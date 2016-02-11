@@ -151,10 +151,10 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        CALwebtool\Providers\AppServiceProvider::class,
+        CALwebtool\Providers\AuthServiceProvider::class,
+        CALwebtool\Providers\EventServiceProvider::class,
+        CALwebtool\Providers\RouteServiceProvider::class,
 
     ],
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace CALwebtool\Jobs;
 
 use Illuminate\Bus\Queueable;
 

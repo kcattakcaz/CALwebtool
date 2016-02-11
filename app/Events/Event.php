@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace CALwebtool\Events;
 
 abstract class Event
 {
