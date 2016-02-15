@@ -4,9 +4,12 @@ namespace CALwebtool\Http\Controllers\Auth;
 
 use CALwebtool\User;
 use Validator;
+use Illuminate\Http\Request;
 use CALwebtool\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Support\Facades\Auth;
+use Laracasts\Flash\Flash;
 
 class AuthController extends Controller
 {
@@ -56,8 +59,9 @@ class AuthController extends Controller
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Create a new user instance after a valid registration. OVVERRIDES LARAVEL FRAMEWORK AUTH
      *
+     * @override
      * @param  array  $data
      * @return User
      */
@@ -67,6 +71,48 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'active' => false
         ]);
+    }
+
+
+    /**
+     * Get the needed authorization credentials from the request.  OVERRIDES LARAVEL FRAMEWORK AUTH
+     *
+     * @override
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function getCredentials(Request $request)
+    {
+        //$cred = $request->only($this->loginUsername(), 'password');
+        $cred = Array('email'=>$request->input('email'), 'password'=>$request->input('password'),'active'=>1);
+        return $cred;
+    }
+
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+        Auth::guard($this->getGuard())->login($this->create($request->all()));
+        Auth::guard($this->getGuard())->logout();
+
+        flash()->message('Your account is disabled, please contact your group administrator or a system administrator for assistance.  Accounts can be disabled automatically if they are not used for over two years.');
+
+
+        return redirect('/home');
     }
 }

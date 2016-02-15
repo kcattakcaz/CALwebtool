@@ -2,9 +2,9 @@
 
 namespace CALwebtool;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Group extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name','email', 'password',
+        'name', 'email', 'password',
     ];
 
     /**
@@ -25,7 +25,7 @@ class User extends Authenticatable
     ];
 
 
-    public function groups(){
-        return $this->belongsToMany('CALwebtool\Group');
+    public function users(){
+        return $this->belongsToMany('CALwebtool\User');
     }
 }
