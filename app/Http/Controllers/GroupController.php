@@ -39,7 +39,7 @@ class GroupController extends Controller
         $group->users()->attach($user->id);
         $group->users()->find($user->id)->pivot->administrator = true;
 
-        return view('groups.index');
+        return redirect()->action('GroupController@index');
 
     }
 
