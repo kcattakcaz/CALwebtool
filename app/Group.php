@@ -18,6 +18,23 @@ class Group extends Model
 
 
     public function users(){
-        return $this->belongsToMany('CALwebtool\User');
+        return $this->belongsToMany('CALwebtool\User')->withPivot('creator','moderator','adjudicator','administrator')->withTimestamps();
+    }
+
+    public function administratorUsers(){
+        return $this->users()->wherePivot('administrator',true);
+    }
+
+    public function standardUsers(){
+        return $this->users()->wherePivot('administrator',false);
+    }
+
+    public function isAdmin($user_id){
+        try {
+            return $this->users()->findOrFail($user_id)->pivot->administrator;
+        }
+        catch(\Exception $e){
+            return false;
+        }
     }
 }

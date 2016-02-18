@@ -20,6 +20,7 @@ class GroupsUsersPivot extends Migration
             $table->boolean('moderator'); //Can create/delete/reject ApplicationSubmissions, BallotSubmissions
             $table->boolean('adjudicator'); //Can create SubmissionScores
             $table->boolean('administrator'); //Can create/update/delete all types and view/restore softDeletes
+            $table->timestamps();
 
         });
     }
@@ -32,6 +33,6 @@ class GroupsUsersPivot extends Migration
     public function down()
     {
         //
-        Schema::drop('groups_users');
+        Schema::drop('group_user');
     }
 }

@@ -15,7 +15,7 @@
                     <div class="list-group">
 
                         @foreach($groups as $group)
-                        <a href="#" class="list-group-item">{{$group->name}}</a>
+                        <a href="{{action('GroupController@show',['group'=>$group->id])}}" class="list-group-item">{{$group->name}}</a>
                         @endforeach
                     </div>
 

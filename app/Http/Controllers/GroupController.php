@@ -38,13 +38,14 @@ class GroupController extends Controller
 
         $group->users()->attach($user->id);
         $group->users()->find($user->id)->pivot->administrator = true;
+        $group->save();
 
         return redirect()->action('GroupController@index');
 
     }
 
-    public function show(){
-
+    public function show(Group $group){
+        return view('groups.show',compact('group'));
     }
 
     public function edit(){
