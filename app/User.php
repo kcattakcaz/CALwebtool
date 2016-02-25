@@ -28,4 +28,8 @@ class User extends Authenticatable
     public function groups(){
         return $this->belongsToMany('CALwebtool\Group');
     }
+
+    public function isSystemAdmin(){
+        return $this->system_admin;
+    }
 }

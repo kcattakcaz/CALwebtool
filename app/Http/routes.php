@@ -35,5 +35,10 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/home', 'HomeController@index');
 
-    Route::resource('group','GroupController');
+    Route::get('/settings','HomeController@settings');
+    Route::get('/unavailable','HomeController@unavailable');
+
+    Route::resource('settings/group','GroupController');
+
+    Route::resource('settings/user','UserController');
 });

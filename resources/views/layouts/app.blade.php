@@ -28,11 +28,7 @@
 <body id="app-layout">
 
 @if (Session::has('flash_notification.message'))
-    <div class="alert alert-{{ Session::get('flash_notification.level') }}">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-
-        {{ Session::get('flash_notification.message') }}
-    </div>
+    @include('flash::message')
 @endif
 
 
@@ -57,7 +53,12 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
+                    <li><a href="{{ url('/home') }}">My Dashboard</a></li>
+                    <li><a href="#">Forms</a></li>
+                    <li><a href="#">Submissions</a></li>
+                    @if(Auth::user()->isSystemAdmin())
+                        <li><a href="{{url('/settings')}}">Admin Settings</a></li>
+                    @endif
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -88,5 +89,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+    <script>
+        $('#flash-overlay-modal').modal();
+    </script>
 </body>
 </html>

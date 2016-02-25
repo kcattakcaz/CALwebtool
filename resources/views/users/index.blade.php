@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Group Management
+                <div class="panel-heading">User Management
 
                 </div>
 
@@ -13,14 +13,13 @@
 
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
-                        <button type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
-                        </button>
-
-                        <a href="{{action('GroupController@create')}}"><button type="button" class="btn btn-default">
+                        <a href="{{action('GroupController@create')}}"<button type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Group
                         </button>
                         </a>
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
+                        </button>
                     </div>
 
                     <br>
@@ -29,8 +28,8 @@
 
                     <div class="list-group">
 
-                        @foreach($groups as $group)
-                        <a href="{{action('GroupController@show',['group'=>$group->id])}}" class="list-group-item">{{$group->name}}</a>
+                        @foreach($users as $user)
+                        <a href="{{action('GroupController@show',['group'=>$user->id])}}" class="list-group-item">{{$user->name}}</a>
                         @endforeach
                     </div>
 

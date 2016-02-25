@@ -26,4 +26,14 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function settings(){
+        return view ('settings.index');
+    }
+
+    public function unavailable(){
+        flash()->overlay('This action is unavailable to you at this time.<br>  You may not have permission to access this
+        resource or perform this action','Sorry');
+        return redirect()->back();
+    }
 }

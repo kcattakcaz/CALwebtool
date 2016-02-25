@@ -16,6 +16,7 @@ class default_users extends Seeder
         $user->password = bcrypt("password");
         $user->email = "admin@localhost.localdomain";
         $user->active = true;
+        $user->system_admin = true;
 
         $user->save();
     }

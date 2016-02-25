@@ -13,6 +13,16 @@ class GroupController extends Controller
 {
     //
 
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(){
         $groups = Group::all();
         return view('groups.index',compact('groups'));
@@ -34,11 +44,7 @@ class GroupController extends Controller
         $user = User::where('name',$request->input('initial_group_administrator'))->firstOrFail();
         $group = new Group(['name'=>$request->input('name'),'description'=>$request->input('description')]);
         $group->save();
-
-
-        $group->users()->attach($user->id);
-        $group->users()->find($user->id)->pivot->administrator = true;
-        $group->save();
+        $group->users()->save($user,['administrator'=>true]);
 
         return redirect()->action('GroupController@index');
 
