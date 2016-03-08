@@ -56,7 +56,7 @@
                     <li><a href="{{ url('/home') }}">My Dashboard</a></li>
                     <li><a href="#">Forms</a></li>
                     <li><a href="#">Submissions</a></li>
-                    @if(Auth::user()->isSystemAdmin())
+                    @if(Auth::check() && Auth::user()->isSystemAdmin())
                         <li><a href="{{url('/settings')}}">Admin Settings</a></li>
                     @endif
                 </ul>

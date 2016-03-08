@@ -5,37 +5,44 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">{{$group->name}}</div>
+                <div class="panel-heading">{{$user->name}}</div>
 
                 <div class="panel-body">
                     <p>
-                        {{$group->description}}
+                       Modification of the user profile is not enabled at this time
                     </p>
-
-                    <div class="list-group">
-
-                        <p>
-                            <strong>Group Administrators</strong>
-                            <button type="button" class="btn btn-default">
-                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Star
-                            </button>
-                        </p>
-                        @foreach($group->administratorUsers()->get() as $user)
-                            <a href="#" class=" list-group-item">{{$user->name}}</a>
-                        @endforeach
-                        <br>
-                        <p>
-                            <strong>Group Members</strong>
-                        </p>
-
-                        @foreach($group->standardUsers()->get() as $user)
-                            <a href="#" class=" list-group-item">{{$user->name}}</a>
-                        @endforeach
-                    </div>
-
-
                 </div>
             </div>
+            <div class="panel panel-default">
+
+                <div class="panel-heading">Group Membership</div>
+
+                <div class="panel-body">
+                    @foreach($user->groups()->get() as $group)
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">{{$group->name}}</div>
+
+                            <div class="panel-body">
+                                @if($group->users()->find($user->id)->pivot->administrator)
+                                    <p>Group Administrator</P>
+                                @endif
+                                @if($group->users()->find($user->id)->pivot->moderatorr)
+                                    <p>Moderator</P>
+                                @endif
+                                @if($group->users()->find($user->id)->pivot->creator)
+                                    <p>Creator</P>
+                                @endif
+                                @if($group->users()->find($user->id)->pivot->adjudicator)
+                                    <p>Adjudicator</P>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>

@@ -13,8 +13,8 @@
 
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
-                        <a href="{{action('GroupController@create')}}"<button type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Group
+                        <a href="{{action('UserController@create')}}"<button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New User
                         </button>
                         </a>
                         <button type="button" class="btn btn-default">
@@ -29,7 +29,7 @@
                     <div class="list-group">
 
                         @foreach($users as $user)
-                        <a href="{{action('GroupController@show',['group'=>$user->id])}}" class="list-group-item">{{$user->name}}</a>
+                        <a href="{{action('UserController@show',['user'=>$user->id])}}" class="list-group-item">{{$user->name}}</a>
                         @endforeach
                     </div>
 

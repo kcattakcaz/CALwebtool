@@ -79,7 +79,7 @@
 
                         <p>
                             @foreach($group->users()->get() as $user)
-                                <a href="#" class=" list-group-item">{{$user->name}}
+                                <a href="{{action("UserController@show",compact('user'))}}" class=" list-group-item">{{$user->name}}
 
                                     @if($group->users()->find($user->id)->pivot->administrator)
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-briefcase"> </span>

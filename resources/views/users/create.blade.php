@@ -9,15 +9,9 @@
 
                 <div class="panel-body">
                    <p>
-                       A user
+                       Create a new user and add them to a group.  Then you can assign them permissions.
                    </p>
 
-                    <p>
-                        Each group is managed by a Group Administrator, who can add/remove users from the group, as well
-                        as reset their passwords.  The Group Administrator can also recover some deleted objects, unlock
-                        locked objects, and view detailed audit information.  They can also promote additional users to
-                        be Group Administrators, however most users should not have this level of permissions.
-                    </p>
 
 
                     @if (count($errors) > 0)
@@ -57,7 +51,7 @@
                             <label for="initial_group">Initial Group:</label>
                             <select name="initial_group" class="form-control" id="initial_group">
                                 @foreach($groups as $group)
-                                    <option value="{{$user->id}}">{{$group->name}}</option>
+                                    <option value="{{$group->id}}">{{$group->name}}</option>
                                 @endforeach
                             </select>
                         </div>
