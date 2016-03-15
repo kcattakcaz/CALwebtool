@@ -49,7 +49,7 @@
 
                         <div class="form-group">
                             <label for="initial_group">Initial Group:</label>
-                            <select name="initial_group" class="form-control" id="initial_group">
+                            <select multiple="multiple" name="initial_group[]" class="form-control" id="initial_group">
                                 @foreach($groups as $group)
                                     <option value="{{$group->id}}">{{$group->name}}</option>
                                 @endforeach

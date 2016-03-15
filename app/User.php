@@ -32,4 +32,8 @@ class User extends Authenticatable
     public function isSystemAdmin(){
         return $this->system_admin;
     }
+
+    public function formDefinitions(){
+        return $this->hasMany('CALwebtool\User');
+    }
 }

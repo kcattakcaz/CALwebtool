@@ -41,8 +41,20 @@ class UserController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
+
         $user = new User(['name'=>$request->input('name'),'email'=>$request->input('email'),'password'=>bcrypt($request->input('password')),'active'=>true,'system_admin'=>false]);
         $user->save();
+
+        foreach($request->input('initial_group') as $init_group){
+            try {
+                $group = Group::findOrFail($init_group);
+                $group->users()->save($user);
+            }
+            catch(\Exception $e){
+                flash()->overlay("The user was created successfully, but there was a problem adding this user to the group with ID $init_group. Visit the user's profile and manually check their group membership.  The error was\n $e->getMessage()","Group Error");
+                return redirect()->action('UserController@index');
+            }
+        }
 
         return redirect()->action('UserController@index');
 
