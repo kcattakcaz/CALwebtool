@@ -14,13 +14,16 @@ class GroupsUsersPivot extends Migration
     {
         //
         Schema::create('group_user', function (Blueprint $table) {
-            $table->integer('user_id');
-            $table->integer('group_id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('group_id')->unsigned();
             $table->boolean('creator'); //Can create FormDefinitions, ElectionDefinitions
             $table->boolean('moderator'); //Can create/delete/reject ApplicationSubmissions, BallotSubmissions
             $table->boolean('adjudicator'); //Can create SubmissionScores
             $table->boolean('administrator'); //Can create/update/delete all types and view/restore softDeletes
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
 
         });
     }
