@@ -37,4 +37,8 @@ class Group extends Model
             return false;
         }
     }
+
+    public function formDefinitions(){
+        return $this->hasMany('CALwebtool\FormDefinition');
+    }
 }

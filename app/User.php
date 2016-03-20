@@ -34,6 +34,6 @@ class User extends Authenticatable
     }
 
     public function formDefinitions(){
-        return $this->hasMany('CALwebtool\User');
+        return $this->hasMany('CALwebtool\FormDefinition');
     }
 }

@@ -3,10 +3,13 @@
 namespace CALwebtool\Http\Controllers;
 
 use CALwebtool\FormDefinition;
+use CALwebtool\Group;
 use Illuminate\Http\Request;
 
 use CALwebtool\Http\Requests;
 use CALwebtool\Http\Controllers\Controller;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class FormDefinitionController extends Controller
 {
@@ -21,13 +24,13 @@ class FormDefinitionController extends Controller
     }
 
     public function index(){
-        $groups = FormDefinition::all();
-        return view('groups.index',compact('groups'));
+        $groups = new Collection();
+        return view('formdefinitions.index',compact('groups'));
     }
 
     public function create(){
-
-        return view('groups.create');
+        $groups = Auth::user()->groups()->get();
+        return view('formdefinitions.create',compact('groups'));
     }
 
     public function store(Request $request){
@@ -37,7 +40,7 @@ class FormDefinitionController extends Controller
         ]);
 
 
-        return redirect()->action('GroupController@index');
+        return redirect()->action('FormDefinitionController@index');
 
     }
 

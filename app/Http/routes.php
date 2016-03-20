@@ -41,4 +41,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('settings/group','GroupController');
 
     Route::resource('settings/user','UserController');
+
+    Route::resource('form','FormDefinitionController');
 });

@@ -42,10 +42,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="initial_group_administrator">Initial Group Administrator:</label>
-                            <select name="initial_group_administrator" class="form-control" id="initial_group_administrator">
-                                @foreach($users as $user)
-                                    <option value="{{$user->name}}">{{$user->name}}</option>
+                            <label for="group_id">Group:</label>
+                            <select name="group_id" class="form-control" id="group_id">
+                                @foreach($groups as $group)
+                                    <option value="{{$group->id}}">{{$group->name}}</option>
                                 @endforeach
                             </select>
                         </div>
