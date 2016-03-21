@@ -23,9 +23,7 @@ class CreateFormDefinitionTable extends Migration
             $table->dateTime('submissions_start');
             $table->dateTime('submissions_end');
             $table->dateTime('scores_due');
-            $table->json('fields');
-            //$table->enum('status',array('Drafting','Scheduled','Accepting','Reviewing','Scored','Archived'));
-            $table->rememberToken();
+            $table->enum('status',array('Drafting','Scheduled','Accepting','Reviewing','Scored','Archived'));
             $table->timestamps();
 
             $table->foreign('group_id')->references('id')->on('groups');

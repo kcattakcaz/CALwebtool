@@ -25,4 +25,8 @@ class FormDefinition extends Model
     public function group(){
         return $this->belongsTo('CALWebtool\Group');
     }
+
+    public function fields(){
+        return $this->hasMany('CALWebtool\Fields');
+    }
 }

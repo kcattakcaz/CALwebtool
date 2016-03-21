@@ -29,6 +29,10 @@ class User extends Authenticatable
         return $this->belongsToMany('CALwebtool\Group');
     }
 
+    public function creatorGroups(){
+        return $this->groups()->wherePivot('creator',true);
+    }
+
     public function isSystemAdmin(){
         return $this->system_admin;
     }

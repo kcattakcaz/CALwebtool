@@ -29,7 +29,7 @@ class FormDefinitionController extends Controller
     }
 
     public function create(){
-        $groups = Auth::user()->groups()->get();
+        $groups = Auth::user()->creatorGroups()->get();
         return view('formdefinitions.create',compact('groups'));
     }
 
@@ -57,6 +57,10 @@ class FormDefinitionController extends Controller
     }
 
     public function destroy(){
+
+    }
+
+    public static function getSupportedFieldTypes(){
 
     }
 }

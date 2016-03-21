@@ -32,7 +32,7 @@
                     <form role="form" method="post" action="{{action('GroupController@store')}}">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <label for="name">Group Name:</label>
+                            <label for="name">Form Name:</label>
                             <input name="name" type="text" class="form-control" id="name">
                         </div>
 
@@ -49,6 +49,22 @@
                                 @endforeach
                             </select>
                         </div>
+
+
+                        <div id="formdef_creator" class="form-group">
+                            <label for="ftype_select">
+                                Field Type:
+                            </label>
+                            <select class="form-control" id="ftype_select" name="ftype_select">
+                                @foreach($field_types as $ftype)
+                                    <option value="{{$ftype->id}}">{{$ftype->name}}</option>
+                                @eendforeach
+                            </select>
+
+                        </div>
+
+
+
                         <button type="submit" class="btn btn-default">Submit</button>
                     </form>
 
