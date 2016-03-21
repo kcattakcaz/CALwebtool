@@ -52,14 +52,19 @@
 
 
                         <div id="formdef_creator" class="form-group">
-                            <label for="ftype_select">
+                            <label for="ftype_select" class="col-xs-2">
                                 Field Type:
                             </label>
-                            <select class="form-control" id="ftype_select" name="ftype_select">
-                                @foreach($field_types as $ftype)
-                                    <option value="{{$ftype->id}}">{{$ftype->name}}</option>
-                                @eendforeach
+                            <select class="col-xs-7" id="ftype_select" name="ftype_select">
+                                @foreach($field_types as $key=>$ftype)
+                                    <option value="{{$key}}">{{$ftype->get("name")}}</option>
+                                @endforeach
                             </select>
+                            <button type="button" id="btn_addField" class="btn btn-default col-xs-offset-1 col-xs-2">Add</button>
+                            <br>
+                            <div id="formdef_viewer">
+
+                            </div>
 
                         </div>
 
@@ -74,4 +79,17 @@
         </div>
     </div>
 </div>
+
+<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+
+    <script>
+        $("#btn_addField").on( "click", function() {
+            //console.log($("#ftype_select").val());
+            if($("#ftype_select").val() == "Text"){
+              $("#formdef_viewer").append("<p>Text Field</p>")
+            }
+        });
+    </script>
+
 @endsection

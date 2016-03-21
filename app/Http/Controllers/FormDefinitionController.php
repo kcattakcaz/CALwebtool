@@ -10,6 +10,7 @@ use CALwebtool\Http\Requests;
 use CALwebtool\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\DomCrawler\Form;
 
 class FormDefinitionController extends Controller
 {
@@ -30,7 +31,8 @@ class FormDefinitionController extends Controller
 
     public function create(){
         $groups = Auth::user()->creatorGroups()->get();
-        return view('formdefinitions.create',compact('groups'));
+        $field_types = self::getSupportedFieldTypes();
+        return view('formdefinitions.create',compact('groups','field_types'));
     }
 
     public function store(Request $request){
@@ -60,7 +62,33 @@ class FormDefinitionController extends Controller
 
     }
 
-    public static function getSupportedFieldTypes(){
+    public static function textField(){
+        $field = new Collection();
+        $options = array("MultiLine"=>"Boolean","MaxLength"=>"Integer","MinLength"=>"Integer","EMail"=>"Boolean");
+        $name = "Text Field";
 
+        $field->put("options",$options);
+        $field->put("name",$name);
+
+        return $field;
+    }
+
+    public static function checkboxField(){
+        $field = new Collection();
+        $options = array("Required"=>"Boolean");
+        $name = "Checkbox";
+
+        $field->put("options",$options);
+        $field->put("name",$name);
+
+        return $field;
+    }
+
+    public static function getSupportedFieldTypes(){
+        //return ['Text','Checkbox','Radios','Select','File'];
+        $fields = new Collection();
+        $fields->put("Text",FormDefinitionController::textField());
+        $fields->put("Checkbox",FormDefinitionController::checkboxField());
+        return $fields;
     }
 }
