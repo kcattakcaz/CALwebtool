@@ -51,7 +51,7 @@
                         </div>
 
 
-                        <div id="formdef_creator" class="form-group">
+                        <div id="formdef_creator" class="form-group row">
                             <label for="ftype_select" class="col-xs-2">
                                 Field Type:
                             </label>
@@ -61,11 +61,44 @@
                                 @endforeach
                             </select>
                             <button type="button" id="btn_addField" class="btn btn-default col-xs-offset-1 col-xs-2">Add</button>
-                            <br>
-                            <div id="formdef_viewer">
 
+                        </div>
+
+                        <div class="col-xs-12" id="formdef_viewer">
+                            <div class='panel panel-default'>
+                                <div class='panel-heading'>
+                                    <h3 class='panel-title'>Text Field</h3>
+                                </div>
+                                <div class='panel-body'>
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input class="form-control" type="text" name="name" id="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="required">Required</label>
+                                        <select class="form-control" name="required" id="required">
+                                            <option value="false">False: Is Optional</option>
+                                            <option value="true"> True: Is Required</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="multiline">Multiline</label>
+                                        <select class="form-control" name="multiline" id="multiline">
+                                            <option value="false">False: Is Single Line</option>
+                                            <option value="true"> True: Is Multiple Lines</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="minlen">Minimum Length</label>
+                                        <input class="form-control" type="text" name="minlen" id="minlen" value="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="maxlen">Maximum Length</label>
+                                        <input class="form-control" type="text" name="maxlen" id="maxlen" value="255">
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
 
 
@@ -80,15 +113,19 @@
     </div>
 </div>
 
-<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
-
-
     <script>
+
+        {{--@foreach($field_types as $key=>$ftype)
+            var field_{{$key}} = "{!!$ftype->get("html_options")!!}";
+        @endforeach --}}
+
         $("#btn_addField").on( "click", function() {
-            //console.log($("#ftype_select").val());
-            if($("#ftype_select").val() == "Text"){
-              $("#formdef_viewer").append("<p>Text Field</p>")
+            var selectionValue = $("#ftype_select").val();
+            @foreach($field_types as $key=>$ftype)
+            if( selectionValue == "{{$key}}"){
+                $("#formdef_viewer").append("{!!$ftype->get("html_options")!!}");
             }
+            @endforeach
         });
     </script>
 

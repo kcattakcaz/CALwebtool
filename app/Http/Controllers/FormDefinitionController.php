@@ -64,10 +64,12 @@ class FormDefinitionController extends Controller
 
     public static function textField(){
         $field = new Collection();
-        $options = array("MultiLine"=>"Boolean","MaxLength"=>"Integer","MinLength"=>"Integer","EMail"=>"Boolean");
+        $options = array("Required"=>"Boolean","MultiLine"=>"Boolean","MaxLength"=>"Integer","MinLength"=>"Integer","EMail"=>"Boolean");
+        $html_options = "<div class='panel panel-default'><div class='panel-heading'><h3 class='panel-title'>Panel title</h3></div><div class='panel-body'>Panel content</div></div>";
         $name = "Text Field";
 
         $field->put("options",$options);
+        $field->put("html_options",$html_options);
         $field->put("name",$name);
 
         return $field;
@@ -76,9 +78,11 @@ class FormDefinitionController extends Controller
     public static function checkboxField(){
         $field = new Collection();
         $options = array("Required"=>"Boolean");
+        $html_options = "<p>CheckboxField</p>";
         $name = "Checkbox";
 
         $field->put("options",$options);
+        $field->put("html_options",$html_options);
         $field->put("name",$name);
 
         return $field;
