@@ -115,18 +115,56 @@
 
     <script>
 
+        function FieldController()  {
+            this.field_objects = {};
+            this.current_field_count = 1;
+
+            this.supported_types = {}
+
+            this.newField = function(type){
+                return null;
+            };
+
+            this.delField = function(fieldId){
+                return null;
+            };
+        }
+
+        function Field(){
+            this.type = null;
+            this.html = null;
+        }
+
+
         {{--@foreach($field_types as $key=>$ftype)
             var field_{{$key}} = "{!!$ftype->get("html_options")!!}";
         @endforeach --}}
 
-        $("#btn_addField").on( "click", function() {
+        {{-- $("#btn_addField").on( "click", function() {
             var selectionValue = $("#ftype_select").val();
             @foreach($field_types as $key=>$ftype)
             if( selectionValue == "{{$key}}"){
                 $("#formdef_viewer").append("{!!$ftype->get("html_options")!!}");
             }
             @endforeach
+        }); --}}
+
+        $("#btn_addField").on( "click", function() {
+            var selected_field_type = $("#ftype_select").val();
+            var field_name = "";
+
+            var panel = $("<div class='panel panel-default'></div>");
+            panel.append("<div class='panel-heading'> <h3 class='panel-title'>"+field_name+"</h3> </div>")
+
+            var panel_body = $("<div class='panel-body'>");
+            panel_body.append($("<div class='form-group'>"))
+
+            panel.append(panel_body);
+            $('#formdef_viewer').append(panel);
+
         });
+
+
     </script>
 
 @endsection
