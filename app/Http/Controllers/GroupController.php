@@ -55,10 +55,9 @@ class GroupController extends Controller
 
     //loads edit page
     public function edit(Group $group){
-        $group_users = array($group->users()->get());               //these need to send
-        $users = array_diff(array(User::all()) , $group_users);    //the correct ata type
+        $group_users = $group->users()->get();               //these need to send
+        $users = User::all()->diff($group_users);
 
-        //dd($users);
         return view('groups.edit', compact(['group', 'users']));    //right meow i think it's a group and a user
 
     }

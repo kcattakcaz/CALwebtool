@@ -110,13 +110,11 @@
                 var panel_group = $("<div class='panel-group'>");
 
                 var panel = $("<div class='panel panel-default'>");
-                var panel_heading = $("<div class='panel-heading>")
-                        .append("<h3 class='panel-title'>")
-                        .append("<a href='#collapse'>"+name+"</a>")
-                        .attr('data-toggle','collapse');
+                var panel_heading = $("<div class='panel-heading><h3 class='panel-title'>Hello</h3></div>");
+
+                console.log(panel_heading);
 
                 panel.append(panel_heading);
-
 
                 var panel_collapse = $("<div class='panel-collapse collapse in'>");
 
