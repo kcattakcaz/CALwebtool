@@ -118,8 +118,9 @@
 
 
                                 -->
+
                                 @foreach($users as $user)
-                                    <option value="{{$user->name}}">{{$user->name}}</option>
+                                    <option value="{{$user->get('name')}}">{{$user->get('name')}}</option>
                                 @endforeach
                             </select>
                         </div>

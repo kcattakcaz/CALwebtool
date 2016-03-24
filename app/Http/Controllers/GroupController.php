@@ -58,8 +58,8 @@ class GroupController extends Controller
         $group_users = array($group->users()->get());               //these need to send
         $users = array_diff(array(User::all()) , $group_users);    //the correct ata type
 
-        echo $users;
-        //return view('groups.edit', compact(['group', 'users']));    //right meow i think it's a group and a user
+        //dd($users);
+        return view('groups.edit', compact(['group', 'users']));    //right meow i think it's a group and a user
 
     }
 
