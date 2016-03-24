@@ -8,16 +8,49 @@
                 <div class="panel-heading">{{$user->name}}</div>
 
                 <div class="panel-body">
+
                     <p>
-                       Modification of the user profile is not enabled at this time
+                        User modification is unavailable at this time.
                     </p>
+
+                    <form role="form" method="post" action="{{action('UserController@update', compact('user'))}}">
+                        {{ csrf_field() }}
+                            <div class="form-group">
+                                <label for="name">User Name:</label>
+                                <input name="name" type="text" class="form-control" id="name" value="{{$user->name}}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">E-Mail:</label>
+                                <input name="email" type="email" class="form-control" id="email" value="{{$user->email}}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input name="password" type="password" class="form-control" id="password">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password_confirmation">Confirm Password:</label>
+                                <input name="password_confirmation" type="password" class="form-control" id="password_confirmation">
+                            </div>
+
+                        <!--
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        -->
+
+                        </form>
+
+
                 </div>
             </div>
             <div class="panel panel-default">
 
-                <div class="panel-heading">Group Membership</div>
+                <div class="panel-heading">Groups that {{$user->name}} is a member of:</div>
 
                 <div class="panel-body">
+
+                    <!-- this should be a table instead of another panel-->
                     @foreach($user->groups()->get() as $group)
 
                         <div class="panel panel-default">

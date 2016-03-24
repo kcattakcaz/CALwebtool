@@ -1,34 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <div class="panel-heading">{{$group->name}}</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{$group->name}}</div>
 
-                <div class="panel-body">
+                    <div class="panel-body">
 
-                    <div class="btn-group pull-right" role="group" aria-label="...">
+                        <div class="btn-group pull-right" role="group" aria-label="...">
 
-                        <a href="{{action('GroupController@edit',['group'=>$group->id])}}"><button type="button" class="btn btn-default">
-                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit Group
-                            </button>
-                        </a>
-                       <a> <button type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
-                        </button> </a>
-                    </div>
+                            <a href="{{action('GroupController@update',['group'=>$group->id])}}"><button type="button" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-check" aria-hidden="true"></span> Save
+                                </button>
+                            </a>
+                            <a> <button type="button" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
+                                </button> </a>
+                        </div>
 
-                    <p>
-                        {{$group->description}}
-                    </p>
+                        <p>
+                            {{$group->description}}
+                        </p>
 
-                    <br>
+                        <br>
 
-                    <p>
-                        Members can have one or more of the following permissions: Moderator, Creator, Adjudicator,
-                        or no permissions at all.
+                        <p>
+                            Members can have one or more of the following permissions: Moderator, Creator, Adjudicator,
+                            or no permissions at all.
                         <ul>
                             <li><em>No Permissions-</em>This user can view group data but cannot modify it.
                                 <span class="pull-right glyphicon glyphicon-user"> </span></li>
@@ -44,30 +44,30 @@
 
                         </ul>
 
-                    </p>
-
-                    <div class="list-group">
-                        <p>
-                            <strong>Group Members</strong>
-
                         </p>
 
-                        <div class="">
-                            <div class="input-group">
-                                  <input type="text" class="form-control" placeholder="Search for...">
+                        <div class="list-group">
+                            <p>
+                                <strong>Group Members</strong>
+
+                            </p>
+
+                            <div class="">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search for...">
                                   <span class="input-group-btn">
                                     <button class="btn btn-default" type="button">Search</button>
                                   </span>
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort <span class="caret"></span></button>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li><a href="#">By Name</a></li>
-                                        <li><a href="#">By Date Added</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="#">Show Admins Only</a></li>
-                                    </ul>
-                                </div><!-- /btn-group -->
-                            </div><!-- /input-group -->
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort <span class="caret"></span></button>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li><a href="#">By Name</a></li>
+                                            <li><a href="#">By Date Added</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="#">Show Admins Only</a></li>
+                                        </ul>
+                                    </div><!-- /btn-group -->
+                                </div><!-- /input-group -->
                             </div><!-- /input-group -->
                         </div><!-- /.col-lg-6 -->
 
@@ -103,11 +103,34 @@
                             @endforeach
                         </p>
                     </div>
+                    <form role="form" method="post" action="{{action('GroupController@update', compact('group'))}}">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <label for="all_users">Add group members:</label>
+                            <select multiple="multiple" name="all_users" class="form-control" id="new_group_users">
+
+                                <!--
+                                should only display users that are not already in the group
+                                or have a list of checkboxes <- this may be a better idea
+
+
+                                show active / inactive somehow
+
+
+                                -->
+                                @foreach($users as $user)
+                                    <option value="{{$user->name}}">{{$user->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-default">Submit</button>
+
 
 
                 </div>
             </div>
         </div>
     </div>
-</div>
+    </div>
 @endsection

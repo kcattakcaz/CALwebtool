@@ -42,7 +42,10 @@ class UserController extends Controller
         ]);
 
 
-        $user = new User(['name'=>$request->input('name'),'email'=>$request->input('email'),'password'=>bcrypt($request->input('password')),'active'=>true,'system_admin'=>false]);
+        $user = new User(['name'=>$request->input('name'),
+                            'email'=>$request->input('email'),
+                            'password'=>bcrypt($request->input('password')),
+                            'active'=>true,'system_admin'=>false]);
         $user->save();
 
         foreach($request->input('initial_group') as $init_group){
@@ -61,15 +64,23 @@ class UserController extends Controller
     }
 
     public function show(User $user){
-        return view('users.show',compact('user'));
+        return view('users.show', compact('user'));
     }
 
-    public function edit(){
+    public function update(Request $request){
 
-    }
+        $this->validate($request,[
+            'name' => 'unique:groups|max:255',
+            'email' => 'email|unique:users',
+            'password' => 'min:6|confirmed',
+        ]);
 
-    public function update(){
+        $user = Input::get('user');
 
+        $user->name = $request->input('name');
+        $user->name = $request->input('email');
+        $user->name = $request->input('password');
+        $user->save();
     }
 
     public function destroy(){

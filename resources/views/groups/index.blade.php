@@ -13,14 +13,13 @@
 
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
+                        <a href="{{action('GroupController@create')}}"><button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Group
+                            </button>
+                        </a>
                         <button type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
                         </button>
-
-                        <a href="{{action('GroupController@create')}}"><button type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Group
-                        </button>
-                        </a>
                     </div>
 
                     <br>

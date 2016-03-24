@@ -86,7 +86,9 @@ class AuthController extends Controller
     protected function getCredentials(Request $request)
     {
         //$cred = $request->only($this->loginUsername(), 'password');
-        $cred = Array('email'=>$request->input('email'), 'password'=>$request->input('password'),'active'=>1);
+        $cred = Array('email'=>$request->input('email'),
+                    'password'=>$request->input('password'),
+                    'active'=>1);
         return $cred;
     }
 
