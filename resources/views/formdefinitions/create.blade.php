@@ -75,19 +75,6 @@
 
                         <button type="submit" class="btn btn-default">Submit</button>
 
-                        <div class="panel-group">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" href="#collapse1">Collapsible panel</a>
-                                    </h4>
-                                </div>
-                                <div id="collapse1" class="panel-collapse collapse">
-                                    <div class="panel-body">Panel Body</div>
-                                    <div class="panel-footer">Panel Footer</div>
-                                </div>
-                            </div>
-                        </div>
                 </div>
                     </form>
 
@@ -101,31 +88,42 @@
     <script>
 
         function FieldController()  {
-            this.field_objects = [];
+            this.field_objects = {};
             this.current_field_count = 1;
-            this.supported_types = {}
+            this.supported_types = {};
 
             this.newField = function(type,name){
 
-                var panel_group = $("<div class='panel-group'>");
+                var field_id = this.getUniqueFieldId(type);
+                console.log("New Field created with ID: "+field_id);
+
+                var panel_group = $("<div class='panel-group'>").attr("id","panel_group_"+field_id);
 
                 var panel = $("<div class='panel panel-default'>");
-                var panel_heading = $("<div class='panel-heading><h3 class='panel-title'>Hello</h3></div>");
-
-                console.log(panel_heading);
+                var panel_heading = $("<div class='panel-heading'>");
+                var panel_title = $("<h3 class='panel-title'>");
+                var title_link = $("<a href='#"+field_id+"'>").attr('data-toggle','collapse').attr('id',field_id+"_title_link").text(name +" ("+field_id + ")");
+                var delete_link = $("<a href='#"+field_id+"_delete'>").addClass('pull-right glyphicon glyphicon-remove').on('click',function(){
+                    Field_Manager.delField(field_id);
+                });
+                panel_title.append(title_link);
+                panel_title.append(delete_link);
+                panel_heading.append(panel_title);
 
                 panel.append(panel_heading);
 
-                var panel_collapse = $("<div class='panel-collapse collapse in'>");
+                var panel_collapse = $("<div class='panel-collapse collapse in'>").attr('id',field_id);
 
                 var panel_body = $("<div class='panel-body'>");
-                var panel_footer = $(" <div class='panel-footer'><a href='#collapse' data-toggle='collapse'>Collapse</a></div>");
+                var panel_footer = $(" <div class='panel-footer'>");
+                var collapse_link = $("<a href='#"+field_id+"'>").attr('data-toggle','collapse').attr('id',field_id+"_collapse_link").text("Close");
+                panel_footer.append(collapse_link);
 
                 if(type == "Text"){
-                    var nF = new TextField(this.getUniqueFieldId(name),name);
+                    var nF = new TextField(field_id,name);
                 }
 
-                this.field_objects.push(nF);
+                this.field_objects[field_id] =  nF;
                 nF.renderOptions(panel_body,null);
                 panel_collapse.append(panel_body);
                 panel_collapse.append(panel_footer);
@@ -133,28 +131,37 @@
                 panel_group.append(panel);
                 $('#formdef_viewer').append(panel_group);
 
-                $("#"+this.id+"_panel_collapse").on('click',function(){
-
-                })
             };
 
             this.delField = function(fieldId){
-                return null;
+                delete this.field_objects[fieldId];
+                $("#panel_group_"+fieldId).remove();
+                return true;
             };
 
-            this.getUniqueFieldId = function (name) { //generate a unique ID for this field based upon its name
+            this.getFormDefinition = function(){
+                var definitionArray = [];
+                for(var field in this.field_objects){
+                    console.log(field);
+                    definitionArray.push(this.field_objects[field].getValuesObj());
+                }
+                return definitionArray;
+            };
+
+            this.getUniqueFieldId = function (type) { //generate a unique ID for this field based upon its type
                 i = 2;
-                var fieldID = name.replace(/\W+/g, "_"); //replace all non-alphanumeric characters with a _ //TEST WHAT HAPPENS WITH A SINGE SPACE!
+                //var fieldID = type.replace(/\W+/g, "_"); //replace all non-alphanumeric characters with a _
+                var fieldID = type + "_1";
                 while(true){
                     if(this.field_objects.hasOwnProperty(fieldID)){
-                        fieldID = fieldID + "_" + i.toString();
+                        fieldID = type + "_" + i.toString();
                         i++;
                     }
                     else{
                         return fieldID;
                     }
                 }
-            }
+            };
         }
 
         function TextField(id,name){
@@ -180,18 +187,22 @@
              *
              * renderOptions will append to a given parent element the HTML elements needed to set the values of this field
              * you may also provide values to fill the fields from a saved state.  It will also setup the object so that you
-             * can later call retrieveValues() to get the field parameters
+             * can later call getValuesObj() to get the field parameters
              *
              **/
             this.renderOptions = function(parentElementRef,currentValuesObj){
                 if(currentValuesObj === null){
 
-                    //Name Text Input Field
+                    //Name Text Input Field//
                         var name_group = $("<div class='form-group'>");
                         name_group.append("<label for='name'>Name</label>");
-                        this.elementref_name = $("<input class='form-control' type='text' name='"+this.id+"_name' id='"+this.id+"_name'>");
+                        this.elementref_name = $("<input class='form-control' type='text' name='"+this.id+"_name' id='"+this.id+"_name'>").val(this.name);
                         name_group.append(this.elementref_name);
                         parentElementRef.append(name_group);
+                        this.elementref_name.on('keyup',{field_id:this.id},function(event){
+                            //console.log("Change event for: "+this+"  with id: "+event.data.field_id);
+                            $("#"+event.data.field_id+"_title_link").text($(this).val() + " ("+event.data.field_id+")");
+                        });
 
                     //Required Select Field
                         var required_group = $("<div class='form-group'>");
@@ -224,19 +235,33 @@
 
                     //Max Length Input Field
                         var maxlength_group = $("<div class='form-group'>");
-                        maxlength_group.append("<label for='name'>Max Length</label>");
+                        maxlength_group.append("<labehell for='name'>Max Length</labehell>");
                         this.elementref_maxlength = $("<input class='form-control' type='text' name='"+this.id+"_maxlength' id='"+this.id+"_maxlength'>");
                         maxlength_group.append(this.elementref_maxlength);
                         parentElementRef.append(maxlength_group);
 
                 }
                 else{
-                    parentElementRef.append(alert("I can't do that yet!"));
+                    parentElementRef.append(alert("I can'helt do that yet!"));
                 }
             }
 
             this.renderView = function(){
                 return null;
+            }
+
+            this.getValuesObj = function(){
+                var values = {};
+                values.type = "Text";
+                values.id = this.id;
+                values.name = this.elementref_name.val();
+                values.required = this.elementref_required.val();
+                values.multiline = this.elementref_multiline.val();
+                values.maxlength = this.elementref_maxlength.val();
+                values.minlength = this.elementref_minlength.val();
+
+                return values;
+
             }
 
         }
@@ -245,9 +270,9 @@
         var Field_Manager = new FieldController($("#formdef_viewer"));
 
         $("#btn_addField").on( "click", function() {
-            var selected_field_type = $("#ftype_select").val();
-            var entered_name = $("#ftype_name").val();
-            Field_Manager.newField(selected_field_type,entered_name);
+                var selected_field_type = $("#ftype_select").val();
+                var entered_name = $("#ftype_name").val();
+                Field_Manager.newField(selected_field_type,entered_name);
 
         });
 
