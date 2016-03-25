@@ -11,7 +11,6 @@ use CALwebtool\Http\Controllers\Controller;
 
 class GroupController extends Controller
 {
-    //
 
     /**
      * Create a new controller instance.
@@ -55,29 +54,32 @@ class GroupController extends Controller
 
     //loads edit page
     public function edit(Group $group){
-        $group_users = $group->users()->get();               //these need to send
+        $group_users = $group->users()->get();
         $users = User::all()->diff($group_users);
 
-        return view('groups.edit', compact(['group', 'users']));    //right meow i think it's a group and a user
+        return view('groups.edit', compact(['group', 'users']));
 
     }
 
     //called by edit page
     public function update(Request $request, Group $group){
 
-        $this->validate($request,[
-            'name' => 'required|unique:groups|max:255',
-            'description' => 'required|max:1000',
-        ]);
+        //$this->validate($request,[
+        //    'name' => 'required|unique:groups|max:255',
+        //    'description' => 'required|max:1000',
+        //]);
 
-        foreach($request->input('group_users') as $added_user){
+        //$group = Group::where('id', $request->input('group_id'))->firstOrFail();
+        dd($group);
+
+        foreach($request->input('new_group_users') as $added_user){
             try {
                 $user = User::findOrFail($added_user);
                 $group->users()->save($user);
             }
             catch(\Exception $e){
-                flash()->overlay("The user was created successfully, but there was a problem adding this user to the group with ID $init_group. Visit the user's profile and manually check their group membership.  The error was\n $e->getMessage()","Group Error");
-                return redirect()->action('GroupController@show');
+                flash()->overlay("There was a problem adding the user $added_user->name to the group. Visit the user's profile and manually check their group membership.  The error was\n $e->getMessage()","Group Error");
+                return redirect()->action('GroupController@index');
             }
         }
 

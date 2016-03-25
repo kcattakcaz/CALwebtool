@@ -11,10 +11,6 @@
 
                         <div class="btn-group pull-right" role="group" aria-label="...">
 
-                            <a href="{{action('GroupController@update',['group'=>$group->id])}}"><button type="button" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-check" aria-hidden="true"></span> Save
-                                </button>
-                            </a>
                             <a> <button type="button" class="btn btn-default">
                                     <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
                                 </button> </a>
@@ -98,35 +94,27 @@
                                     @else
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                                     @endif
-
                                 </a>
                             @endforeach
                         </p>
                     </div>
-                    <form role="form" method="post" action="{{action('GroupController@update', compact('group'))}}">
+                    <form role="form" method="post" action="{{action('GroupController@update')}}">
                         {{ csrf_field() }}
+
                         <div class="form-group">
-                            <label for="all_users">Add group members:</label>
-                            <select multiple="multiple" name="all_users" class="form-control" id="new_group_users">
+                            <input type="hidden" name="group_id" id="group_id" value="{{$group->id}}">
+                        </div>
 
-                                <!--
-                                should only display users that are not already in the group
-                                or have a list of checkboxes <- this may be a better idea
-
-
-                                show active / inactive somehow
-
-
-                                -->
-
+                        <div class="form-group">
+                            <label for="new_group_users">Add group members:</label>
+                            <select multiple="multiple" name="new_group_users[]" class="form-control" id="new_group_users">
                                 @foreach($users as $user)
-                                    <option value="{{$user->name}}">{{$user->name}}</option>
+                                    <option value="{{$user->id}}">{{$user->name}}</option>
                                 @endforeach
                             </select>
                         </div>
-
                         <button type="submit" class="btn btn-default">Submit</button>
-
+                    </form>
 
 
                 </div>
