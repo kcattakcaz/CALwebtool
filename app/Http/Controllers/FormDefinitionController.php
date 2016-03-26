@@ -92,7 +92,7 @@ class FormDefinitionController extends Controller
         //return ['Text','Checkbox','Radios','Select','File'];
         $fields = new Collection();
         $fields->put("Text",FormDefinitionController::textField());
-        $fields->put("Checkbox",FormDefinitionController::checkboxField());
+        $fields->put("CheckBox",FormDefinitionController::checkboxField());
         return $fields;
     }
 }
