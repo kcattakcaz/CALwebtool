@@ -98,8 +98,10 @@
                             @endforeach
                         </p>
                     </div>
-                    <form role="form" method="post" action="{{action('GroupController@update')}}">
+                    <form role="form" method="post" action="{{action('GroupController@update',compact('group'))}}">
                         {{ csrf_field() }}
+
+                        <input type="hidden" name="_method" value="PATCH">
 
                         <div class="form-group">
                             <input type="hidden" name="group_id" id="group_id" value="{{$group->id}}">

@@ -57,7 +57,7 @@ class GroupController extends Controller
         $group_users = $group->users()->get();
         $users = User::all()->diff($group_users);
 
-        return view('groups.edit', compact(['group', 'users']));
+        return view('groups.edit', compact('group', 'users'));
 
     }
 

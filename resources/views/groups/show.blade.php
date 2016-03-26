@@ -11,7 +11,7 @@
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
 
-                        <a href="{{action('GroupController@edit',['group'=>$group->id])}}"><button type="button" class="btn btn-default">
+                        <a href="{{action('GroupController@edit',compact('group'))}}"><button type="button" class="btn btn-default">
                                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit Group
                             </button>
                         </a>
