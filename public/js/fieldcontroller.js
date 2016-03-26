@@ -290,10 +290,11 @@ function SelectField(id,name){
     this.id = id;
     this.name = name;
     this.required = false;
-    this.options ={};
+    this.options =[];
 
     this.elementref_name = null;
     this.elementref_required = null;
+    this.elementref_multipleselect = null;
     this.elementref_value_true = null;
     this.elementref_value_false = null;
     this.elementref_options_array = [];
@@ -334,6 +335,17 @@ function SelectField(id,name){
             required_group.append(this.elementref_required);
             parentElementRef.append(required_group);
 
+            //Multiple-select Select Field
+            var multipleselect_group = $("<div class='form-group'>");
+            multipleselect_group.append("<label for='required'>Multiple Select</label>");
+            this.elementref_multipleselect = $("<select class='form-control' name='"+this.id+"_multipleselect' id='"+this.id+"_multipleselect'>")
+                .append(
+                    $("<option value='false'>False: Only 1 option can be selected</option>"),
+                    $("<option value='true'> True: Many options can be selected</option>")
+                );
+            multipleselect_group.append(this.elementref_multipleselect);
+            parentElementRef.append(multipleselect_group);
+
             //Option Values-Labels Group
             var option_values_labels_panel = $("<div class='panel panel-default'>");
             var option_values_labels_group = $("<div class='panel-body'>");
@@ -357,12 +369,15 @@ function SelectField(id,name){
             var option_add_btn = $("<button type='button' class='btn btn-default' >Add</button>")
                 .on('click',{select_field:this},function(event){
                     console.log("Label: "+event.data.select_field.option_label.val() + " with Value: "+event.data.select_field.option_value.val());
+                    var new_option_object= event.data.select_field.addOption(event.data.select_field.option_label.val(),event.data.select_field.option_value.val());
                     var new_option_list_item = $("<li class='list-group-item'>");
                     var new_option_div = $("<div>");
                     new_option_div.append($("<span>").text("Label: "+event.data.select_field.option_label.val() + " Value: "+event.data.select_field.option_value.val()));
+
                     new_option_div.append($("<a href='#remove_item' class='pull-right glyphicon glyphicon-remove'>")
-                        .on('click',{select_field:event.data.select_field},function(event){
-                            alert("Removal is not supported yet for option of field with ID: " + event.data.select_field.id);
+                        .on('click',{select_field:event.data.select_field,option_list_item:new_option_list_item,option_object:new_option_object},function(event){
+                            event.data.select_field.delOption(event.data.option_object);
+                            event.data.option_list_item.remove();
                         }));
                     new_option_list_item.append(new_option_div);
                     event.data.select_field.elementref_options_display_area.append(new_option_list_item);
@@ -384,15 +399,33 @@ function SelectField(id,name){
 
     this.getValuesObj = function(){
         var values = {};
-        values.type = "CheckBox";
+        values.type = "Select";
         values.id = this.id;
         values.name = this.elementref_name.val();
         values.required = this.elementref_required.val();
-        values.value_checked = this.elementref_value_true.val();
-        values.value_unchecked = this.elementref_value_false.val();
+        values.multipleselect = this.elementref_multipleselect.val();
+        values.options = this.options;
 
         return values;
 
+    };
+
+
+    this.addOption = function(label,value){
+        var option_object = {label:label,value:value};
+        this.options.push(option_object);
+        return option_object;
+    };
+
+    this.delOption = function(option_object){
+        var index = this.options.indexOf(option_object);
+        if(index == -1){
+            alert("There was a problem removing the option, it seems to have already been removed.");
+        }
+        else{
+            this.options.splice(index,1);
+        }
     }
+
 
 }
