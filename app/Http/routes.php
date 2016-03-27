@@ -39,6 +39,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/unavailable','HomeController@unavailable');
 
     Route::resource('settings/group','GroupController');
+    Route::delete('settings/group/user','GroupController@removeUser');
 
     Route::resource('settings/user','UserController');
 
