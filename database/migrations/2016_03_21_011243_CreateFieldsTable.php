@@ -16,6 +16,7 @@ class CreateFieldsTable extends Migration
 
         Schema::create('fields', function (Blueprint $table) {
             $table->increments('id');
+            $table->string("field_id");
             $table->integer('formdefinition_id')->unsigned();
             $table->string('name');
             $table->integer('order');

@@ -14,7 +14,7 @@ class Field extends Model
      * @var array
      */
     protected $fillable = [
-        'form_id','name','type','options','order'
+        'form_id','name','field_id','type','options','order'
     ];
 
     public function formdefinition(){

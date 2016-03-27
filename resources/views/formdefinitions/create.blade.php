@@ -29,7 +29,7 @@
                     @endif
 
 
-                    <form role="form" method="post" action="{{action('GroupController@store')}}">
+                    <form role="form">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="name">Form Name:</label>
@@ -76,7 +76,7 @@
 
 
 
-                        <button type="submit" class="btn btn-default">Submit</button>
+                        <button id="btn_save_formdef" type="button" class="btn btn-default">Save</button>
 
                 </div>
                     </form>
@@ -100,9 +100,46 @@
         $("#btn_addField").on( "click", function() {
                 var selected_field_type = $("#ftype_select").val();
                 var entered_name = $("#ftype_name").val();
-                Field_Manager.newField(selected_field_type,entered_name);
+                if(entered_name.length == 0){
+                    alert("Please provide a name");
+                    return;
+                }
+                else {
+                    Field_Manager.newField(selected_field_type, entered_name);
+                    $("#ftype_name").val("");
+                }
 
         });
+
+        $("#btn_save_formdef").on("click",function(){
+
+            var formdef = {};
+            var fields = Field_Manager.getFieldDefinitions();
+
+            formdef['name'] = $("#name").val();
+            formdef['description'] = $("#description").val();
+            formdef['group'] = $("#group_id").val();
+            formdef['definition'] = fields;
+
+
+            if(formdef === null){
+                alert("Error");
+                console.log("FormDef:");
+                console.log(Field_Manager.getErrors());
+            }
+            else{
+                $.ajax({
+                    url:"{{action('FormDefinitionController@store')}}",
+                    headers:{'X-CSRF-TOKEN':"{{csrf_token()}}"},
+                    method:"POST",
+                    data:formdef
+                }).done(function(data,textStatus,jqXHR){
+                    console.log(data);
+                }).fail(function (jqXHR,textStatus,errorThrown) {
+                    console.log("Error:"+errorThrown);
+                })
+            }
+        })
 
 
     </script>

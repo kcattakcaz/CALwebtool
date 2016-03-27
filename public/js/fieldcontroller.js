@@ -7,6 +7,7 @@ function FieldController()  {
     this.field_objects = {};
     this.current_field_count = 1;
     this.supported_types = {};
+    this.errorList = [];
 
     this.newField = function(type,name){
 
@@ -70,13 +71,22 @@ function FieldController()  {
         return true;
     };
 
-    this.getFormDefinition = function(){
+    this.getFieldDefinitions = function(){
         var definitionArray = [];
+
         for(var field in this.field_objects){
-            console.log(field);
-            definitionArray.push(this.field_objects[field].getValuesObj());
+            //console.log(field);
+            console.log(this.field_objects[field].getValuesObj());
+            definitionArray.push(this.field_objects[field].getValuesObj().content);
         }
-        return definitionArray;
+        if(this.errorList.length == 0){
+            return definitionArray;
+        }
+        else{
+            return null;
+        }
+
+
     };
 
     this.getUniqueFieldId = function (type) { //generate a unique ID for this field based upon its type
@@ -92,6 +102,16 @@ function FieldController()  {
                 return fieldID;
             }
         }
+    };
+
+    this.addError = function(error){
+        this.errorList.push(error);
+    }
+
+    this.getErrors = function(){
+        var errors = this.errorList;
+        this.errorList = [];
+        return errors;
     };
 }
 
@@ -160,14 +180,14 @@ function TextField(id,name){
             //Min Length Input Field
             var minlength_group = $("<div class='form-group'>");
             minlength_group.append("<label for='name'>Min Length</label>");
-            this.elementref_minlength = $("<input class='form-control' type='text' name='"+this.id+"_minlength' id='"+this.id+"_minlength'>");
+            this.elementref_minlength = $("<input class='form-control' type='text' name='"+this.id+"_minlength' id='"+this.id+"_minlength'>").val(1);
             minlength_group.append(this.elementref_minlength);
             parentElementRef.append(minlength_group);
 
             //Max Length Input Field
             var maxlength_group = $("<div class='form-group'>");
-            maxlength_group.append("<labehell for='name'>Max Length</labehell>");
-            this.elementref_maxlength = $("<input class='form-control' type='text' name='"+this.id+"_maxlength' id='"+this.id+"_maxlength'>");
+            maxlength_group.append("<label for='name'>Max Length</label>");
+            this.elementref_maxlength = $("<input class='form-control' type='text' name='"+this.id+"_maxlength' id='"+this.id+"_maxlength'>").val(255);
             maxlength_group.append(this.elementref_maxlength);
             parentElementRef.append(maxlength_group);
 
@@ -183,15 +203,37 @@ function TextField(id,name){
 
     this.getValuesObj = function(){
         var values = {};
+        var errors = [];
+
         values.type = "Text";
         values.id = this.id;
         values.name = this.elementref_name.val();
+        if(values.name.length == 0){
+            alert('invalid');
+            errors.push("The name for "+this.id+ "is empty");
+        }
+
         values.required = this.elementref_required.val();
         values.multiline = this.elementref_multiline.val();
-        values.maxlength = this.elementref_maxlength.val();
+        values.maxlength = parseInt(this.elementref_maxlength.val(),10);
+        if(isNaN(values.maxlength) || values.maxlength === null || values.maxlength<1 ){
+            alert("Max length is invalid");
+            values.maxlength = 0;
+            errors.push("The max length for "+this.id+"is not valid");
+        }
         values.minlength = this.elementref_minlength.val();
+        if(isNaN(values.minlength) || values.minlength === null || values.minlength > values.maxlength){
+            alert("Min length is invalid");
+            values.minlength = 0;
+            errors,push("The min length for "+this.id+"is not valid");
+        }
 
-        return values;
+        if(errors.length == 0) {
+            return {errors:false,content:values};
+        }
+        else{
+            return {errors:true,content:errors};
+        }
 
     }
 
@@ -320,7 +362,6 @@ function SelectField(id,name){
             name_group.append(this.elementref_name);
             parentElementRef.append(name_group);
             this.elementref_name.on('keyup',{field_id:this.id},function(event){
-                //console.log("Change event for: "+this+"  with id: "+event.data.field_id);
                 $("#"+event.data.field_id+"_title_link").text($(this).val() + " ("+event.data.field_id+")");
             });
 
@@ -404,6 +445,139 @@ function SelectField(id,name){
         values.name = this.elementref_name.val();
         values.required = this.elementref_required.val();
         values.multipleselect = this.elementref_multipleselect.val();
+        values.options = this.options;
+
+        return values;
+
+    };
+
+
+    this.addOption = function(label,value){
+        var option_object = {label:label,value:value};
+        this.options.push(option_object);
+        return option_object;
+    };
+
+    this.delOption = function(option_object){
+        var index = this.options.indexOf(option_object);
+        if(index == -1){
+            alert("There was a problem removing the option, it seems to have already been removed.");
+        }
+        else{
+            this.options.splice(index,1);
+        }
+    }
+
+
+}
+
+function RadioGroupField(id,name){
+    this.type = "RadioGroup";
+    this.id = id;
+    this.name = name;
+    this.required = false;
+    this.options =[];
+
+    this.elementref_name = null;
+    this.elementref_required = null;
+    this.elementref_multipleselect = null;
+    this.elementref_value_true = null;
+    this.elementref_value_false = null;
+    this.elementref_options_array = [];
+
+    /**
+     * renderOptions(parentElementRef,currentValuesObj)
+     *
+     * parentElementRef: Use a JQuery selector to refer to the parent element the field should be appended to
+     * currentvaluesObj: An object containing key-value pairs of all the parameters needed to restore a field
+     *
+     * renderOptions will append to a given parent element the HTML elements needed to set the values of this field
+     * you may also provide values to fill the fields from a saved state.  It will also setup the object so that you
+     * can later call getValuesObj() to get the field parameters
+     *
+     **/
+    this.renderOptions = function(parentElementRef,currentValuesObj){
+        if(currentValuesObj === null){
+
+            //Name Text Input Field//
+            var name_group = $("<div class='form-group'>");
+            name_group.append("<label for='name'>Name</label>");
+            this.elementref_name = $("<input class='form-control' type='text' name='"+this.id+"_name' id='"+this.id+"_name'>").val(this.name);
+            name_group.append(this.elementref_name);
+            parentElementRef.append(name_group);
+            this.elementref_name.on('keyup',{field_id:this.id},function(event){
+                $("#"+event.data.field_id+"_title_link").text($(this).val() + " ("+event.data.field_id+")");
+            });
+
+            //Required Select Field
+            var required_group = $("<div class='form-group'>");
+            required_group.append("<label for='required'>Required</label>");
+            this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
+                .append(
+                    $("<option value='false'>False: Is Optional</option>"),
+                    $("<option value='true'> True: Is Required</option>")
+                );
+            required_group.append(this.elementref_required);
+            parentElementRef.append(required_group);
+
+
+            //Option Values-Labels Group
+            var option_values_labels_panel = $("<div class='panel panel-default'>");
+            var option_values_labels_group = $("<div class='panel-body'>");
+            option_values_labels_group.append("<p >").text("The label is what will be displayed to the user, the value will be what is saved");
+            this.elementref_options_display_area = $("<ul class='list-group'>");
+            option_values_labels_group.append(this.elementref_options_display_area);
+            option_values_labels_panel.append(option_values_labels_group);
+
+            var option_label_group = $("<div class='form-group'>");
+            option_label_group.append("<label for='label'>Option Label</label>");
+            this.option_label = $("<input class='form-control' type='text' name='"+this.id+"_option_label' id='"+this.id+"_option_label'>");
+            option_label_group.append(this.option_label);
+            option_values_labels_group.append(option_label_group);
+
+            var option_value_group = $("<div class='form-group'>");
+            option_value_group.append("<label for='value'>Option Value</label>");
+            this.option_value = $("<input class='form-control' type='text' name='"+this.id+"_option_value' id='"+this.id+"_option_value'>");
+            option_value_group.append(this.option_value);
+            option_values_labels_group.append(option_value_group);
+
+            var option_add_btn = $("<button type='button' class='btn btn-default' >Add</button>")
+                .on('click',{select_field:this},function(event){
+                    console.log("Label: "+event.data.select_field.option_label.val() + " with Value: "+event.data.select_field.option_value.val());
+                    var new_option_object= event.data.select_field.addOption(event.data.select_field.option_label.val(),event.data.select_field.option_value.val());
+                    var new_option_list_item = $("<li class='list-group-item'>");
+                    var new_option_div = $("<div>");
+                    new_option_div.append($("<span>").text("Label: "+event.data.select_field.option_label.val() + " Value: "+event.data.select_field.option_value.val()));
+
+                    new_option_div.append($("<a href='#remove_item' class='pull-right glyphicon glyphicon-remove'>")
+                        .on('click',{select_field:event.data.select_field,option_list_item:new_option_list_item,option_object:new_option_object},function(event){
+                            event.data.select_field.delOption(event.data.option_object);
+                            event.data.option_list_item.remove();
+                        }));
+                    new_option_list_item.append(new_option_div);
+                    event.data.select_field.elementref_options_display_area.append(new_option_list_item);
+                });
+
+            option_values_labels_group.append(option_add_btn);
+
+            parentElementRef.append(option_values_labels_panel);
+
+        }
+        else{
+            parentElementRef.append(alert("I can'helt do that yet!"));
+        }
+    };
+
+    this.renderView = function(){
+        return null;
+    };
+
+    this.getValuesObj = function(){
+        var values = {};
+        values.type = "RadioGroup";
+        values.id = this.id;
+        values.name = this.elementref_name.val();
+        values.required = this.elementref_required.val();
         values.options = this.options;
 
         return values;
