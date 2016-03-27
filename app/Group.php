@@ -3,6 +3,7 @@
 namespace CALwebtool;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 
 class Group extends Model
 {
@@ -34,6 +35,61 @@ class Group extends Model
             return $this->users()->findOrFail($user_id)->pivot->administrator;
         }
         catch(\Exception $e){
+            return false;
+        }
+    }
+
+    public function makeAdmin($user){
+        try {
+            if ($this->users()->findOrFail($user->id)) {
+                $this->users()->find($user->id)->pivot->administrator = true;
+                $this->users()->find($user->id)->pivot->creator = true;
+                $this->users()->find($user->id)->pivot->moderator = true;
+                $this->users()->find($user->id)->pivot->adjudicator = true;
+                return true;
+            } else {
+                $this->users()->save($user, ['administrator' => true, 'creator' => true, 'moderator' => true, 'adjudicator' => true]);
+                return true;
+            }
+        }
+        catch(QueryException $e){
+            return false;
+        }
+
+    }
+
+    public function removeAdmin($user){
+        try {
+            $this->users()->findOrFail($user->id)->pivot->administrator = false;
+            $this->users()->findOrFail($user->id)->pivot->creator = false;
+            $this->users()->findOrFail($user->id)->pivot->moderator = false;
+            $this->users()->findOrFail($user->id)->pivot->adjudicator = false;
+            return true;
+        }
+        catch(QueryException $e){
+            return false;
+        }
+    }
+
+    public function addUser($user,$creator = false, $moderator = false, $adjudicator = false){
+        try {
+            $this->users()->save($user, ['administrator' => false, 'creator' => $creator, 'moderator' => $moderator, 'adjudicator' => $adjudicator]);
+            return true;
+        }
+        catch(QueryException $e){
+            return false;
+        }
+    }
+
+    public function modifyPermissions($user,$creator = false, $moderator = false, $adjudicator = false){
+        try{
+            $this->users()->findOrFail($user->id)->pivot->administrator = true;
+            $this->users()->findOrFail($user->id)->pivot->creator = true;
+            $this->users()->findOrFail($user->id)->pivot->moderator = true;
+            $this->users()->findOrFail($user->id)->pivot->adjudicator = true;
+            return true;
+        }
+        catch(QueryException $e){
             return false;
         }
     }

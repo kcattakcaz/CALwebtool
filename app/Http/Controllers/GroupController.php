@@ -42,7 +42,7 @@ class GroupController extends Controller
         $user = User::where('name',$request->input('initial_group_administrator'))->firstOrFail();
         $group = new Group(['name'=>$request->input('name'),'description'=>$request->input('description')]);
         $group->save();
-        $group->users()->save($user,['administrator'=>true]);
+        $group->addNewAdmin($user);
 
         return redirect()->action('GroupController@index');
 
@@ -75,7 +75,7 @@ class GroupController extends Controller
         foreach($request->input('new_group_users') as $added_user){
             try {
                 $user = User::findOrFail($added_user);
-                $group->users()->save($user);
+                $group->addUser($user,false,false,false);
             }
             catch(\Exception $e){
                 flash()->overlay("There was a problem adding the user $added_user->name to the group. Visit the user's profile and manually check their group membership.  The error was\n $e->getMessage()","Group Error");
