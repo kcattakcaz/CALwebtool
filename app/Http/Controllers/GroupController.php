@@ -42,7 +42,7 @@ class GroupController extends Controller
         $user = User::where('name',$request->input('initial_group_administrator'))->firstOrFail();
         $group = new Group(['name'=>$request->input('name'),'description'=>$request->input('description')]);
         $group->save();
-        $group->addNewAdmin($user);
+        $group->makeAdmin($user);
 
         return redirect()->action('GroupController@index');
 

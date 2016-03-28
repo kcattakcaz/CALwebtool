@@ -105,7 +105,7 @@
 
                         <div class="form-group">
                             <input type="hidden" name="group_id" id="group_id" value="{{$group->id}}">
-                        </div> 
+                        </div>
 
                         <div class="form-group">
                             <label for="new_group_users">Add group members:</label>

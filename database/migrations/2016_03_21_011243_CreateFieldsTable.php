@@ -24,7 +24,7 @@ class CreateFieldsTable extends Migration
             $table->string('options');
             $table->timestamps();
 
-            $table->foreign('formdefinition_id')->references('id')->on('groups');
+            $table->foreign('formdefinition_id')->references('id')->on('formdefinitions');
 
         });
     }
