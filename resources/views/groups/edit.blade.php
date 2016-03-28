@@ -85,7 +85,7 @@
                                         <span style="padding-left:10px" class="glyphicon glyphicon-briefcase">: </span>
                                     </label>
                                     @if($group->isAdmin($user->id))
-                                        <input type="checkbox" name="{{$user->id}}-administrator" id="{{$user->id}}-administrator checked="true"/>
+                                        <input type="checkbox" name="{{$user->id}}-administrator" id="{{$user->id}}-administrator" checked/>
                                     @else
                                         <input type="checkbox" name="{{$user->id}}-administrator" id="{{$user->id}}-administrator"/>
                                     @endif
@@ -94,8 +94,8 @@
                                         <span style="padding-left:10px" class=" glyphicon glyphicon-inbox">: </span>
                                     </label>
                                     @if ($group->isMod($user->id))
-                                        <input type="checkbox" name="{{$user->id}}-moderator" id="{{$user->id}}-moderator" checked="true"/>
- a                                  @else
+                                        <input type="checkbox" name="{{$user->id}}-moderator" id="{{$user->id}}-moderator" checked/>
+                                   @else
                                         <input type="checkbox" name="{{$user->id}}-moderator" id="{{$user->id}}-moderator"/>
                                     @endif
 
@@ -103,7 +103,7 @@
                                         <span style="padding-left:10px" class=" glyphicon glyphicon-pencil">: </span>
                                     </label>
                                     @if ($group->isCreator($user->id))
-                                        <input type="checkbox" name="{{$user->id}}-creator" id="{{$user->id}}-creator" checked="true"/>
+                                        <input type="checkbox" name="{{$user->id}}-creator" id="{{$user->id}}-creator" checked/>
                                     @else
                                         <input type="checkbox" name="{{$user->id}}-creator" id="{{$user->id}}-creator"/>
                                     @endif
@@ -112,7 +112,7 @@
                                         <span style="padding-left:10px" class=" glyphicon glyphicon-star">: </span>
                                     </label>
                                     @if ($group->isJudge($user->id))
-                                        <input type="checkbox" name="{{$user->id}}-adjudicator" id="{{$user->id}}-adjudicator" checked="true"/>
+                                        <input type="checkbox" name="{{$user->id}}-adjudicator" id="{{$user->id}}-adjudicator" checked/>
                                     @else
                                         <input type="checkbox" name="{{$user->id}}-adjudicator" id="{{$user->id}}-adjudicator"/>
                                     @endif

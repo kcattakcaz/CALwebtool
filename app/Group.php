@@ -31,10 +31,10 @@ class Group extends Model
     public function makeAdmin($user){
         try {
             if ($this->users()->find($user->id) !== null){
-                $this->users()->find($user->id)->pivot->administrator = true;
-                $this->users()->find($user->id)->pivot->creator = true;
-                $this->users()->find($user->id)->pivot->moderator = true;
-                $this->users()->find($user->id)->pivot->adjudicator = true;
+                $this->users()->sync([$user->id => ['administrator' => true]], false);
+                $this->users()->sync([$user->id => ['creator' => true]], false);
+                $this->users()->sync([$user->id => ['moderator' => true]], false);
+                $this->users()->sync([$user->id => ['adjudicator' => true]], false);
                 return true;
             } else {
                 $this->users()->save($user, ['administrator' => true, 'creator' => true, 'moderator' => true, 'adjudicator' => true]);
@@ -49,10 +49,10 @@ class Group extends Model
 
     public function removeAdmin($user){
         try {
-            $this->users()->findOrFail($user->id)->pivot->administrator = false;
-            $this->users()->findOrFail($user->id)->pivot->creator = false;
-            $this->users()->findOrFail($user->id)->pivot->moderator = false;
-            $this->users()->findOrFail($user->id)->pivot->adjudicator = false;
+            $this->users()->sync([$user->id => ['administrator' => false]], false);
+            $this->users()->sync([$user->id => ['creator' => false]], false);
+            $this->users()->sync([$user->id => ['moderator' => false]], false);
+            $this->users()->sync([$user->id => ['adjudicator' => false]], false);
             return true;
         }
         catch(QueryException $e){
@@ -72,9 +72,10 @@ class Group extends Model
 
     public function modifyPermissions($user, $creator = false, $moderator = false, $adjudicator = false){
         try{
-            $this->users()->findOrFail($user->id)->pivot->creator = $creator;
-            $this->users()->findOrFail($user->id)->pivot->moderator = $moderator;
-            $this->users()->findOrFail($user->id)->pivot->adjudicator = $adjudicator;
+            $this->users()->sync([$user->id => ['creator' => $creator]], false);
+            $this->users()->sync([$user->id => ['moderator' => $moderator]], false);
+            $this->users()->sync([$user->id => ['adjudicator' => $adjudicator]], false);
+
             return true;
         }
         catch(QueryException $e){

@@ -90,25 +90,24 @@
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-briefcase"> </span>
                                     @else
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                                    @endif
 
+                                    @if($group->isMod($user->id))
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-inbox"> </span>
+                                    @else
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                                    @endif
 
-                                        @if($group->isMod($user->id))
-                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-inbox"> </span>
-                                        @else
-                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
-                                        @endif
+                                    @if($group->isCreator($user->id))
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-pencil"> </span>
+                                    @else
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                                    @endif
 
-                                        @if($group->isCreator($user->id))
-                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-pencil"> </span>
-                                        @else
-                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
-                                        @endif
-
-                                        @if($group->isJudge($user->id))
-                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
-                                        @else
-                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
-                                        @endif
+                                    @if($group->isJudge($user->id))
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
+                                    @else
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                                     @endif
 
                                 </a>

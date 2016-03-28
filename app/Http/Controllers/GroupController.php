@@ -72,6 +72,7 @@ class GroupController extends Controller
             } else {
                 //dd(($request->input($user->id . '-creator')) == 'on' ? 'nontrue' : 'nonfalse');
                 //dd('non');
+                $group->removeAdmin($user);
                 $group->modifyPermissions($user, (($request->input($user->id . '-creator')) == 'on'),
                                                 (($request->input($user->id . '-adjudicator')) == 'on'),
                                                 (($request->input($user->id . '-moderator')) == 'on'));
