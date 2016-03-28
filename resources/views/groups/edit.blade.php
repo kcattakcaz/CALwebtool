@@ -5,6 +5,11 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
+
+                    <form role="form" method="post" action="{{action('GroupController@update', compact('group'))}}">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="_method" value="PATCH">
+
                     <div class="panel-heading">{{$group->name}}</div>
 
                     <div class="panel-body">
@@ -26,8 +31,10 @@
                             Members can have one or more of the following permissions: Moderator, Creator, Adjudicator,
                             or no permissions at all.
                         <ul>
+                            <!--
                             <li><em>No Permissions-</em>This user can view group data but cannot modify it.
                                 <span class="pull-right glyphicon glyphicon-user"> </span></li>
+                            -->
                             <li><em>Moderator-</em>Allows the user to approve/reject submissions
                                 <span class="pull-right glyphicon glyphicon-inbox"> </span></li>
                             <li><em>Creator-</em>Allows the user to create/modify/delete forms
@@ -68,45 +75,53 @@
                         </div><!-- /.col-lg-6 -->
 
                         <p>
-                            @foreach($group->users()->get() as $user)
-                                <a href="{{action("UserController@show",compact('user'))}}" class=" list-group-item">{{$user->name}}
+                        @foreach($group->users()->get() as $user)
 
-                                    @if($group->users()->find($user->id)->pivot->administrator)
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-briefcase"> </span>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">{{$user->name}}</div>
+                                <div class="panel-body">
+
+                                    <label for="{{$user->id}}-administrator">
+                                        <span style="padding-left:10px" class="glyphicon glyphicon-briefcase">: </span>
+                                    </label>
+                                    @if($group->isAdmin($user->id))
+                                        <input type="checkbox" name="{{$user->id}}-administrator" id="{{$user->id}}-administrator checked="true"/>
                                     @else
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                                        <input type="checkbox" name="{{$user->id}}-administrator" id="{{$user->id}}-administrator"/>
                                     @endif
 
-                                    @if($group->users()->find($user->id)->pivot->moderator)
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-inbox"> </span>
-                                    @else
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                                    <label for="{{$user->id}}-moderator">
+                                        <span style="padding-left:10px" class=" glyphicon glyphicon-inbox">: </span>
+                                    </label>
+                                    @if ($group->isMod($user->id))
+                                        <input type="checkbox" name="{{$user->id}}-moderator" id="{{$user->id}}-moderator" checked="true"/>
+ a                                  @else
+                                        <input type="checkbox" name="{{$user->id}}-moderator" id="{{$user->id}}-moderator"/>
                                     @endif
 
-                                    @if($group->users()->find($user->id)->pivot->creator)
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-pencil"> </span>
+                                    <label for="{{$user->id}}-creator">
+                                        <span style="padding-left:10px" class=" glyphicon glyphicon-pencil">: </span>
+                                    </label>
+                                    @if ($group->isCreator($user->id))
+                                        <input type="checkbox" name="{{$user->id}}-creator" id="{{$user->id}}-creator" checked="true"/>
                                     @else
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                                        <input type="checkbox" name="{{$user->id}}-creator" id="{{$user->id}}-creator"/>
                                     @endif
 
-                                    @if($group->users()->find($user->id)->pivot->adjudicator)
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
+                                    <label for="{{$user->id}}-adjudicator">
+                                        <span style="padding-left:10px" class=" glyphicon glyphicon-star">: </span>
+                                    </label>
+                                    @if ($group->isJudge($user->id))
+                                        <input type="checkbox" name="{{$user->id}}-adjudicator" id="{{$user->id}}-adjudicator" checked="true"/>
                                     @else
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                                        <input type="checkbox" name="{{$user->id}}-adjudicator" id="{{$user->id}}-adjudicator"/>
                                     @endif
-                                </a>
-                            @endforeach
+                                </div>
+                            </div>
+                        @endforeach
                         </p>
+
                     </div>
-                    <form role="form" method="post" action="{{action('GroupController@update',compact('group'))}}">
-                        {{ csrf_field() }}
-
-                        <input type="hidden" name="_method" value="PATCH">
-
-                        <div class="form-group">
-                            <input type="hidden" name="group_id" id="group_id" value="{{$group->id}}">
-                        </div> 
-
                         <div class="form-group">
                             <label for="new_group_users">Add group members:</label>
                             <select multiple="multiple" name="new_group_users[]" class="form-control" id="new_group_users">
@@ -115,13 +130,13 @@
                                 @endforeach
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
+                        <button type="submit" class="btn btn-default pull-right">Save Changes</button>
+
                     </form>
 
 
                 </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection

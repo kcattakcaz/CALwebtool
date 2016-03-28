@@ -29,18 +29,29 @@
                     <p>
                         Members can have one or more of the following permissions: Moderator, Creator, Adjudicator,
                         or no permissions at all.
-                        <ul>
-                            <li><em>No Permissions-</em>This user can view group data but cannot modify it.
-                                <span class="pull-right glyphicon glyphicon-user"> </span></li>
-                            <li><em>Moderator-</em>Allows the user to approve/reject submissions
-                                <span class="pull-right glyphicon glyphicon-inbox"> </span></li>
-                            <li><em>Creator-</em>Allows the user to create/modify/delete forms
-                                <span class="pull-right glyphicon glyphicon-pencil"> </span></li>
-                            <li><em>Adjudicator-</em>Allows the user to score submissions
-                                <span class="pull-right glyphicon glyphicon-star"> </span></li>
-                            <li><em>Administrator-</em>Provides user with all permissions above, and also the ability
+                        <ul style="list-style-type:none">
+                            <li>
+                                <span class="glyphicon glyphicon-user"> </span>
+                                <em> - No Permissions-</em>This user can view group data but cannot modify it.
+                            </li>
+                            <li>
+                                <span class="glyphicon glyphicon-inbox"> </span>
+                                <em> - Moderator-</em>Allows the user to approve/reject submissions
+                            </li>
+                            <li>
+                                <span class="glyphicon glyphicon-pencil"> </span>
+                                <em> - Creator-</em>Allows the user to create/modify/delete forms
+                            </li>
+                            <li>
+                                <span class="glyphicon glyphicon-star"> </span>
+                                <em> - Adjudicator-</em>Allows the user to score submissions
+                            </li>
+                            <li>
+                                <span class="glyphicon glyphicon-briefcase"> </span>
+                                <em> - Administrator-</em>Provides user with all permissions above, and also the ability
                                 to add/remove users and modify permissions of other users
-                                <span class="pull-right glyphicon glyphicon-briefcase"> </span></li>
+
+                            </li>
 
                         </ul>
 
@@ -75,28 +86,29 @@
                             @foreach($group->users()->get() as $user)
                                 <a href="{{action("UserController@show",compact('user'))}}" class=" list-group-item">{{$user->name}}
 
-                                    @if($group->users()->find($user->id)->pivot->administrator)
+                                    @if($group->isAdmin($user->id))
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-briefcase"> </span>
                                     @else
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
-                                    @endif
 
-                                    @if($group->users()->find($user->id)->pivot->moderator)
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-inbox"> </span>
-                                    @else
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
-                                    @endif
 
-                                    @if($group->users()->find($user->id)->pivot->creator)
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-pencil"> </span>
-                                    @else
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
-                                    @endif
+                                        @if($group->isMod($user->id))
+                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-inbox"> </span>
+                                        @else
+                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                                        @endif
 
-                                    @if($group->users()->find($user->id)->pivot->adjudicator)
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
-                                    @else
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                                        @if($group->isCreator($user->id))
+                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-pencil"> </span>
+                                        @else
+                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                                        @endif
+
+                                        @if($group->isJudge($user->id))
+                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
+                                        @else
+                                            <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                                        @endif
                                     @endif
 
                                 </a>

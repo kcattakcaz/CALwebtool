@@ -60,7 +60,7 @@
                                 @if($group->users()->find($user->id)->pivot->administrator)
                                     <p>Group Administrator</P>
                                 @endif
-                                @if($group->users()->find($user->id)->pivot->moderatorr)
+                                @if($group->users()->find($user->id)->pivot->moderator)
                                     <p>Moderator</P>
                                 @endif
                                 @if($group->users()->find($user->id)->pivot->creator)
@@ -70,6 +70,11 @@
                                     <p>Adjudicator</P>
                                 @endif
                             </div>
+
+                            <!--
+                            CHANGE GROUP PERMISSIONS HERE
+                            -->
+
                         </div>
                     @endforeach
                 </div>
