@@ -30,7 +30,7 @@ class Group extends Model
 
     public function makeAdmin($user){
         try {
-            if ($this->users()->findOrFail($user->id)) {
+            if ($this->users()->find($user->id) !== null){
                 $this->users()->find($user->id)->pivot->administrator = true;
                 $this->users()->find($user->id)->pivot->creator = true;
                 $this->users()->find($user->id)->pivot->moderator = true;

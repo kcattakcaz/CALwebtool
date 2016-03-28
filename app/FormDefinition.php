@@ -15,7 +15,7 @@ class FormDefinition extends Model
      * @var array
      */
     protected $fillable = [
-        'group_id','user_id', 'submissions_start','submissions_end','scores_due'
+        'group_id','user_id', 'name','description', 'submissions_start','submissions_end','scores_due'
     ];
 
     public function user(){

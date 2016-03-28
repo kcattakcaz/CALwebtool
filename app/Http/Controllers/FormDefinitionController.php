@@ -2,15 +2,17 @@
 
 namespace CALwebtool\Http\Controllers;
 
+use CALwebtool\Field;
 use CALwebtool\FormDefinition;
 use CALwebtool\Group;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 use CALwebtool\Http\Requests;
 use CALwebtool\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\DomCrawler\Form;
+use Illuminate\Support\Facades\Validator;
 
 class FormDefinitionController extends Controller
 {
@@ -42,10 +44,54 @@ class FormDefinitionController extends Controller
             'definition'=>'required|array',
         ]);
 
-        foreach($request->input('definition') as $fieldDef){
-            if($fieldDef["type"] == "Text"){
-                return response()->json($fieldDef);
+
+        $fieldErrors = new Collection();
+        try {
+            $formDef = new FormDefinition(["name" => $request->input('name'), "description" => $request->input('description'), 'group_id' => $request->input('group'), 'user_id' => Auth::user()->id]);
+            $formDef->save();
+        }
+        catch(QueryException $e){
+            return response()->json(['message'=>"Error creating FormDefinition",'error'=>$e->getMessage()],500);
+        }
+
+        foreach($request->input('definition') as $fieldArray){
+            $fieldDef = collect($fieldArray);
+            $type = $fieldDef->get("type");
+            if($type == "Text"){
+                $validator = Validator::make($fieldArray,[
+                    'id' => 'required|alpha_dash',
+                    'name' => 'required',
+                    'required'=>'required|boolean',
+                    'multiline'=>'required|boolean',
+                    'maxlength'=>'required|integer',
+                    'minlength'=>'required|integer'
+                ]);
+
+                if($validator->fails()){
+                    $fieldErrors->push($validator->errors());
+                }
+                else{
+                    $field_options = new Collection();
+                    $field_options->put('required',$fieldDef->get('required'));
+                    $field_options->put('multiline',$fieldDef->get('multiline'));
+                    $field_options->put('maxlength',$fieldDef->get('maxlength'));
+                    $field_options->put('minlength',$fieldDef->get('minlength'));
+
+                    $field = new Field(['formdefinition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                    $field->save();
+                }
             }
+            else{
+                $fieldErrors->push(["Unknown field type in submission"]);
+            }
+        }
+
+        if($fieldErrors->count() == 0){
+            return response()->json([true],200);
+        }
+        else{
+            $FormDefintion->forceDelete();
+            return response()->json($fieldErrors,422);
         }
 
 

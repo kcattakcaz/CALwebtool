@@ -77,7 +77,7 @@ function FieldController()  {
         for(var field in this.field_objects){
             //console.log(field);
             console.log(this.field_objects[field].getValuesObj());
-            definitionArray.push(this.field_objects[field].getValuesObj().content);
+            definitionArray.push(this.field_objects[field].getValuesObj());
         }
         if(this.errorList.length == 0){
             return definitionArray;
@@ -160,8 +160,8 @@ function TextField(id,name){
             required_group.append("<label for='required'>Required</label>");
             this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
                 .append(
-                    $("<option value='false'>False: Is Optional</option>"),
-                    $("<option value='true'> True: Is Required</option>")
+                    $("<option value='0'>False: Is Optional</option>"),
+                    $("<option value='1'> True: Is Required</option>")
                 );
             required_group.append(this.elementref_required);
             parentElementRef.append(required_group);
@@ -171,8 +171,8 @@ function TextField(id,name){
             multiline_group.append("<label for='required'>Multiline</label>");
             this.elementref_multiline = $("<select class='form-control' name='"+this.id+"_multiline' id='"+this.id+"_multiline'>")
                 .append(
-                    $("<option value='false'>False: Is Single Line</option>"),
-                    $("<option value='true'> True: Mutli Line</option>")
+                    $("<option value='0'>False: Is Single Line</option>"),
+                    $("<option value='1'> True: Mutli Line</option>")
                 );
             multiline_group.append(this.elementref_multiline);
             parentElementRef.append(multiline_group);
@@ -203,6 +203,7 @@ function TextField(id,name){
 
     this.getValuesObj = function(){
         var values = {};
+        /*
         var errors = [];
 
         values.type = "Text";
@@ -233,8 +234,16 @@ function TextField(id,name){
         }
         else{
             return {errors:true,content:errors};
-        }
+        }*/
 
+        values.type = "Text";
+        values.id = this.id;
+        values.name = this.elementref_name.val();
+        values.required = this.elementref_required.val();
+        values.multiline = this.elementref_multiline.val();
+        values.maxlength = parseInt(this.elementref_maxlength.val(),10);
+        values.minlength = parseInt(this.elementref_minlength.val(),10);
+        return values;
     }
 
 }
@@ -282,8 +291,8 @@ function CheckBoxField(id,name){
             required_group.append("<label for='required'>Required</label>");
             this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
                 .append(
-                    $("<option value='false'>False: Is Optional</option>"),
-                    $("<option value='true'> True: Is Required</option>")
+                    $("<option value='0'>False: Is Optional</option>"),
+                    $("<option value='1'> True: Is Required</option>")
                 );
             required_group.append(this.elementref_required);
             parentElementRef.append(required_group);
@@ -370,8 +379,8 @@ function SelectField(id,name){
             required_group.append("<label for='required'>Required</label>");
             this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
                 .append(
-                    $("<option value='false'>False: Is Optional</option>"),
-                    $("<option value='true'> True: Is Required</option>")
+                    $("<option value='0'>False: Is Optional</option>"),
+                    $("<option value='1'> True: Is Required</option>")
                 );
             required_group.append(this.elementref_required);
             parentElementRef.append(required_group);
@@ -381,8 +390,8 @@ function SelectField(id,name){
             multipleselect_group.append("<label for='required'>Multiple Select</label>");
             this.elementref_multipleselect = $("<select class='form-control' name='"+this.id+"_multipleselect' id='"+this.id+"_multipleselect'>")
                 .append(
-                    $("<option value='false'>False: Only 1 option can be selected</option>"),
-                    $("<option value='true'> True: Many options can be selected</option>")
+                    $("<option value='0'>False: Only 1 option can be selected</option>"),
+                    $("<option value='1'> True: Many options can be selected</option>")
                 );
             multipleselect_group.append(this.elementref_multipleselect);
             parentElementRef.append(multipleselect_group);
@@ -514,8 +523,8 @@ function RadioGroupField(id,name){
             required_group.append("<label for='required'>Required</label>");
             this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
                 .append(
-                    $("<option value='false'>False: Is Optional</option>"),
-                    $("<option value='true'> True: Is Required</option>")
+                    $("<option value='0'>False: Is Optional</option>"),
+                    $("<option value='1'> True: Is Required</option>")
                 );
             required_group.append(this.elementref_required);
             parentElementRef.append(required_group);
