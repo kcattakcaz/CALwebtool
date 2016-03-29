@@ -17,7 +17,10 @@ class Group extends Model
     ];
 
     public function users(){
-        return $this->belongsToMany('CALwebtool\User')->withPivot('creator','moderator','adjudicator','administrator')->withTimestamps();
+        return $this->belongsToMany('CALwebtool\User')->withPivot('creator',
+                                                                    'moderator',
+                                                                    'adjudicator',
+                                                                    'administrator')->withTimestamps();
     }
 
     public function administratorUsers(){
@@ -37,7 +40,10 @@ class Group extends Model
                 $this->users()->sync([$user->id => ['adjudicator' => true]], false);
                 return true;
             } else {
-                $this->users()->save($user, ['administrator' => true, 'creator' => true, 'moderator' => true, 'adjudicator' => true]);
+                $this->users()->save($user, ['administrator' => true,
+                                                'creator' => true,
+                                                'moderator' => true,
+                                                'adjudicator' => true]);
                 return true;
             }
         }
@@ -60,9 +66,12 @@ class Group extends Model
         }
     }
 
-    public function addUser($user,$creator = false, $moderator = false, $adjudicator = false){
+    public function addUser($user, $creator = false, $moderator = false, $adjudicator = false){
         try {
-            $this->users()->save($user, ['administrator' => false, 'creator' => $creator, 'moderator' => $moderator, 'adjudicator' => $adjudicator]);
+            $this->users()->save($user, ['administrator' => false,
+                                            'creator' => $creator,
+                                            'moderator' => $moderator,
+                                            'adjudicator' => $adjudicator]);
             return true;
         }
         catch(QueryException $e){
@@ -75,7 +84,6 @@ class Group extends Model
             $this->users()->sync([$user->id => ['creator' => $creator]], false);
             $this->users()->sync([$user->id => ['moderator' => $moderator]], false);
             $this->users()->sync([$user->id => ['adjudicator' => $adjudicator]], false);
-
             return true;
         }
         catch(QueryException $e){

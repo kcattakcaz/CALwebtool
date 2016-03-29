@@ -12,7 +12,7 @@
                     <div class="btn-group pull-right" role="group" aria-label="...">
 
                         <a href="{{action('GroupController@edit',compact('group'))}}"><button type="button" class="btn btn-default">
-                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit Group
+                                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Edit Group
                             </button>
                         </a>
                        <a> <button type="button" class="btn btn-default">
@@ -27,13 +27,9 @@
                     <br>
 
                     <p>
-                        Members can have one or more of the following permissions: Moderator, Creator, Adjudicator,
+                        Members can have one or more of the following permissions: Administrator, Moderator, Creator, Adjudicator,
                         or no permissions at all.
                         <ul style="list-style-type:none">
-                            <li>
-                                <span class="glyphicon glyphicon-user"> </span>
-                                <em> - No Permissions-</em>This user can view group data but cannot modify it.
-                            </li>
                             <li>
                                 <span class="glyphicon glyphicon-inbox"> </span>
                                 <em> - Moderator-</em>Allows the user to approve/reject submissions
@@ -81,6 +77,7 @@
                             </div><!-- /input-group -->
                             </div><!-- /input-group -->
                         </div><!-- /.col-lg-6 -->
+
 
                         <p>
                             @foreach($group->users()->get() as $user)

@@ -112,12 +112,13 @@ class GroupController extends Controller
     }
 
     public function removeUser(Group $group, User $user) {
-        dd($group, $user);
         $group->users()->detach($user);
-        return redirect()->action('GroupController@show', compact($group));
+        return redirect()->action('GroupController@edit', compact($group));
     }
 
     public function destroy(){
 
+
+        return redirect()->action('GroupController@show', compact($group));
     }
 }
