@@ -15,10 +15,11 @@
                     <div class="panel-body">
 
                         <div class="btn-group pull-right" role="group" aria-label="...">
-
-                            <a> <button type="button" class="btn btn-default">
+                            <a>
+                                <button type="button" class="btn btn-default">
                                     <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
-                                </button> </a>
+                                </button>
+                            </a>
                         </div>
 
                         <p>
@@ -28,20 +29,27 @@
                         <br>
 
                         <p>
-                            Members can have one or more of the following permissions: Moderator, Creator, Adjudicator,
+                            Members can have one or more of the following permissions: Administrator, Moderator, Creator, Adjudicator,
                             or no permissions at all.
-                        <ul>
-                            <li><em>No Permissions-</em>This user can view group data but cannot modify it.
-                                <span class="pull-right glyphicon glyphicon-user"> </span></li>
-                            <li><em>Moderator-</em>Allows the user to approve/reject submissions
-                                <span class="pull-right glyphicon glyphicon-inbox"> </span></li>
-                            <li><em>Creator-</em>Allows the user to create/modify/delete forms
-                                <span class="pull-right glyphicon glyphicon-pencil"> </span></li>
-                            <li><em>Adjudicator-</em>Allows the user to score submissions
-                                <span class="pull-right glyphicon glyphicon-star"> </span></li>
-                            <li><em>Administrator-</em>Provides user with all permissions above, and also the ability
+                        <ul style="list-style-type:none">
+                            <li>
+                                <span class="glyphicon glyphicon-inbox"> </span>
+                                <em> - Moderator-</em>Allows the user to approve/reject submissions
+                            </li>
+                            <li>
+                                <span class="glyphicon glyphicon-pencil"> </span>
+                                <em> - Creator-</em>Allows the user to create/modify/delete forms
+                            </li>
+                            <li>
+                                <span class="glyphicon glyphicon-star"> </span>
+                                <em> - Adjudicator-</em>Allows the user to score submissions
+                            </li>
+                            <li>
+                                <span class="glyphicon glyphicon-briefcase"> </span>
+                                <em> - Administrator-</em>Provides user with all permissions above, and also the ability
                                 to add/remove users and modify permissions of other users
-                                <span class="pull-right glyphicon glyphicon-briefcase"> </span></li>
+
+                            </li>
 
                         </ul>
 
@@ -114,6 +122,11 @@
                                     @else
                                         <input type="checkbox" name="{{$user->id}}-adjudicator" id="{{$user->id}}-adjudicator"/>
                                     @endif
+
+                                    <button name="btn_userDelete" onclick="removeUser('{{$group->id}}', '{{$user->id}}')" type="button" class="btn btn-default pull-right">
+                                        <span class="glyphicon glyphicon-erase" aria-hidden="true"></span> Delete
+                                    </button>
+
                                 </div>
                             </div>
                         @endforeach
@@ -129,13 +142,23 @@
                             </select>
                         </div>
                         <button type="submit" class="btn btn-default pull-right">Save Changes</button>
-
                     </form>
-
-
                 </div>
             </div>
         </div>
     </div>
-    </div>
+
+<script>
+    function removeUser(groupId, userId) {
+        $.ajax({
+            url:"{{action('GroupController@removeUser', compact([groupId, userId]))}}",
+            headers:{'X-CSRF-TOKEN':"{{csrf_token()}}"},
+            method:"DELETE"
+        }).done(function(data,textStatus,jqXHR){
+            console.log(data);
+        }).fail(function (jqXHR,textStatus,errorThrown) {
+            console.log("Error:"+errorThrown);
+        })
+    }
+</script>
 @endsection
