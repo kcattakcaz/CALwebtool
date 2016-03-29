@@ -323,7 +323,7 @@ function CheckBoxField(id,name){
 
     this.getValuesObj = function(){
         var values = {};
-        values.type = "CheckBox";
+        values.type = "Checkbox";
         values.id = this.id;
         values.name = this.elementref_name.val();
         values.required = this.elementref_required.val();

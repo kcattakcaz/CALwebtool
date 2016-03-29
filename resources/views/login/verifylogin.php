@@ -7,5 +7,3 @@ if ( $_POST['email'] === 'yoonmatt@msu.edu' &&
 }
 
 ?>
-
-

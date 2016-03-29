@@ -31,8 +31,10 @@
                             Members can have one or more of the following permissions: Moderator, Creator, Adjudicator,
                             or no permissions at all.
                         <ul>
+                            <!--
                             <li><em>No Permissions-</em>This user can view group data but cannot modify it.
                                 <span class="pull-right glyphicon glyphicon-user"> </span></li>
+                            -->
                             <li><em>Moderator-</em>Allows the user to approve/reject submissions
                                 <span class="pull-right glyphicon glyphicon-inbox"> </span></li>
                             <li><em>Creator-</em>Allows the user to create/modify/delete forms
