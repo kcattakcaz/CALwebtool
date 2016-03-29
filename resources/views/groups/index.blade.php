@@ -17,6 +17,9 @@
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Group
                             </button>
                         </a>
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
+                        </button>
                     </div>
 
                     <br>

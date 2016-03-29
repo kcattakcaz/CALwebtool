@@ -27,29 +27,30 @@
                     <br>
 
                     <p>
-                        Members can have one or more of the following permissions: Moderator, Creator, Adjudicator,
-                        or no permissions at all.
-                        <ul style="list-style-type:none">
-                            <li>
-                                <span class="glyphicon glyphicon-user"> </span>
-                                <em> - No Permissions-</em>This user can view group data but cannot modify it.
+                        Members can have one or more of the following permissions:
+
+                        <ul class="list-group-permissions">
+
+                            <li class="list-group-perm">
+                                <span class="glyphicon glyphicon-minus-sign"> </span>
+                                <em> -   No Permissions: </em>This user can view group data but cannot modify it.
                             </li>
-                            <li>
-                                <span class="glyphicon glyphicon-inbox"> </span>
-                                <em> - Moderator-</em>Allows the user to approve/reject submissions
+                            <li class="list-group-perm">
+                                <span class="glyphicon glyphicon-check"> </span>
+                                <em> -   Moderator: </em>Allows the user to approve/reject submissions.
                             </li>
-                            <li>
+                            <li class="list-group-perm">
                                 <span class="glyphicon glyphicon-pencil"> </span>
-                                <em> - Creator-</em>Allows the user to create/modify/delete forms
+                                <em> -   Creator: </em>Allows the user to create/modify/delete forms.
                             </li>
-                            <li>
+                            <li class="list-group-perm">
                                 <span class="glyphicon glyphicon-star"> </span>
-                                <em> - Adjudicator-</em>Allows the user to score submissions
+                                <em> -   Adjudicator: </em>Allows the user to score submissions.
                             </li>
-                            <li>
+                            <li class="list-group-perm">
                                 <span class="glyphicon glyphicon-briefcase"> </span>
-                                <em> - Administrator-</em>Provides user with all permissions above, and also the ability
-                                to add/remove users and modify permissions of other users
+                                <em> -   Administrator: </em>Provides user with all permissions above, including the ability
+                                to add/remove users and modify permissions of other users.
 
                             </li>
 
@@ -93,7 +94,7 @@
                                     @endif
 
                                     @if($group->isMod($user->id))
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-inbox"> </span>
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-check"> </span>
                                     @else
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                                     @endif
