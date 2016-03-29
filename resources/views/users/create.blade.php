@@ -5,11 +5,11 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Register a User</div>
+                <div class="panel-heading">User Registration</div>
 
                 <div class="panel-body">
                    <p>
-                       Create a new user and add them to a group.  Then you can assign them permissions.
+                       Create a new user, assign them to a group, and give them permissions.
                    </p>
 
 
@@ -33,7 +33,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="email">E-Mail:</label>
+                            <label for="email">E-mail:</label>
                             <input name="email" type="email" class="form-control" id="email">
                         </div>
 

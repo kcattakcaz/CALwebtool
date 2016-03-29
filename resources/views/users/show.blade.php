@@ -21,7 +21,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="email">E-Mail:</label>
+                                <label for="email">E-mail:</label>
                                 <input name="email" type="email" class="form-control" id="email" value="{{$user->email}}">
                             </div>
 

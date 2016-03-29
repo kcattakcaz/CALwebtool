@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Create a Group</div>
+                <div class="panel-heading">Create A Group</div>
 
                 <div class="panel-body">
                    <p> Groups represent a collection of Users, Forms and Ballots that serve a common purpose.  Examples include
