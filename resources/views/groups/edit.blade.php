@@ -123,9 +123,22 @@
                                         <input type="checkbox" name="{{$user->id}}-adjudicator" id="{{$user->id}}-adjudicator"/>
                                     @endif
 
-                                    <button name="btn_userDelete" onclick="removeUser('{{$group->id}}', '{{$user->id}}')" type="button" class="btn btn-default pull-right">
+                                    <button id="btn_userDelete_{{$user->id}}" name="btn_userDelete" type="button" class="btn btn-default pull-right">
                                         <span class="glyphicon glyphicon-erase" aria-hidden="true"></span> Delete
                                     </button>
+                                    <script>
+                                        $('#btn_userDelete_{{$user->id}}').on('click',function(){
+                                            $.ajax({
+                                                url:"{{action('GroupController@removeUser', compact('group','user'))}}",
+                                                headers:{'X-CSRF-TOKEN':"{{csrf_token()}}"},
+                                                method:"DELETE"
+                                            }).done(function(data,textStatus,jqXHR){
+                                                console.log(data);
+                                            }).fail(function (jqXHR,textStatus,errorThrown) {
+                                                console.log("Error:"+errorThrown);
+                                            })
+                                        })
+                                    </script>
 
                                 </div>
                             </div>
@@ -148,17 +161,4 @@
         </div>
     </div>
 
-<script>
-    function removeUser(groupId, userId) {
-        $.ajax({
-            url:"{{action('GroupController@removeUser', compact([groupId, userId]))}}",
-            headers:{'X-CSRF-TOKEN':"{{csrf_token()}}"},
-            method:"DELETE"
-        }).done(function(data,textStatus,jqXHR){
-            console.log(data);
-        }).fail(function (jqXHR,textStatus,errorThrown) {
-            console.log("Error:"+errorThrown);
-        })
-    }
-</script>
 @endsection

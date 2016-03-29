@@ -119,6 +119,6 @@ class GroupController extends Controller
     public function destroy(){
 
 
-        return redirect()->action('GroupController@show', compact($group));
+        //return redirect()->action('GroupController@show', compact($group));
     }
 }
