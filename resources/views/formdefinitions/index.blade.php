@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Form Definitions
+                <div class="panel-heading"><h3 class="panel-title">Form Definitions</h3>
 
                 </div>
 
@@ -29,8 +29,8 @@
 
                     <div class="list-group">
 
-                        @foreach($groups as $group)
-                        <a href="{{action('FormDefinitionController@show',['group'=>$group->id])}}" class="list-group-item">{{$group->name}}</a>
+                        @foreach($forms as $form)
+                        <a href="{{action('FormDefinitionController@show',['group'=>$form->id])}}" class="list-group-item">{{$form->name}}</a>
                         @endforeach
                     </div>
 

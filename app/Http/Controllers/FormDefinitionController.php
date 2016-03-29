@@ -27,8 +27,11 @@ class FormDefinitionController extends Controller
     }
 
     public function index(){
-        $groups = new Collection();
-        return view('formdefinitions.index',compact('groups'));
+        $forms = new Collection();
+        foreach(Auth::user()->groups()->get() as $group){
+            $forms = $forms->merge($group->formDefinitions()->get());
+        }
+        return view('formdefinitions.index',compact('forms'));
     }
 
     public function create(){
@@ -81,6 +84,27 @@ class FormDefinitionController extends Controller
                     $field->save();
                 }
             }
+            else if($type == "Checkbox"){
+                $validator = Validator::make($fieldArray,[
+                    'id' => 'required|alpha_dash',
+                    'name' => 'required',
+                    'required'=>'required',
+                    'value_checked'=>'required',
+                    'value_unchecked'=>'required',
+                ]);
+                if($validator->fails()){
+                    $fieldErrors->push($validator->errors());
+                }
+                else{
+                    $field_options = new Collection();
+                    $field_options->put('required',$fieldDef->get('required'));
+                    $field_options->put('value_unchecked',$fieldDef->get('value_unchecked'));
+                    $field_options->put('value_checked',$fieldDef->get('value_checked'));
+
+                    $field = new Field(['formdefinition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                    $field->save();
+                }
+            }
             else{
                 $fieldErrors->push(["Unknown field type in submission"]);
             }
@@ -90,7 +114,7 @@ class FormDefinitionController extends Controller
             return response()->json([true],200);
         }
         else{
-            $FormDefintion->forceDelete();
+            $formDef->forceDelete();
             return response()->json($fieldErrors,422);
         }
 
