@@ -38,10 +38,12 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/settings','HomeController@settings');
     Route::get('/unavailable','HomeController@unavailable');
 
-    Route::delete('settings/group/user','GroupController@removeUser');
+    Route::delete('settings/group/{group}/user/{user}','GroupController@removeUser');
     Route::resource('settings/group','GroupController');
 
     Route::resource('settings/user','UserController');
 
     Route::resource('form','FormDefinitionController');
+
+    Route::get('forms/{formDef}','FormDefinitionController@displayForm');
 });
