@@ -123,17 +123,17 @@
                                         <input type="checkbox" name="{{$user->id}}-adjudicator" id="{{$user->id}}-adjudicator"/>
                                     @endif
 
-                                    <button id="btn_userDelete_{{$user->id}}" name="btn_userDelete" type="button" class="btn btn-default pull-right">
+                                    <button id="btn_userDelete_{{$user->id}}" name="btn_userDelete_{{$user->id}}" type="button" class="btn btn-default pull-right">
                                         <span class="glyphicon glyphicon-erase" aria-hidden="true"></span> Delete
                                     </button>
                                     <script>
                                         $('#btn_userDelete_{{$user->id}}').on('click',function(){
                                             $.ajax({
-                                                url:"{{action('GroupController@removeUser', compact('group','user'))}}",
+                                                url:"{!!action('GroupController@removeUser', compact('group', 'user'))!!}",
                                                 headers:{'X-CSRF-TOKEN':"{{csrf_token()}}"},
                                                 method:"DELETE"
-                                            }).done(function(data,textStatus,jqXHR){
-                                                console.log(data);
+                                            }).done(function(textStatus,jqXHR){
+                                                console.log('wtf is this shit why doesnt it work?');
                                             }).fail(function (jqXHR,textStatus,errorThrown) {
                                                 console.log("Error:"+errorThrown);
                                             })
