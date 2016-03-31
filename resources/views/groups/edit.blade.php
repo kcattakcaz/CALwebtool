@@ -133,7 +133,7 @@
                                                 headers:{'X-CSRF-TOKEN':"{{csrf_token()}}"},
                                                 method:"DELETE"
                                             }).done(function(textStatus,jqXHR){
-                                                console.log('wtf is this shit why doesnt it work?');
+                                                location.reload();
                                             }).fail(function (jqXHR,textStatus,errorThrown) {
                                                 console.log("Error:"+errorThrown);
                                             })
