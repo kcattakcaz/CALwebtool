@@ -114,7 +114,7 @@ class GroupController extends Controller
     public function removeUser(Group $group, User $user) {
         //dd(group->name);
         $group->users()->detach([$user->id]);
-        return view('groups.edit',compact('group', 'users'));
+        //return view('groups.edit',compact('group', 'users'));
     }
 
     public function destroy(){
