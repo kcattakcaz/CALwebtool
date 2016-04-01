@@ -80,7 +80,7 @@ class FormDefinitionController extends Controller
                     $field_options->put('maxlength',$fieldDef->get('maxlength'));
                     $field_options->put('minlength',$fieldDef->get('minlength'));
 
-                    $field = new Field(['formdefinition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                    $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
                     $field->save();
                 }
             }
@@ -101,7 +101,30 @@ class FormDefinitionController extends Controller
                     $field_options->put('value_unchecked',$fieldDef->get('value_unchecked'));
                     $field_options->put('value_checked',$fieldDef->get('value_checked'));
 
-                    $field = new Field(['formdefinition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                    $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                    $field->save();
+                }
+            }
+            else if($type == "Select"){
+                $validator = Validator::make($fieldArray,[
+                    'id' => 'required|alpha_dash',
+                    'name' => 'required',
+                    'required'=>'required',
+                    'multipleselect'=>'required|boolean',
+                    'options'=>'required|array',
+                    'options.*.label'=>'required',
+                    'options.*.value'=>'required',
+                ]);
+                if($validator->fails()){
+                    $fieldErrors->push($validator->errors());
+                }
+                else{
+                    $field_options = new Collection();
+                    $field_options->put('required',$fieldDef->get('required'));
+                    $field_options->put('multipleselect',$fieldDef->get('multipleselect'));
+                    $field_options->put('options',$fieldDef->get('options'));
+
+                    $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
                     $field->save();
                 }
             }
@@ -123,8 +146,22 @@ class FormDefinitionController extends Controller
 
     }
 
-    public function show(Group $group){
-        return view('groups.show',compact('group'));
+    public function show(FormDefinition $formDef){
+
+    }
+
+    public function displayForm(FormDefinition $formDef){
+        $form = new Collection();
+
+        foreach($formDef->fields()->get() as $fieldDef){
+            $field = new Collection();
+            $field->put('type',$fieldDef->type);
+            $field->put('id',$fieldDef->id);
+            $field->put('name',$fieldDef->name);
+            $field->put('options',new Collection(json_decode($fieldDef->options)));
+            $form->push($field);
+        }
+        return view('formdefinitions.display',compact('form'));
     }
 
     public function edit(){

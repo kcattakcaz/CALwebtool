@@ -19,14 +19,14 @@ class FormDefinition extends Model
     ];
 
     public function user(){
-        return $this->belongsTo('CALWebtool\User');
+        return $this->belongsTo('CALwebtool\User');
     }
 
     public function group(){
-        return $this->belongsTo('CALWebtool\Group');
+        return $this->belongsTo('CALwebtool\Group');
     }
 
     public function fields(){
-        return $this->hasMany('CALWebtool\Fields');
+        return $this->hasMany('CALwebtool\Field');
     }
 }
