@@ -60,12 +60,13 @@ class FormDefinitionController extends Controller
         foreach($request->input('definition') as $fieldArray){
             $fieldDef = collect($fieldArray);
             $type = $fieldDef->get("type");
+
             if($type == "Text"){
                 $validator = Validator::make($fieldArray,[
                     'id' => 'required|alpha_dash',
                     'name' => 'required',
                     'required'=>'required|boolean',
-                    'multiline'=>'required|boolean',
+                    'text_type'=>'required|in:any,num,alpha,email,phone,date,time,multiline',
                     'maxlength'=>'required|integer',
                     'minlength'=>'required|integer'
                 ]);
@@ -76,7 +77,7 @@ class FormDefinitionController extends Controller
                 else{
                     $field_options = new Collection();
                     $field_options->put('required',$fieldDef->get('required'));
-                    $field_options->put('multiline',$fieldDef->get('multiline'));
+                    $field_options->put('text_type',$fieldDef->get('text_type'));
                     $field_options->put('maxlength',$fieldDef->get('maxlength'));
                     $field_options->put('minlength',$fieldDef->get('minlength'));
 
@@ -128,13 +129,34 @@ class FormDefinitionController extends Controller
                     $field->save();
                 }
             }
+            else if($type == "RadioGroup"){
+                $validator = Validator::make($fieldArray,[
+                    'id' => 'required|alpha_dash',
+                    'name' => 'required',
+                    'required'=>'required',
+                    'options'=>'required|array',
+                    'options.*.label'=>'required',
+                    'options.*.value'=>'required',
+                ]);
+                if($validator->fails()){
+                    $fieldErrors->push($validator->errors());
+                }
+                else{
+                    $field_options = new Collection();
+                    $field_options->put('required',$fieldDef->get('required'));
+                    $field_options->put('options',$fieldDef->get('options'));
+
+                    $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                    $field->save();
+                }
+            }
             else{
                 $fieldErrors->push(["Unknown field type in submission"]);
             }
         }
 
         if($fieldErrors->count() == 0){
-            return response()->json([true],200);
+            return response()->json([$formDef->id],200);
         }
         else{
             $formDef->forceDelete();

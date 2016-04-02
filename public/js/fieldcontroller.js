@@ -25,6 +25,9 @@ function FieldController()  {
         else if(type == "Select"){
             newField = new SelectField(field_id,name);
         }
+        else if(type == "Radio"){
+            newField = new RadioGroupField(field_id,name);
+        }
 
         if(newField === null){
             console.log("Failed to create field of given type "+type+" (the attempt to create the object returned null)");
@@ -120,15 +123,17 @@ function TextField(id,name){
     this.id = id;
     this.name = name;
     this.required = false;
-    this.is_multi_line = false;
+    //this.is_multi_line = false;
     this.max_length = 500;
     this.min_length = 0;
+    this.text_type = "Plain";
 
     this.elementref_name = null;
     this.elementref_required = null;
     this.elementref_multiline = null;
     this.elementref_maxlength = null;
     this.elementref_minlength = null;
+    this.elementref_texttype = null;
 
     /**
      * renderOptions(parentElementRef,currentValuesObj)
@@ -165,7 +170,7 @@ function TextField(id,name){
                 );
             required_group.append(this.elementref_required);
             parentElementRef.append(required_group);
-
+            /*
             //Multiline Select Field
             var multiline_group = $("<div class='form-group'>");
             multiline_group.append("<label for='required'>Multiline</label>");
@@ -176,6 +181,26 @@ function TextField(id,name){
                 );
             multiline_group.append(this.elementref_multiline);
             parentElementRef.append(multiline_group);
+            */
+            //TextType Select Field
+            //Multiline Select Field
+            var texttype_group = $("<div class='form-group'>");
+            texttype_group.append("<label for='required'>Text Type</label>");
+            this.elementref_texttype = $("<select class='form-control' name='"+this.id+"_texttype' id='"+this.id+"_texttype'>")
+                .append(
+                    $("<option value='any'>Any Text</option>"),
+                    $("<option value='multiline'>Multiline Text Area</option>"),
+                    $("<option value='num'>Number Spinner</option>"),
+                    $("<option value='alpha'>Alphabetic</option>"),
+                    $("<option value='email'>E-Mail Field</option>"),
+                    $("<option value='phone'>Telephone Field</option>"),
+                    $("<option value='date'>Date Field</option>"),
+                    $("<option value='time'>Time Field</option>")
+                );
+            texttype_group.append(this.elementref_texttype);
+            parentElementRef.append(texttype_group);
+
+
 
             //Min Length Input Field
             var minlength_group = $("<div class='form-group'>");
@@ -203,44 +228,13 @@ function TextField(id,name){
 
     this.getValuesObj = function(){
         var values = {};
-        /*
-        var errors = [];
-
-        values.type = "Text";
-        values.id = this.id;
-        values.name = this.elementref_name.val();
-        if(values.name.length == 0){
-            alert('invalid');
-            errors.push("The name for "+this.id+ "is empty");
-        }
-
-        values.required = this.elementref_required.val();
-        values.multiline = this.elementref_multiline.val();
-        values.maxlength = parseInt(this.elementref_maxlength.val(),10);
-        if(isNaN(values.maxlength) || values.maxlength === null || values.maxlength<1 ){
-            alert("Max length is invalid");
-            values.maxlength = 0;
-            errors.push("The max length for "+this.id+"is not valid");
-        }
-        values.minlength = this.elementref_minlength.val();
-        if(isNaN(values.minlength) || values.minlength === null || values.minlength > values.maxlength){
-            alert("Min length is invalid");
-            values.minlength = 0;
-            errors,push("The min length for "+this.id+"is not valid");
-        }
-
-        if(errors.length == 0) {
-            return {errors:false,content:values};
-        }
-        else{
-            return {errors:true,content:errors};
-        }*/
 
         values.type = "Text";
         values.id = this.id;
         values.name = this.elementref_name.val();
         values.required = this.elementref_required.val();
-        values.multiline = this.elementref_multiline.val();
+        values.text_type = this.elementref_texttype.val();
+        //values.multiline = this.elementref_multiline.val();
         values.maxlength = parseInt(this.elementref_maxlength.val(),10);
         values.minlength = parseInt(this.elementref_minlength.val(),10);
         return values;
