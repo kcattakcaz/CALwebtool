@@ -173,7 +173,7 @@ class FormDefinitionController extends Controller
     }
 
     public function displayForm(FormDefinition $formDef){
-        $form = new Collection();
+        $fields = new Collection();
 
         foreach($formDef->fields()->get() as $fieldDef){
             $field = new Collection();
@@ -181,9 +181,9 @@ class FormDefinitionController extends Controller
             $field->put('id',$fieldDef->id);
             $field->put('name',$fieldDef->name);
             $field->put('options',new Collection(json_decode($fieldDef->options)));
-            $form->push($field);
+            $fields->push($field);
         }
-        return view('formdefinitions.display',compact('form'));
+        return view('formdefinitions.display',compact('fields','formDef'));
     }
 
     public function edit(){

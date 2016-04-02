@@ -40,20 +40,32 @@
 
     <div class="container">
 
-    @foreach($form as $field)
-        @if($field->get('type') =='Text')
-            @include('fields.text',['text_field' => $field])
-        @elseif($field->get('type') == 'Select')
-            @include('fields.select',['select_field'=>$field])
-        @elseif($field->get('type') == 'Checkbox')
-            @include('fields.checkbox',['checkbox_field'=>$field])
-        @elseif($field->get('type') == 'RadioGroup')
-            @include('fields.radiogroup',['radiogroup_field'=>$field])
-        @endif
-    @endforeach
+        <h1>{{$formDef->name}}</h1>
+
+        <p>{{$formDef->description}}</p>
+
+        @foreach($fields as $field)
+            @if($field->get('type') =='Text')
+                @include('fields.text',['text_field' => $field])
+            @elseif($field->get('type') == 'Select')
+                @include('fields.select',['select_field'=>$field])
+            @elseif($field->get('type') == 'Checkbox')
+                @include('fields.checkbox',['checkbox_field'=>$field])
+            @elseif($field->get('type') == 'RadioGroup')
+                @include('fields.radiogroup',['radiogroup_field'=>$field])
+            @endif
+        @endforeach
+
+        <button class="btn btn-default btn-block" type="button" id="btn_submit_form">Submit</button>
 
     </div>
 
     </body>
+
+    <script>
+        $("#btn_submit_form").on('click',function(){
+            alert("LOL, slow down there, I didn't make THAT much progress!");
+        })
+    </script>
 
 </html>

@@ -21,7 +21,7 @@ class CreateFieldsTable extends Migration
             $table->string('name');
             $table->integer('order');
             $table->enum('type',array('Text','Checkbox','RadioGroup','Select','File'));
-            $table->string('options');
+            $table->mediumText('options');
             $table->timestamps();
 
             $table->foreign('form_definition_id')->references('id')->on('formdefinitions')->onDelete('cascade');
