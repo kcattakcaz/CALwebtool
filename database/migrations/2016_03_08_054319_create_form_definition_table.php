@@ -18,16 +18,16 @@ class CreateFormDefinitionTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description');
-            $table->integer('group_id')->unsigned()->onDelete('cascade');
-            $table->integer('user_id')->unsigned()->onDelete('set null');
+            $table->integer('group_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->dateTime('submissions_start');
             $table->dateTime('submissions_end');
             $table->dateTime('scores_due');
             $table->enum('status',array('Drafting','Scheduled','Accepting','Reviewing','Scored','Archived'));
             $table->timestamps();
 
-            $table->foreign('group_id')->references('id')->on('groups');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
 
         });
     }

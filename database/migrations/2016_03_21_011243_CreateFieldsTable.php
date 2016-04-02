@@ -17,14 +17,14 @@ class CreateFieldsTable extends Migration
         Schema::create('fields', function (Blueprint $table) {
             $table->increments('id');
             $table->string("field_id");
-            $table->integer('formdefinition_id')->unsigned();
+            $table->integer('form_definition_id')->unsigned();
             $table->string('name');
             $table->integer('order');
-            $table->enum('type',array('Text','Checkbox','Radios','Select','File'));
+            $table->enum('type',array('Text','Checkbox','RadioGroup','Select','File'));
             $table->string('options');
             $table->timestamps();
 
-            $table->foreign('formdefinition_id')->references('id')->on('formdefinitions');
+            $table->foreign('form_definition_id')->references('id')->on('formdefinitions')->onDelete('cascade');
 
         });
     }
@@ -37,5 +37,6 @@ class CreateFieldsTable extends Migration
     public function down()
     {
         //
+        Schema::drop('fields');
     }
 }
