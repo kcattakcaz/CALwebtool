@@ -45,5 +45,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::resource('form','FormDefinitionController');
 
-    Route::get('forms/{formDef}','FormDefinitionController@displayForm');
+    Route::get('public/forms/{formDef}','FormDefinitionController@displayForm');
+
+    Route::post('public/forms/{formDef}','SubmissionController@store');
 });

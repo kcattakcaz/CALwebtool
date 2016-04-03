@@ -178,7 +178,7 @@ class FormDefinitionController extends Controller
         foreach($formDef->fields()->get() as $fieldDef){
             $field = new Collection();
             $field->put('type',$fieldDef->type);
-            $field->put('id',$fieldDef->id);
+            $field->put('id',$fieldDef->field_id);
             $field->put('name',$fieldDef->name);
             $field->put('options',new Collection(json_decode($fieldDef->options)));
             $fields->push($field);
