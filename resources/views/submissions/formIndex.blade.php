@@ -10,7 +10,7 @@
                 <div class="panel-body">
                     <div class="list-group">
                         @foreach($submissions as $submission)
-                            <a href="{{action('SubmissionController@show',compact('$submission'))}}" class="list-group-item">{{$submission->name}} | {{$submission->email}} <strong class="pull-right">{{$submission->status}}</strong></a>
+                            <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item">{{$submission->name}} | {{$submission->email}} <strong class="pull-right">{{$submission->status}}</strong></a>
                         @endforeach
                     </div>
                 </div>
