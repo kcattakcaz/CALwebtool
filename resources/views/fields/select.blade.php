@@ -1,7 +1,7 @@
 <div class="form-group">
     <label for="{{$select_field->get('id')}}">{{$select_field->get('name')}}</label>
     @if(json_decode($select_field->get('options'))->multipleselect == true)
-        <select multiple class="form-control" name="{{$select_field->get('id')}}" id="{{$select_field->get('id')}}">
+        <select multiple class="form-control" name="{{$select_field->get('id')}}[]" id="{{$select_field->get('id')}}">
     @else
         <select class="form-control" name="{{$select_field->get('id')}}" id="{{$select_field->get('id')}}">
     @endif

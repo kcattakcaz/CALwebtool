@@ -3,11 +3,14 @@
 namespace CALwebtool\Http\Controllers;
 
 use CALwebtool\FormDefinition;
+use CALwebtool\Submission;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use CALwebtool\Http\Requests;
 use CALwebtool\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 
 class SubmissionController extends Controller
 {
@@ -31,8 +34,8 @@ class SubmissionController extends Controller
         return view('home');
     }
 
-    public function store(Request $request, FormDefinition $form){
-        dd($request->input());
+    public function store(Request $request, FormDefinition $formDef){
+        //dd($request->input());
 
         $this->validate($request,[
             'name' => 'required|max:255|string',
@@ -40,16 +43,168 @@ class SubmissionController extends Controller
         ]);
 
         $fields = new Collection();
+        $errors = new Collection();
 
-        foreach($request->input() as $submission_key=>$submission_value){
-            if($submission_key == 'name' || $submission_key =='email'){
-                continue;
+        foreach($formDef->fields()->get() as $field){
+            $options = json_decode($field->options);
+            if($options->required && !$request->has($field->field_id)){
+                $errors->push("Missing required field named ".$field->name." with ID".$field->field_id);
             }
-            dd($form->fields());
-            $form_field = $form->fields()->where('field_id',$submission_key)->firstOrFail();
-            $fields->put($submission_key,$submission_value);
+            elseif(!$request->has($field->field_id)){
+                $fields->put($field->field_id,null);
+            }
+            else{
+                if($this->verifyField($field,$request->input($field->field_id))){
+                    $fields->put($field->field_id,$request->input($field->field_id));
+
+                }
+                else{
+                    $errors->push("Invalid value for field named \"".$field->name."\" with ID: ".$field->field_id);
+                }
+
+              }
         }
-        dd($fields);
+
+        if($errors->count() > 0){
+            return response()->json(["The submission was REJECTED and errors follow",$errors],422);
+        }
+
+        $submission = new Submission(["form_definition_id"=>$formDef->id,"name"=>$request->input('name'),"email"=>$request->input('email'),"password"=>null,"submitted"=>Carbon::now(),"status"=>'Reviewing',"options"=>$fields->toJson()]);
+        $submission->save();
+        return response()->json(["The submission was accepted and follows",$submission],200);
+
+    }
+
+    public static function verifyField($field,$value){
+        $options = json_decode($field->options);
+
+        if($field->type == "Text"){
+            $fieldArray = [$field->field_id=>$value];
+
+            if($options->text_type == "any" || $options->text_type == "multiline"){
+                $validator = Validator::make($fieldArray,[
+                    $field->field_id => 'required|string',
+                ]);
+
+                if($validator->fails()){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+            else if($options->text_type == "num"){
+                $validator = Validator::make($fieldArray,[
+                    $field->field_id => 'required|numeric',
+                ]);
+
+                if($validator->fails()){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+            else if($options->text_type == "alpha"){
+                $validator = Validator::make($fieldArray,[
+                    $field->field_id => 'required|alpha',
+                ]);
+
+                if($validator->fails()){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+            else if($options->text_type == "email"){
+                $validator = Validator::make($fieldArray,[
+                    $field->field_id => 'required|email',
+                ]);
+
+                if($validator->fails()){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }else if($options->text_type == "phone"){
+                $validator = Validator::make($fieldArray,[
+                    $field->field_id => 'required|string|min:10|max:40',
+                ]);
+
+                if($validator->fails()){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }else if($options->text_type == "date"){
+                $validator = Validator::make($fieldArray,[
+                    $field->field_id => 'required|date_format:m#d#y',
+                ]);
+
+                if($validator->fails()){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }else if($options->text_type == "time") {
+                $validator = Validator::make($fieldArray,[
+                    $field->field_id => 'required|date_format:H',
+                ]);
+
+                if($validator->fails()){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }else{
+                return false;
+            }
+
+        }
+        elseif($field->type == "Checkbox"){
+            if($value == true || $value == false){
+                return true;
+            }
+            else{
+                return false;
+            }
+
+        }
+        elseif($field->type == "Select"){
+            $fieldArray = [$field->field_id=>$value];
+            $validator = Validator::make($fieldArray,[
+                $field->field_id => 'required|array',
+                $field->field_id.".*"=>'required|string',
+            ]);
+
+            if($validator->fails()){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        elseif($field->type == "RadioGroup"){
+            $fieldArray = [$field->field_id=>$value];
+            $validator = Validator::make($fieldArray,[
+                $field->field_id => 'required|string',
+            ]);
+
+            if($validator->fails()){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            echo "<br>".$field->type;
+        }
     }
 
 }
