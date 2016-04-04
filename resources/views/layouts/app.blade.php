@@ -60,7 +60,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/home') }}">My Dashboard</a></li>
                     <li><a href="{{action('FormDefinitionController@index')}}">Forms</a></li>
-                    <li><a href="#">Submissions</a></li>
+                    <li><a href="{{action('SubmissionController@index')}}">Submissions</a></li>
                     @if(Auth::check() && Auth::user()->isSystemAdmin())
                         <li><a href="{{url('/settings')}}">Admin Settings</a></li>
                     @endif

@@ -29,4 +29,8 @@ class FormDefinition extends Model
     public function fields(){
         return $this->hasMany('CALwebtool\Field');
     }
+
+    public function submissions(){
+        return $this->hasMany('CALwebtool\Submission');
+    }
 }

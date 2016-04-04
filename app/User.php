@@ -33,6 +33,10 @@ class User extends Authenticatable
         return $this->groups()->wherePivot('creator',true);
     }
 
+    public function moderatorGroups(){
+        return $this->groups()->wherePivot('moderator',true);
+    }
+
     public function isSystemAdmin(){
         return $this->system_admin;
     }

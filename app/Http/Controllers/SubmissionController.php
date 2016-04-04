@@ -3,6 +3,7 @@
 namespace CALwebtool\Http\Controllers;
 
 use CALwebtool\FormDefinition;
+use CALwebtool\Group;
 use CALwebtool\Submission;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use CALwebtool\Http\Requests;
 use CALwebtool\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class SubmissionController extends Controller
@@ -31,7 +33,11 @@ class SubmissionController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $forms = new Collection();
+        foreach(Auth::user()->moderatorGroups()->get() as $group){
+            $forms = $forms->merge($group->formDefinitions()->get());
+        }
+        return view('submissions.index',compact('forms'));
     }
 
     public function store(Request $request, FormDefinition $formDef){
@@ -73,6 +79,16 @@ class SubmissionController extends Controller
         $submission->save();
         return response()->json(["The submission was accepted and follows",$submission],200);
 
+    }
+
+    public function getForm(FormDefinition $form){
+        $submissions = $form->submissions()->get();
+
+        return view('submissions.formIndex',compact('form','submissions'));
+    }
+
+    public function show(Submission $submission){
+        dd($submission);
     }
 
     public static function verifyField($field,$value){
