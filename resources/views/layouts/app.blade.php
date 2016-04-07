@@ -13,8 +13,6 @@
 
     <!-- Styles -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/assets/css/custom-bootstrap.css" rel="stylesheet">
-    <link href="/resources/assets/less/custom-variables.less" rel="stylesheet">
     {{-- <link href="{{ elixir('custom/app.custom') }}" rel="stylesheet"> --}}
     <style>
         body {
