@@ -13,10 +13,10 @@ class Submission extends Model
      * @var array
      */
     protected $fillable = [
-        'form_definition_id','name','email','password','submitted','status','options'
+        'id','form_definition_id','name','email','password','submitted','status','options'
     ];
 
     public function formdefinition(){
-        return $this->belongsTo('CALWebtool\FormDefinition');
+        return $this->belongsTo('CALwebtool\FormDefinition','form_definition_id');
     }
 }

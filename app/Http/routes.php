@@ -45,10 +45,13 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::resource('form','FormDefinitionController');
 
-    Route::get('public/forms/{formDef}','FormDefinitionController@displayForm');
 
+
+
+
+    Route::get('submissions/form/{form}','SubmissionController@getForm');
+    Route::resource('submissions','SubmissionController');
+    Route::get('public/forms/{formDef}','FormDefinitionController@displayForm');
     Route::post('public/forms/{formDef}','SubmissionController@store');
 
-    Route::resource('submissions','SubmissionController');
-    Route::get('submissions/form/{form}','SubmissionController@getForm');
 });

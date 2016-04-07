@@ -87,8 +87,14 @@ class SubmissionController extends Controller
         return view('submissions.formIndex',compact('form','submissions'));
     }
 
-    public function show(Submission $submission){
-        dd($submission);
+    public function show(Submission $submissions){
+        $form = $submissions->formdefinition()->first();
+        $submission_fields = json_decode($submissions->options);
+        foreach($submission_fields as $sf){
+            
+        }
+
+        return view('submissions.show',compact('submissions','form','fields'));
     }
 
     public static function verifyField($field,$value){

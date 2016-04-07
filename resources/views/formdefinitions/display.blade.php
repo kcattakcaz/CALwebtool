@@ -58,13 +58,13 @@
 
             @foreach($fields as $field)
                 @if($field->get('type') =='Text')
-                    @include('fields.text',['text_field' => $field])
+                    @include('fields.display.text',['text_field' => $field])
                 @elseif($field->get('type') == 'Select')
-                    @include('fields.select',['select_field'=>$field])
+                    @include('fields.display.select',['select_field'=>$field])
                 @elseif($field->get('type') == 'Checkbox')
-                    @include('fields.checkbox',['checkbox_field'=>$field])
+                    @include('fields.display.checkbox',['checkbox_field'=>$field])
                 @elseif($field->get('type') == 'RadioGroup')
-                    @include('fields.radiogroup',['radiogroup_field'=>$field])
+                    @include('fields.display.radiogroup',['radiogroup_field'=>$field])
                 @endif
             @endforeach
 
