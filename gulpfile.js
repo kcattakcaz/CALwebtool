@@ -16,5 +16,5 @@ elixir(function(mix) {
 });
 
 elixir(function(mix) {
-    mix.less('custom-variables.less');
+    mix.less('custom-variables.less','/resources/assets/css/custom-bootstrap.css');
 });
