@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 use CALwebtool\Http\Requests;
 use CALwebtool\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
 
 class GroupController extends Controller
 {
@@ -23,7 +25,7 @@ class GroupController extends Controller
     }
 
     public function index(){
-        $groups = Group::all();
+        $groups = Auth::user()->adminGroups()->get();
         return view('groups.index',compact('groups'));
     }
 
@@ -56,26 +58,22 @@ class GroupController extends Controller
     public function edit(Group $group){
         $group_users = $group->users()->get();
         $users = User::all()->diff($group_users);
-
         return view('groups.edit', compact('group', 'users'));
-
     }
 
     //called by edit page
     public function update(Request $request, Group $group){
 
         foreach($group->users()->get() as $user) {
+
+            //if admin is selected then the user gets all permissions
             if ($request->input($user->id . '-administrator') == 'on') {
-                //dd(($request->input($user->id . '-administrator')) == 'on' ? 'admintrue' : 'adminfalse');
-                //dd('admin');
                 $group->makeAdmin($user);
             } else {
-                //dd(($request->input($user->id . '-creator')) == 'on' ? 'nontrue' : 'nonfalse');
-                //dd('non');
                 $group->removeAdmin($user);
                 $group->modifyPermissions($user, (($request->input($user->id . '-creator')) == 'on'),
-                                                (($request->input($user->id . '-adjudicator')) == 'on'),
-                                                (($request->input($user->id . '-moderator')) == 'on'));
+                                                (($request->input($user->id . '-moderator')) == 'on'),
+                                                (($request->input($user->id . '-adjudicator')) == 'on'));
             }
         }
 
@@ -112,9 +110,7 @@ class GroupController extends Controller
     }
 
     public function removeUser(Group $group, User $user) {
-        //dd(group->name);
         $group->users()->detach([$user->id]);
-        //return view('groups.edit',compact('group', 'users'));
     }
 
     public function destroy(){

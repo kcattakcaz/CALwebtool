@@ -36,7 +36,12 @@ class FormDefinitionController extends Controller
 
     public function create(){
         $groups = Auth::user()->creatorGroups()->get();
-        return view('formdefinitions.create',compact('groups'));
+        if ($groups->count() > 0) {
+            return view('formdefinitions.create',compact('groups'));
+        } else {
+            Flash()->overlay("You do not hve sufficient permission to perform this action. Please contact your group's administrator.", 'Authorization Error');
+            return redirect()->back();
+        }
     }
 
     public function store(Request $request){
@@ -170,20 +175,44 @@ class FormDefinitionController extends Controller
 
     public function show(FormDefinition $formDef){
 
+        $fieldErrors = new Collection();
+        if (Group::find($formDef->group_id)->isMod(Auth::user()->id)) {
+
+            $fields = new Collection();
+            foreach ($formDef->fields()->get() as $fieldDef) {
+                $field = new Collection();
+                $field->put('type', $fieldDef->type);
+                $field->put('id', $fieldDef->field_id);
+                $field->put('name', $fieldDef->name);
+                $field->put('options', new Collection(json_decode($fieldDef->options)));
+                $fields->push($field);
+            }
+
+            return view('formdefinitions.show', compact('formDef', 'fields', 'formGroup'));
+        } else {
+            $fieldErrors->push(["You do not have sufficient permissions to view this form."]);
+        }
     }
 
-    public function displayForm(FormDefinition $formDef){
-        $fields = new Collection();
 
-        foreach($formDef->fields()->get() as $fieldDef){
-            $field = new Collection();
-            $field->put('type',$fieldDef->type);
-            $field->put('id',$fieldDef->field_id);
-            $field->put('name',$fieldDef->name);
-            $field->put('options',new Collection(json_decode($fieldDef->options)));
-            $fields->push($field);
+    public function displayForm(FormDefinition $formDef)
+    {
+        $fields = new Collection();
+        if (Group::find($formDef->group_id)->isMod(Auth::user()->id)) {
+            foreach ($formDef->fields()->get() as $fieldDef) {
+                $field = new Collection();
+                $field->put('type', $fieldDef->type);
+                $field->put('id', $fieldDef->field_id);
+                $field->put('name', $fieldDef->name);
+                $field->put('options', new Collection(json_decode($fieldDef->options)));
+                $fields->push($field);
+            }
+            return view('formdefinitions.display', compact('fields', 'formDef'));
+        } else {
+            //dd('YOU DONT HAVE PERMISSION TO DO THAT');
+            Flash()->overlay("You do not hve sufficient permission to perform this action. Please contact your group's administrator.", 'Authorization Error');
+            return redirect()->back();
         }
-        return view('formdefinitions.display',compact('fields','formDef'));
     }
 
     public function edit(){

@@ -31,13 +31,17 @@ class SubmissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $forms = new Collection();
         foreach(Auth::user()->moderatorGroups()->get() as $group){
             $forms = $forms->merge($group->formDefinitions()->get());
         }
-        return view('submissions.index',compact('forms'));
+        if ($forms->count() > 0) {
+            return view('submissions.index',compact('forms'));
+        } else {
+            Flash()->overlay("You do not have sufficient permission to perform this action. Please contact your group's administrator.", 'Authorization Error');
+            return redirect()->back();
+        }
     }
 
     public function store(Request $request, FormDefinition $formDef){
@@ -87,12 +91,10 @@ class SubmissionController extends Controller
         return view('submissions.formIndex',compact('form','submissions'));
     }
 
-    public function show(Submission $submissions){
-        $form = $submissions->formdefinition()->first();
-        $submission_fields = json_decode($submissions->options);
-        foreach($submission_fields as $sf){
-            
-        }
+    public function show(Submission $submission){
+        $form = $submission->formdefinition()->first();
+        $submission_fields = json_decode($submission->options);
+        //foreach($submission_fields as $sf){}
 
         return view('submissions.show',compact('submissions','form','fields'));
     }

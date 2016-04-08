@@ -124,7 +124,7 @@
                                     @endif
 
                                     <button id="btn_userDelete_{{$user->id}}" name="btn_userDelete_{{$user->id}}" type="button" class="btn btn-default pull-right">
-                                        <span class="glyphicon glyphicon-erase" aria-hidden="true"></span> Delete
+                                        <span class="glyphicon glyphicon-erase" aria-hidden="true"></span> Remove
                                     </button>
                                     <script>
                                         $('#btn_userDelete_{{$user->id}}').on('click',function(){
@@ -144,7 +144,6 @@
                             </div>
                         @endforeach
                         </p>
-
                     </div>
                         <div class="form-group">
                             <label for="new_group_users">Add group members:</label>

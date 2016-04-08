@@ -38,17 +38,15 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/settings','HomeController@settings');
     Route::get('/unavailable','HomeController@unavailable');
 
+    //group
     Route::delete('settings/group/{group}/user/{user}','GroupController@removeUser');
     Route::resource('settings/group','GroupController');
 
+    //user
     Route::resource('settings/user','UserController');
 
-    Route::resource('form','FormDefinitionController');
-
-
-
-
-
+    //forms / submissions
+    Route::resource('formDef','FormDefinitionController');
     Route::get('submissions/form/{form}','SubmissionController@getForm');
     Route::resource('submissions','SubmissionController');
     Route::get('public/forms/{formDef}','FormDefinitionController@displayForm');

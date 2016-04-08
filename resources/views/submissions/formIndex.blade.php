@@ -9,7 +9,7 @@
 
                 <div class="panel-body">
                     <table class="table table-striped">
-                        <thead class="thead-inverse">
+                        <thead class="thead">
                             <tr>
                                 <th>ID</th>
                                 <th>Form Name</th>

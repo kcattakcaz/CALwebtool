@@ -8,7 +8,21 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in!
+                    @if(Auth::check())
+                        You are logged in!
+                    @else
+                        <strong>Please login to view your dashboard.</strong>
+
+                        <p>
+                            This site is for CAL staff, alumni committee and other authorized users, if you are a student
+                            looking to fill out an application, please return to your college's home page, and follow a link
+                            directly.
+                        </p>
+
+                        <p>
+                            If you are having difficulty accessing your account, contact your group administrator.
+                        </p>
+                    @endif
                 </div>
             </div>
         </div>

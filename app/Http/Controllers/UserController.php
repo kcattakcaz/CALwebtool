@@ -75,12 +75,10 @@ class UserController extends Controller
             'password' => 'min:6|confirmed',
         ]);
 
-        $user = Input::get('user');
-
-        $user->name = $request->input('name');
-        $user->name = $request->input('email');
-        $user->name = $request->input('password');
-        $user->save();
+        //$user->name = $request->input('name');
+        //$user->name = $request->input('email');
+        //$user->name = $request->input('password');
+        //$user->save();
     }
 
     public function destroy(){

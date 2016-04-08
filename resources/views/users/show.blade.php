@@ -58,16 +58,16 @@
 
                             <div class="panel-body">
                                 @if($group->users()->find($user->id)->pivot->administrator)
-                                    <p>Group Administrator</P>
+                                    <p>Group Administrator</p>
                                 @endif
                                 @if($group->users()->find($user->id)->pivot->moderator)
-                                    <p>Moderator</P>
+                                    <p>Moderator</p>
                                 @endif
                                 @if($group->users()->find($user->id)->pivot->creator)
-                                    <p>Creator</P>
+                                    <p>Creator</p>
                                 @endif
                                 @if($group->users()->find($user->id)->pivot->adjudicator)
-                                    <p>Adjudicator</P>
+                                    <p>Adjudicator</p>
                                 @endif
                             </div>
 

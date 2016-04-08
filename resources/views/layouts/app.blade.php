@@ -62,7 +62,7 @@
                     <li><a href="{{ url('/home') }}">My Dashboard</a></li>
                     <li><a href="{{action('FormDefinitionController@index')}}">Forms</a></li>
                     <li><a href="{{action('SubmissionController@index')}}">Submissions</a></li>
-                    @if(Auth::check() && Auth::user()->isSystemAdmin())
+                    @if(Auth::check() && Auth::user()->isSystemAdmin() || Auth::check() && Auth::user()->adminGroups()->count() > 0)
                         <li><a href="{{url('/settings')}}">Admin Settings</a></li>
                     @endif
                 </ul>

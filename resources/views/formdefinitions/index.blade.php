@@ -30,7 +30,7 @@
                     <div class="list-group">
 
                         @foreach($forms as $form)
-                        <a href="{{action('FormDefinitionController@show',['group'=>$form->id])}}" class="list-group-item">{{$form->name}}</a>
+                        <a href="{{action('FormDefinitionController@displayForm',['formDef'=>$form->id])}}" class="list-group-item">{{$form->name}}</a>
                         @endforeach
                     </div>
 
