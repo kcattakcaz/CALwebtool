@@ -5,14 +5,36 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Submissions for {{$form->name}}</div>
+                <div class="panel-heading">{{$form->name}}'s submissions:</div>
 
                 <div class="panel-body">
-                    <div class="list-group">
+                    <table class="table table-striped">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>ID</th>
+                                <th>Form Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         @foreach($submissions as $submission)
-                            <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item">{{$submission->id}} {{$submission->name}} | {{$submission->email}} <strong class="pull-right">{{$submission->status}}</strong></a>
+                            <tr>
+                                <td>{{$submission->id}}</td>
+                                <td>{{$submission->name}}</td>
+                                <td>{{$submission->email}}</td>
+                                <td>{{$submission->status}}</td>
+                                <td>
+                                    <a href="{{action('SubmissionController@show',compact('submission'))}}">
+                                        <button type="button" class="btn btn-default">
+                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
                         @endforeach
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
