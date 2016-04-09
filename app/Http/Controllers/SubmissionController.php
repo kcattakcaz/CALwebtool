@@ -69,14 +69,15 @@ class SubmissionController extends Controller
 
                 }
                 else{
-                    $errors->push("Invalid value for field named \"".$field->name."\" with ID: ".$field->field_id);
+                    $errors->push("Invalid value for field named \"".$field->name."\" with ID  ".$field->field_id);
                 }
 
               }
         }
 
         if($errors->count() > 0){
-            return response()->json(["The submission was REJECTED and errors follow",$errors],422);
+            //return response()->json(["The submission was REJECTED and errors follow",$errors],422);
+            return redirect()->back()->withErrors($errors);
         }
 
         $submission = new Submission(["form_definition_id"=>$formDef->id,"name"=>$request->input('name'),"email"=>$request->input('email'),"password"=>null,"submitted"=>Carbon::now(),"status"=>'Reviewing',"options"=>$fields->toJson()]);
@@ -91,10 +92,18 @@ class SubmissionController extends Controller
         return view('submissions.formIndex',compact('form','submissions'));
     }
 
-    public function show(Submission $submission){
-        $form = $submission->formdefinition()->first();
-        $submission_fields = json_decode($submission->options);
-        //foreach($submission_fields as $sf){}
+    public function show(Submission $submissions){
+        $form = $submissions->formdefinition()->first();
+        $submission_fields = json_decode($submissions->options);
+        $fields = new Collection();
+        foreach($submission_fields as $key=>$value){
+            if($form->fields()->where('field_id',$key)->get() !== null){
+                $field = new Collection();
+                $field->put("fieldDef",$form->fields()->where('field_id',$key)->first());
+                $field->put("submission",$value);
+                $fields->push($field);
+            }
+        }
 
         return view('submissions.show',compact('submissions','form','fields'));
     }
@@ -201,10 +210,18 @@ class SubmissionController extends Controller
         }
         elseif($field->type == "Select"){
             $fieldArray = [$field->field_id=>$value];
-            $validator = Validator::make($fieldArray,[
-                $field->field_id => 'required|array',
-                $field->field_id.".*"=>'required|string',
-            ]);
+            if($options->multipleselect == true) {
+                $validator = Validator::make($fieldArray, [
+                    $field->field_id => 'required|array',
+                    $field->field_id . ".*" => 'required|string',
+                ]);
+            }
+            else{
+                $validator = Validator::make($fieldArray, [
+                    $field->field_id => 'required|string',
+                    $field->field_id . ".*" => 'required|string',
+                ]);
+            }
 
             if($validator->fails()){
                 return false;

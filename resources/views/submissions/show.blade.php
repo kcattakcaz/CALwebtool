@@ -9,18 +9,34 @@
 
                 <div class="panel-body">
 
-                    @foreach($fields as $type=>$field)
-                        @if($type =='Text')
-                            @include('fields.submission.text',['text_field' => $field])
-                        @elseif($type == 'Select')
-                            @include('fields.submission.select',['select_field'=>$field])
-                        @elseif($type == 'Checkbox')
-                            @include('fields.submission.checkbox',['checkbox_field'=>$field])
-                        @elseif($type == 'RadioGroup')
-                            @include('fields.submission.radiogroup',['radiogroup_field'=>$field])
-                        @else
-                            {{json_encode($field)}}<br>
-                        @endif
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Name</span>
+                            <input disabled type="text" class="form-control" aria-describedby="basic-addon1" value="{{$submissions->name}}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">E-Mail</span>
+                            <input disabled type="text" class="form-control" aria-describedby="basic-addon1" value="{{$submissions->email}}">
+                        </div>
+                    </div>
+
+                    @foreach($fields as $field)
+                        <div class="form-group">
+                            @if($field->get('fieldDef')->type =='Text')
+                                @include('fields.submission.text',['text_field' => $field])
+                            @elseif($field->get('fieldDef')->type == 'Select')
+                                @include('fields.submission.select',['select_field'=>$field])
+                            @elseif($field->get('fieldDef')->type == 'Checkbox')
+                                @include('fields.submission.checkbox',['checkbox_field'=>$field])
+                            @elseif($field->get('fieldDef')->type == 'RadioGroup')
+                                @include('fields.submission.radiogroup',['radiogroup_field'=>$field])
+                            @else
+                                {{json_encode($field)}}<br>
+                            @endif
+                        </div>
                     @endforeach
 
                 </div>
