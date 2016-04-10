@@ -7,11 +7,12 @@
 @else
     <div class="input-group">
         <span class="input-group-addon" id="basic-addon1">{{$select_field->get('fieldDef')->name}}</span>
-        <input disabled type="text" class="form-control" aria-describedby="basic-addon1" value="
+        <select disabled multiple class="form-control" aria-describedby="basic-addon1">
 @foreach($select_field->get('submission') as $opt)
-{{$opt}} | 
+<option>{{$opt}}</option>
 @endforeach
+            </select>
 
-                ">
+
     </div>
 @endif
