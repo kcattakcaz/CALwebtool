@@ -34,6 +34,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
     Route::get('/home', 'HomeController@index');
+    Route::resource('settings/user','HomeController');
 
     Route::get('/settings','HomeController@settings');
     Route::get('/unavailable','HomeController@unavailable');

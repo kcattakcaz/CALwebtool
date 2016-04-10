@@ -9,7 +9,25 @@
 
                 <div class="panel-body">
                     @if(Auth::check())
-                        You are logged in!
+                        Groups that you are a member of:
+                        <div class="panel-body">
+                            <table class="table table-striped">
+                                <thead class="thead">
+                                <tr>
+                                    <th>Group Name</th>
+                                    <th>Role in group.</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($user->groups()->get() as $group)
+                                    <tr>
+                                        <td>{{$group->name}}</td>
+                                        <td>{{$group->users()->find($user->id)->pivot->administrator}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     @else
                         <strong>Please login to view your dashboard.</strong>
 

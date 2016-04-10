@@ -23,6 +23,10 @@ class Group extends Model
                                                                     'administrator')->withTimestamps();
     }
 
+    public function formDefinitions(){
+        return $this->hasMany('CALwebtool\FormDefinition');
+    }
+
     public function administratorUsers(){
         return $this->users()->wherePivot('administrator',true);
     }
@@ -127,7 +131,4 @@ class Group extends Model
         }
     }
 
-    public function formDefinitions(){
-        return $this->hasMany('CALwebtool\FormDefinition');
-    }
 }
