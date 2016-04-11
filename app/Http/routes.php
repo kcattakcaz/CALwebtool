@@ -34,7 +34,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
     Route::get('/home', 'HomeController@index');
-    Route::resource('settings/user','HomeController');
 
     Route::get('/settings','HomeController@settings');
     Route::get('/unavailable','HomeController@unavailable');
@@ -47,10 +46,13 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('settings/user','UserController');
 
     //forms / submissions
-    Route::resource('formDef','FormDefinitionController');
+    Route::resource('form','FormDefinitionController');
     Route::get('submissions/form/{form}','SubmissionController@getForm');
     Route::resource('submissions','SubmissionController');
     Route::get('public/forms/{formDef}','FormDefinitionController@displayForm');
     Route::post('public/forms/{formDef}','SubmissionController@store');
+    
+    //Scores
+    Route::resource('submissions.scores','ScoreController');
 
 });

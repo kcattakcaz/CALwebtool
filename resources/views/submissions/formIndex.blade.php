@@ -8,10 +8,10 @@
                 <div class="panel-heading">{{$form->name}}'s submissions:</div>
 
                 <div class="panel-body">
+                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead class="thead">
                             <tr>
-                                <th>ID</th>
                                 <th>Form Name</th>
                                 <th>Email</th>
                                 <th>Status</th>
@@ -20,7 +20,6 @@
                         <tbody>
                         @foreach($submissions as $submission)
                             <tr>
-                                <td>{{$submission->id}}</td>
                                 <td>{{$submission->name}}</td>
                                 <td>{{$submission->email}}</td>
                                 <td>{{$submission->status}}</td>
@@ -35,6 +34,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                     </div>
                 </div>
             </div>
         </div>

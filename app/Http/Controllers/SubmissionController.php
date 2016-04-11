@@ -88,7 +88,6 @@ class SubmissionController extends Controller
 
     public function getForm(FormDefinition $form){
         $submissions = $form->submissions()->get();
-
         return view('submissions.formIndex',compact('form','submissions'));
     }
 
