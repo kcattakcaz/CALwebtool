@@ -28,6 +28,9 @@ function FieldController()  {
         else if(type == "Radio"){
             newField = new RadioGroupField(field_id,name);
         }
+        else if(type == "Address"){
+            newField = new AddressField(field_id,name);
+        }
 
         if(newField === null){
             console.log("Failed to create field of given type "+type+" (the attempt to create the object returned null)");
@@ -604,5 +607,79 @@ function RadioGroupField(id,name){
         }
     }
 
+
+}
+
+function AddressField(id,name){
+    this.type = "Address";
+    this.id = id;
+    this.name = name;
+    this.required = false;
+    //this.is_multi_line = false;
+    this.max_length = 500;
+    this.min_length = 0;
+    this.text_type = "Plain";
+
+    this.elementref_name = null;
+    this.elementref_required = null;
+    this.elementref_multiline = null;
+    this.elementref_maxlength = null;
+    this.elementref_minlength = null;
+    this.elementref_texttype = null;
+
+    /**
+     * renderOptions(parentElementRef,currentValuesObj)
+     *
+     * parentElementRef: Use a JQuery selector to refer to the parent element the field should be appended to
+     * currentvaluesObj: An object containing key-value pairs of all the parameters needed to restore a field
+     *
+     * renderOptions will append to a given parent element the HTML elements needed to set the values of this field
+     * you may also provide values to fill the fields from a saved state.  It will also setup the object so that you
+     * can later call getValuesObj() to get the field parameters
+     *
+     **/
+    this.renderOptions = function(parentElementRef,currentValuesObj){
+        if(currentValuesObj === null){
+
+            //Name Text Input Field//
+            var name_group = $("<div class='form-group'>");
+            name_group.append("<label for='name'>Name</label>");
+            this.elementref_name = $("<input class='form-control' type='text' name='"+this.id+"_name' id='"+this.id+"_name'>").val(this.name);
+            name_group.append(this.elementref_name);
+            parentElementRef.append(name_group);
+            this.elementref_name.on('keyup',{field_id:this.id},function(event){
+                //console.log("Change event for: "+this+"  with id: "+event.data.field_id);
+                $("#"+event.data.field_id+"_title_link").text($(this).val() + " ("+event.data.field_id+")");
+            });
+
+            //Required Select Field
+            var required_group = $("<div class='form-group'>");
+            required_group.append("<label for='required'>Required</label>");
+            this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
+                .append(
+                    $("<option value='0'>False: Is Optional</option>"),
+                    $("<option value='1'> True: Is Required</option>")
+                );
+            required_group.append(this.elementref_required);
+            parentElementRef.append(required_group);
+        }
+        else{
+            parentElementRef.append(alert("I can't do that yet!"));
+        }
+    };
+
+    this.renderView = function(){
+        return null;
+    };
+
+    this.getValuesObj = function(){
+        var values = {};
+
+        values.type = "Address";
+        values.id = this.id;
+        values.name = this.elementref_name.val();
+        values.required = this.elementref_required.val();
+        return values;
+    }
 
 }

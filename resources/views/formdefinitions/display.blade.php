@@ -66,6 +66,7 @@
                 <input name="email" type="text" class="form-control" id="email">
             </div>
 
+
             @foreach($fields as $field)
                 @if($field->get('type') =='Text')
                     @include('fields.display.text',['text_field' => $field])
@@ -75,6 +76,8 @@
                     @include('fields.display.checkbox',['checkbox_field'=>$field])
                 @elseif($field->get('type') == 'RadioGroup')
                     @include('fields.display.radiogroup',['radiogroup_field'=>$field])
+                @elseif($field->get('type') == 'Address')
+                    @include('fields.display.address',['address_field'=>$field])
                 @endif
             @endforeach
 

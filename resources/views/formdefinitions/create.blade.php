@@ -69,6 +69,7 @@
                                     <option value="Checkbox">Checkbox</option>
                                     <option value="Radio">Radio Group</option>
                                     <option value="Select">Select Dropdown</option>
+                                    <option value="Address">Address</option>
                                     <option value="File">File</option>
                             </select>
                             <label for="ftype_name" class="col-xs-1">
