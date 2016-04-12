@@ -20,7 +20,8 @@ class CreateFieldsTable extends Migration
             $table->integer('form_definition_id')->unsigned();
             $table->string('name');
             $table->integer('order');
-            $table->enum('type',array('Text','Checkbox','RadioGroup','Select','File'));
+            //$table->enum('type',array('Text','Checkbox','RadioGroup','Select','File'));
+            $table->string('type');
             $table->mediumText('options');
             $table->timestamps();
 

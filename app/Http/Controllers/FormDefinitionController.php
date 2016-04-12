@@ -53,6 +53,8 @@ class FormDefinitionController extends Controller
         ]);
 
 
+        dd($request);
+
         $fieldErrors = new Collection();
         try {
             $formDef = new FormDefinition(["name" => $request->input('name'), "description" => $request->input('description'), 'group_id' => $request->input('group'), 'user_id' => Auth::user()->id]);
@@ -142,6 +144,25 @@ class FormDefinitionController extends Controller
                     'options'=>'required|array',
                     'options.*.label'=>'required',
                     'options.*.value'=>'required',
+                ]);
+                if($validator->fails()){
+                    $fieldErrors->push($validator->errors());
+                }
+                else{
+                    $field_options = new Collection();
+                    $field_options->put('required',$fieldDef->get('required'));
+                    $field_options->put('options',$fieldDef->get('options'));
+
+                    $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                    $field->save();
+                }
+            }
+
+            else if($type == "Address"){
+                $validator = Validator::make($fieldArray,[
+                    'id' => 'required|alpha_dash',
+                    'name' => 'required',
+                    'required'=>'required'
                 ]);
                 if($validator->fails()){
                     $fieldErrors->push($validator->errors());

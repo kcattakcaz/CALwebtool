@@ -41,9 +41,12 @@
     <div class="container">
         <div class="col-md-10 col-md-offset-1">
 
-            <h1>{{$formDef->name}}</h1>
+        <h1>{{$formDef->name}}</h1>
 
-            <p>{{$formDef->description}}</p>
+
+        <div class="row">
+            {!! $formDef->description!!}
+        </div>
 
             @if (count($errors) > 0)
                 <div class="alert alert-danger">

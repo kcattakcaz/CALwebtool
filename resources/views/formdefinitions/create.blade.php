@@ -49,40 +49,68 @@
                             <textarea name="description" rows="3" class="form-control" id="description"></textarea>
                         </div>
 
-                        <div class="form-group">
-                            <label for="group_id">Group:</label>
-                            <select name="group_id" class="form-control" id="group_id">
-                                @foreach($groups as $group)
-                                    <option value="{{$group->id}}">{{$group->name}}</option>
+                        <div class="row">
+                            <div class="form-group col-xs-6">
+                                <label for="start_date">Submissions Start Date:</label>
+                                <input name="start_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="start_date" >
+                            </div>
 
-                                @endforeach
-                            </select>
-                        </div>
-
-
-                        <div id="formdef_creator" class="form-group row">
-                            <label for="ftype_select" class="col-xs-2">
-                                Field Type:
-                            </label>
-                            <select class="col-xs-3" id="ftype_select" name="ftype_select">
-                                    <option value="Text">Text</option>
-                                    <option value="Checkbox">Checkbox</option>
-                                    <option value="Radio">Radio Group</option>
-                                    <option value="Select">Select Dropdown</option>
-                                    <option value="Address">Address</option>
-                                    <option value="File">File</option>
-                            </select>
-                            <label for="ftype_name" class="col-xs-1">
-                                Name:
-                            </label>
-                            <input id="ftype_name" name="ftype_name" class="col-xs-4" type="text"/>
-                            <button type="button" id="btn_addField" class="btn btn-default col-xs-offset-1 col-xs-1">Add</button>
+                            <div class="form-group col-xs-6">
+                                <label for="end_date">Submissions End Date:</label>
+                                <input name="end_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="end_date" >
+                            </div>
 
                         </div>
 
-                        <div class="col-xs-12" id="formdef_viewer">
+                        <div class="row">
+                            <div class="form-group col-xs-6">
+                                <label for="scores_due_date">Judge's Scores Due</label>
+                                <input name="scores_due_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="scores_due_date" >
+                            </div>
+
+                            <div class="form-group col-xs-6">
+                                <label for="group_id">Group:</label>
+                                <select name="group_id" class="form-control" id="group_id">
+                                    @foreach($groups as $group)
+                                        <option value="{{$group->id}}">{{$group->name}}</option>
+
+                                    @endforeach
+                                </select>
+                            </div>
+
                         </div>
 
+
+                        <hr>
+
+                        <div class="row">
+                            <div id="formdef_creator" class="form-group">
+                                <label for="ftype_select" class="col-md-2">
+                                    Field Type:
+                                </label>
+                                <select class="col-md-3" id="ftype_select" name="ftype_select">
+                                        <option value="Text">Text</option>
+                                        <option value="Checkbox">Checkbox</option>
+                                        <option value="Radio">Radio Group</option>
+                                        <option value="Select">Select Dropdown</option>
+                                        <option value="Address">Address</option>
+                                        <option value="File">File</option>
+                                </select>
+                                <label for="ftype_name" class="col-md-1">
+                                    Name:
+                                </label>
+                                <input id="ftype_name" name="ftype_name" class="col-md-4" type="text"/>
+                                <button type="button" id="btn_addField" class="btn btn-default col-md-offset-1 col-md-1">Add</button>
+
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-xs-12" id="formdef_viewer">
+                            </div>
+                        </div>
 
 
                         <button id="btn_save_formdef" type="button" class="btn btn-default">Save</button>
@@ -102,7 +130,52 @@
 
 </script>
 
+<script src="https://cdn.ckeditor.com/4.5.8/standard/ckeditor.js"></script>
+
+<script>
+    CKEDITOR.replace( 'description' );
+</script>
+
+<script src="{{secure_asset('js/bootstrap-datepicker.js')}}">
+</script>
+
     <script>
+
+        $('#scores_due_date').datepicker();
+
+
+        var nowTemp = new Date();
+        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+
+        var start_date = $('#start_date').datepicker({
+            onRender: function(date) {
+                return date.valueOf() < now.valueOf() ? 'disabled' : '';
+            }
+        }).on('changeDate', function(ev) {
+            if (ev.date.valueOf() > end_date.date.valueOf()) {
+                var newDate = new Date(ev.date)
+                newDate.setDate(newDate.getDate() + 1);
+                end_date.setValue(newDate);
+            }
+            start_date.hide();
+            $('#end_date')[0].focus();
+        }).data('datepicker');
+
+        var end_date = $('#end_date').datepicker({
+            onRender: function(date) {
+                return date.valueOf() <= start_date.date.valueOf() ? 'disabled' : '';
+            }
+        }).on('changeDate', function(ev) {
+            end_date.hide();
+        }).data('datepicker');
+
+        var scores_due_date = $('#scores_due_date').datepicker({
+            onRender: function(date) {
+                return date.valueOf() <= scores_due_date.date.valueOf() ? 'disabled' : '';
+            }
+        }).on('changeDate', function(ev) {
+            scores_due_date.hide();
+        });
 
         var Field_Manager = new FieldController($("#formdef_viewer")); //Refer to public/js/fieldcontroller.js
 
