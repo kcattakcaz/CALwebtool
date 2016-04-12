@@ -39,50 +39,52 @@
 
 
     <div class="container">
+        <div class="col-md-10 col-md-offset-1">
 
-        <h1>{{$formDef->name}}</h1>
+            <h1>{{$formDef->name}}</h1>
 
-        <p>{{$formDef->description}}</p>
+            <p>{{$formDef->description}}</p>
 
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-        <form method="post" action="{{action('SubmissionController@store',compact('formDef'))}}">
+            <form method="post" action="{{action('SubmissionController@store',compact('formDef'))}}">
 
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input name="name" type="text" class="form-control" id="name">
-            </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input name="name" type="text" class="form-control" id="name">
+                </div>
 
-            <div class="form-group">
-                <label for="email">E-Mail:</label>
-                <input name="email" type="text" class="form-control" id="email">
-            </div>
+                <div class="form-group">
+                    <label for="email">E-Mail:</label>
+                    <input name="email" type="text" class="form-control" id="email">
+                </div>
 
 
-            @foreach($fields as $field)
-                @if($field->get('type') =='Text')
-                    @include('fields.display.text',['text_field' => $field])
-                @elseif($field->get('type') == 'Select')
-                    @include('fields.display.select',['select_field'=>$field])
-                @elseif($field->get('type') == 'Checkbox')
-                    @include('fields.display.checkbox',['checkbox_field'=>$field])
-                @elseif($field->get('type') == 'RadioGroup')
-                    @include('fields.display.radiogroup',['radiogroup_field'=>$field])
-                @elseif($field->get('type') == 'Address')
-                    @include('fields.display.address',['address_field'=>$field])
-                @endif
-            @endforeach
+                @foreach($fields as $field)
+                    @if($field->get('type') =='Text')
+                        @include('fields.display.text',['text_field' => $field])
+                    @elseif($field->get('type') == 'Select')
+                        @include('fields.display.select',['select_field'=>$field])
+                    @elseif($field->get('type') == 'Checkbox')
+                        @include('fields.display.checkbox',['checkbox_field'=>$field])
+                    @elseif($field->get('type') == 'RadioGroup')
+                        @include('fields.display.radiogroup',['radiogroup_field'=>$field])
+                    @elseif($field->get('type') == 'Address')
+                        @include('fields.display.address',['address_field'=>$field])
+                    @endif
+                @endforeach
 
-            <button class="btn btn-default btn-block" id="btn_submit_form">Submit</button>
-        </form>
+                <button class="btn btn-default btn-block" id="btn_submit_form">Submit</button>
+            </form>
+        </div>
     </div>
 
     </body>
