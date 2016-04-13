@@ -5,6 +5,7 @@ namespace CALwebtool\Http\Controllers;
 use CALwebtool\Field;
 use CALwebtool\FormDefinition;
 use CALwebtool\Group;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -50,17 +51,35 @@ class FormDefinitionController extends Controller
             'description' => 'required|max:1000',
             'group'=>'required|integer',
             'definition'=>'required|array',
+            'start_date'=>'required|date_format:m#d#Y',
+            'end_date'=>'required|date_format:m#d#Y',
+            'scores_date'=>'required|date_format:m#d#Y'
         ]);
-        
+
+      /* dd(['submissions_start'=> Carbon::createFromFormat("m#d#y",$request->input('start_date')),
+                    'submissions_end'=> Carbon::createFromFormat("m#d#y",$request->input('end_date')),
+                    'scores_due'=> Carbon::createFromFormat("m#d#y",$request->input('scores_date')),
+            ]); */
 
         $fieldErrors = new Collection();
-        try {
-            $formDef = new FormDefinition(["name" => $request->input('name'), "description" => $request->input('description'), 'group_id' => $request->input('group'), 'user_id' => Auth::user()->id]);
+       // try {
+            $formDef = new FormDefinition([
+                    "name" => $request->input('name'),
+                    "description" => $request->input('description'),
+                    'group_id' => $request->input('group'),
+                    'user_id' => Auth::user()->id,
+                    'submissions_start'=> Carbon::createFromFormat("m#d#y",$request->input('start_date'))->toDateTimeString(),
+                    'submissions_end'=> Carbon::createFromFormat("m#d#y",$request->input('end_date'))->toDateString(),
+                    'scores_due'=> Carbon::createFromFormat("m#d#y",$request->input('scores_date'))->toDateTimeString(),
+            ]);
+
             $formDef->save();
-        }
-        catch(QueryException $e){
+
+            dd($formDef);
+       /* }
+        catch(\Exception $e){
             return response()->json(['message'=>"Error creating FormDefinition",'error'=>$e->getMessage()],500);
-        }
+        }*/
 
         foreach($request->input('definition') as $fieldArray){
             $fieldDef = collect($fieldArray);

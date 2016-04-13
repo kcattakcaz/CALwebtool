@@ -37,6 +37,6 @@ class CreateScoresTable extends Migration
     public function down()
     {
         //
-        Schema::drop('submissions');
+        Schema::drop('scores');
     }
 }
