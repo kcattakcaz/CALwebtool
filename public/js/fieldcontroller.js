@@ -58,7 +58,7 @@ function FieldController()  {
 
         var panel_body = $("<div class='panel-body'>");
         var panel_footer = $(" <div class='panel-footer'>");
-        var collapse_link = $("<a href='#"+field_id+"'>").attr('data-toggle','collapse').attr('id',field_id+"_collapse_link").text("Close");
+        var collapse_link = $("<a href='#"+field_id+"'>").attr('data-toggle','collapse').attr('id',field_id+"_collapse_link").text("Collapse");
         panel_footer.append(collapse_link);
 
 
@@ -165,11 +165,11 @@ function TextField(id,name){
 
             //Required Select Field
             var required_group = $("<div class='form-group'>");
-            required_group.append("<label for='required'>Required</label>");
+            required_group.append("<label for='required'>Is this required to submit the form?</label>");
             this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
                 .append(
-                    $("<option value='0'>False: Is Optional</option>"),
-                    $("<option value='1'> True: Is Required</option>")
+                    $("<option value='1'> Required</option>"),
+                    $("<option value='0'> Not required</option>")
                 );
             required_group.append(this.elementref_required);
             parentElementRef.append(required_group);
@@ -221,7 +221,7 @@ function TextField(id,name){
 
         }
         else{
-            parentElementRef.append(alert("I can'helt do that yet!"));
+            parentElementRef.append(alert("I can't do that yet!"));
         }
     };
 
@@ -285,11 +285,11 @@ function CheckBoxField(id,name){
 
             //Required Select Field
             var required_group = $("<div class='form-group'>");
-            required_group.append("<label for='required'>Required</label>");
+            required_group.append("<label for='required'>Is this required to submit the form?</label>");
             this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
                 .append(
-                    $("<option value='0'>False: Is Optional</option>"),
-                    $("<option value='1'> True: Is Required</option>")
+                    $("<option value='1'> Required</option>"),
+                    $("<option value='0'> Not required</option>")
                 );
             required_group.append(this.elementref_required);
             parentElementRef.append(required_group);
@@ -373,22 +373,22 @@ function SelectField(id,name){
 
             //Required Select Field
             var required_group = $("<div class='form-group'>");
-            required_group.append("<label for='required'>Required</label>");
+            required_group.append("<label for='required'>Is this required to submit the form?</label>");
             this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
                 .append(
-                    $("<option value='0'>False: Is Optional</option>"),
-                    $("<option value='1'> True: Is Required</option>")
+                    $("<option value='1'> Required</option>"),
+                    $("<option value='0'> Not required</option>")
                 );
             required_group.append(this.elementref_required);
             parentElementRef.append(required_group);
 
             //Multiple-select Select Field
             var multipleselect_group = $("<div class='form-group'>");
-            multipleselect_group.append("<label for='required'>Multiple Select</label>");
+            multipleselect_group.append("<label for='required'>Can the user select more than one option?</label>");
             this.elementref_multipleselect = $("<select class='form-control' name='"+this.id+"_multipleselect' id='"+this.id+"_multipleselect'>")
                 .append(
-                    $("<option value='0'>False: Only 1 option can be selected</option>"),
-                    $("<option value='1'> True: Many options can be selected</option>")
+                    $("<option value='0'>Only allow one option</option>"),
+                    $("<option value='1'>Allow many options</option>")
                 );
             multipleselect_group.append(this.elementref_multipleselect);
             parentElementRef.append(multipleselect_group);
@@ -396,22 +396,27 @@ function SelectField(id,name){
             //Option Values-Labels Group
             var option_values_labels_panel = $("<div class='panel panel-default'>");
             var option_values_labels_group = $("<div class='panel-body'>");
-            option_values_labels_group.append("<p >").text("The label is what will be displayed to the user, the value will be what is saved");
+            option_values_labels_group.append("<p >").text("Enter what you want to be seen in the Label field. Value field is for what is saved on the server.");
             this.elementref_options_display_area = $("<ul class='list-group'>");
             option_values_labels_group.append(this.elementref_options_display_area);
             option_values_labels_panel.append(option_values_labels_group);
 
             var option_label_group = $("<div class='form-group'>");
-            option_label_group.append("<label for='label'>Option Label</label>");
+            option_label_group.append("<label for='label'>Label</label>");
             this.option_label = $("<input class='form-control' type='text' name='"+this.id+"_option_label' id='"+this.id+"_option_label'>");
             option_label_group.append(this.option_label);
             option_values_labels_group.append(option_label_group);
 
+            this.option_label.on('keyup',{field_id:this.id},function(event){
+                $("#"+event.data.field_id+"_option_value").val($(this).val());
+            });
+
             var option_value_group = $("<div class='form-group'>");
-            option_value_group.append("<label for='value'>Option Value</label>");
+            option_value_group.append("<label for='value'>Value</label>");
             this.option_value = $("<input class='form-control' type='text' name='"+this.id+"_option_value' id='"+this.id+"_option_value'>");
             option_value_group.append(this.option_value);
             option_values_labels_group.append(option_value_group);
+
 
             var option_add_btn = $("<button type='button' class='btn btn-default' >Add</button>")
                 .on('click',{select_field:this},function(event){
@@ -517,11 +522,11 @@ function RadioGroupField(id,name){
 
             //Required Select Field
             var required_group = $("<div class='form-group'>");
-            required_group.append("<label for='required'>Required</label>");
+            required_group.append("<label for='required'>Is this required to submit the form?</label>");
             this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
                 .append(
-                    $("<option value='0'>False: Is Optional</option>"),
-                    $("<option value='1'> True: Is Required</option>")
+                    $("<option value='1'> Required</option>"),
+                    $("<option value='0'> Not required</option>")
                 );
             required_group.append(this.elementref_required);
             parentElementRef.append(required_group);
@@ -530,19 +535,22 @@ function RadioGroupField(id,name){
             //Option Values-Labels Group
             var option_values_labels_panel = $("<div class='panel panel-default'>");
             var option_values_labels_group = $("<div class='panel-body'>");
-            option_values_labels_group.append("<p >").text("The label is what will be displayed to the user, the value will be what is saved");
+            option_values_labels_group.append("<p >").text("Enter what you want to be seen in the Label field. Value field is for what is saved on the server.");
             this.elementref_options_display_area = $("<ul class='list-group'>");
             option_values_labels_group.append(this.elementref_options_display_area);
             option_values_labels_panel.append(option_values_labels_group);
 
             var option_label_group = $("<div class='form-group'>");
-            option_label_group.append("<label for='label'>Option Label</label>");
+            option_label_group.append("<label for='label'>Label</label>");
             this.option_label = $("<input class='form-control' type='text' name='"+this.id+"_option_label' id='"+this.id+"_option_label'>");
+            this.option_label.on('keyup',{field_id:this.id},function(event){
+                $("#"+event.data.field_id+"_option_value").val($(this).val());
+            });
             option_label_group.append(this.option_label);
             option_values_labels_group.append(option_label_group);
 
             var option_value_group = $("<div class='form-group'>");
-            option_value_group.append("<label for='value'>Option Value</label>");
+            option_value_group.append("<label for='value'>Value</label>");
             this.option_value = $("<input class='form-control' type='text' name='"+this.id+"_option_value' id='"+this.id+"_option_value'>");
             option_value_group.append(this.option_value);
             option_values_labels_group.append(option_value_group);
@@ -553,7 +561,9 @@ function RadioGroupField(id,name){
                     var new_option_object= event.data.select_field.addOption(event.data.select_field.option_label.val(),event.data.select_field.option_value.val());
                     var new_option_list_item = $("<li class='list-group-item'>");
                     var new_option_div = $("<div>");
-                    new_option_div.append($("<span>").text("Label: "+event.data.select_field.option_label.val() + " Value: "+event.data.select_field.option_value.val()));
+                    new_option_div.append($("<span>").text("Label: "+event.data.select_field.option_label.val()));
+                    new_option_div.append($("<br>"));
+                    new_option_div.append($("<span>").text("Value: "+event.data.select_field.option_value.val()));
 
                     new_option_div.append($("<a href='#remove_item' class='pull-right glyphicon glyphicon-remove'>")
                         .on('click',{select_field:event.data.select_field,option_list_item:new_option_list_item,option_object:new_option_object},function(event){
@@ -654,11 +664,11 @@ function AddressField(id,name){
 
             //Required Select Field
             var required_group = $("<div class='form-group'>");
-            required_group.append("<label for='required'>Required</label>");
+            required_group.append("<label for='required'>Is this required to submit the form?</label>");
             this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
                 .append(
-                    $("<option value='0'>False: Is Optional</option>"),
-                    $("<option value='1'> True: Is Required</option>")
+                    $("<option value='1'> Required</option>"),
+                    $("<option value='0'> Not required</option>")
                 );
             required_group.append(this.elementref_required);
             parentElementRef.append(required_group);
