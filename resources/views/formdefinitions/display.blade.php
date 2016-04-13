@@ -45,7 +45,9 @@
 
 
         <div class="row">
-            {!! $formDef->description!!}
+            <div class="col-md-10 form-group">
+                {!! $formDef->description!!}
+            </div>
         </div>
 
             @if (count($errors) > 0)
