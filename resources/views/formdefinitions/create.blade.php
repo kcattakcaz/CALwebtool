@@ -64,8 +64,8 @@
 
                         <div class="row">
                             <div class="form-group col-xs-6">
-                                <label for="scores_due_date">Judge's Scores Due</label>
-                                <input name="scores_due_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="scores_due_date" >
+                                <label for="scores_date">Judge's Scores Due</label>
+                                <input name="scores_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="scores_date" >
                             </div>
 
                             <div class="form-group col-xs-6">
@@ -130,18 +130,18 @@
 
 </script>
 
-<script src="https://cdn.ckeditor.com/4.5.8/standard/ckeditor.js"></script>
+<link rel="stylesheet" href="{{secure_asset('css/datepicker.css')}}">
 
-<script>
-    CKEDITOR.replace( 'description' );
+<script src="https://cdn.ckeditor.com/4.5.8/standard/ckeditor.js">
 </script>
+
 
 <script src="{{secure_asset('js/bootstrap-datepicker.js')}}">
 </script>
 
     <script>
 
-        $('#scores_due_date').datepicker();
+       // $('#scores_due_date').datepicker();
 
 
         var nowTemp = new Date();
@@ -166,16 +166,26 @@
                 return date.valueOf() <= start_date.date.valueOf() ? 'disabled' : '';
             }
         }).on('changeDate', function(ev) {
+            if (ev.date.valueOf() > scores_date.date.valueOf()) {
+                var newDate = new Date(ev.date)
+                newDate.setDate(newDate.getDate() + 1);
+                scores_date.setValue(newDate);
+            }
             end_date.hide();
+            $('#scores_date')[0].focus();
         }).data('datepicker');
 
-        var scores_due_date = $('#scores_due_date').datepicker({
-            onRender: function(date) {
-                return date.valueOf() <= scores_due_date.date.valueOf() ? 'disabled' : '';
-            }
-        }).on('changeDate', function(ev) {
-            scores_due_date.hide();
-        });
+       var scores_date = $('#scores_date').datepicker({
+           onRender: function(date) {
+               return date.valueOf() <= end_date.date.valueOf() ? 'disabled' : '';
+           }
+       }).on('changeDate', function(ev) {
+           scores_date.hide();
+           $('#scores_date')[0].focus();
+       }).data('datepicker');
+
+
+       var ckeditor_description = CKEDITOR.replace( 'description' );
 
         var Field_Manager = new FieldController($("#formdef_viewer")); //Refer to public/js/fieldcontroller.js
 
@@ -199,8 +209,11 @@
             var fields = Field_Manager.getFieldDefinitions();
 
             formdef['name'] = $("#name").val();
-            formdef['description'] = $("#description").val();
+            formdef['description'] = ckeditor_description.getData();
             formdef['group'] = $("#group_id").val();
+            formdef['start_date'] =$("#start_date").val();
+            formdef['end_date'] = $("#end_date").val();
+            formdef['scores_date'] = $("#scores_date").val();
             formdef['definition'] = fields;
 
 

@@ -51,9 +51,7 @@ class FormDefinitionController extends Controller
             'group'=>'required|integer',
             'definition'=>'required|array',
         ]);
-
-
-        dd($request);
+        
 
         $fieldErrors = new Collection();
         try {
