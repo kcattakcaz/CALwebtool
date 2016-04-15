@@ -14,9 +14,13 @@ class FormDefinition extends Model
      *
      * @var array
      */
-    protected $fillable = [
+   /* protected $fillable = [
         'group_id','user_id', 'name','description', 'submissions_start','submissions_end','scores_due'
+    ];*/
+    protected $fillable= [
+            'name','description','group_id','user_id','submissions_start','submissions_end','scores_due','status','created_at','updated_at'
     ];
+
 
     public function user(){
         return $this->belongsTo('CALwebtool\User');

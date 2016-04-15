@@ -61,25 +61,28 @@ class FormDefinitionController extends Controller
                     'scores_due'=> Carbon::createFromFormat("m#d#y",$request->input('scores_date')),
             ]); */
 
+        if(!(Carbon::createFromFormat("m#d#y",$request->input('start_date')) <  Carbon::createFromFormat("m#d#y",$request->input('end_date'))) || !(Carbon::createFromFormat("m#d#y",$request->input('end_date')) < Carbon::createFromFormat("m#d#y",$request->input('scores_date')))){
+            return response()->json(["status"]);
+        }
+
         $fieldErrors = new Collection();
-       // try {
+        try {
             $formDef = new FormDefinition([
                     "name" => $request->input('name'),
                     "description" => $request->input('description'),
                     'group_id' => $request->input('group'),
                     'user_id' => Auth::user()->id,
-                    'submissions_start'=> Carbon::createFromFormat("m#d#y",$request->input('start_date'))->toDateTimeString(),
-                    'submissions_end'=> Carbon::createFromFormat("m#d#y",$request->input('end_date'))->toDateString(),
-                    'scores_due'=> Carbon::createFromFormat("m#d#y",$request->input('scores_date'))->toDateTimeString(),
+                    'submissions_start'=> Carbon::createFromFormat("m#d#y",$request->input('start_date'))->setTime(0,0,0),
+                    'submissions_end'=> Carbon::createFromFormat("m#d#y",$request->input('end_date'))->setTime(0,0,0),
+                    'scores_due'=> Carbon::createFromFormat("m#d#y",$request->input('scores_date'))->setTime(0,0,0),
             ]);
 
             $formDef->save();
 
-            dd($formDef);
-       /* }
+       }
         catch(\Exception $e){
             return response()->json(['message'=>"Error creating FormDefinition",'error'=>$e->getMessage()],500);
-        }*/
+        }
 
         foreach($request->input('definition') as $fieldArray){
             $fieldDef = collect($fieldArray);
@@ -213,44 +216,43 @@ class FormDefinitionController extends Controller
 
     public function show(FormDefinition $formDef){
 
-        $fieldErrors = new Collection();
-        if (Group::find($formDef->group_id)->isMod(Auth::user()->id)) {
-
-            $fields = new Collection();
-            foreach ($formDef->fields()->get() as $fieldDef) {
-                $field = new Collection();
-                $field->put('type', $fieldDef->type);
-                $field->put('id', $fieldDef->field_id);
-                $field->put('name', $fieldDef->name);
-                $field->put('options', new Collection(json_decode($fieldDef->options)));
-                $fields->push($field);
-            }
-
-            return view('formdefinitions.show', compact('formDef', 'fields', 'formGroup'));
-        } else {
-            $fieldErrors->push(["You do not have sufficient permissions to view this form."]);
+        $fields = new Collection();
+        foreach ($formDef->fields()->get() as $fieldDef) {
+            $field = new Collection();
+            $field->put('type', $fieldDef->type);
+            $field->put('id', $fieldDef->field_id);
+            $field->put('name', $fieldDef->name);
+            $field->put('options', new Collection(json_decode($fieldDef->options)));
+            $fields->push($field);
         }
+
+        return view('formdefinitions.show', compact('formDef', 'fields', 'formGroup'));
     }
 
 
     public function displayForm(FormDefinition $formDef)
     {
-        $fields = new Collection();
-        if (Group::find($formDef->group_id)->isMod(Auth::user()->id)) {
-            foreach ($formDef->fields()->get() as $fieldDef) {
-                $field = new Collection();
-                $field->put('type', $fieldDef->type);
-                $field->put('id', $fieldDef->field_id);
-                $field->put('name', $fieldDef->name);
-                $field->put('options', new Collection(json_decode($fieldDef->options)));
-                $fields->push($field);
-            }
-            return view('formdefinitions.display', compact('fields', 'formDef'));
-        } else {
-            //dd('YOU DONT HAVE PERMISSION TO DO THAT');
-            Flash()->overlay("You do not hve sufficient permission to perform this action. Please contact your group's administrator.", 'Authorization Error');
-            return redirect()->back();
+        if($formDef->submissions_start > Carbon::now()){
+            $date = Carbon::createFromFormat('Y-m-d h:i:s',$formDef->submissions_start)->toDayDateTimeString();
+            return view('formdefinitions.unstarted',compact('formDef','date'));
         }
+
+        if($formDef->submissions_end < Carbon::now()){
+            $date = Carbon::createFromFormat('Y-m-d h:i:s',$formDef->submissions_end)->toDayDateTimeString();
+            return view('formdefinitions.closed',compact('formDef','date'));
+        }
+
+        $fields = new Collection();
+        foreach ($formDef->fields()->get() as $fieldDef) {
+            $field = new Collection();
+            $field->put('type', $fieldDef->type);
+            $field->put('id', $fieldDef->field_id);
+            $field->put('name', $fieldDef->name);
+            $field->put('options', new Collection(json_decode($fieldDef->options)));
+            $fields->push($field);
+        }
+        return view('formdefinitions.display', compact('fields', 'formDef'));
+
     }
 
     public function edit(){

@@ -11,6 +11,22 @@
 
                     <div class="form-group">
                         <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Received</span>
+                            <input disabled type="text" class="form-control" aria-describedby="basic-addon1" value="{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submissions->created_at)->toCookieString()}}">
+                        </div>
+                    </div>
+
+                    @if($submissions->submitted != $submissions->created_at)
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">Edited</span>
+                                <input disabled type="text" class="form-control" aria-describedby="basic-addon1" value="{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submissions->submitted)->toCookieString()}}">
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="form-group">
+                        <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">Name</span>
                             <input disabled type="text" class="form-control" aria-describedby="basic-addon1" value="{{$submissions->name}}">
                         </div>
