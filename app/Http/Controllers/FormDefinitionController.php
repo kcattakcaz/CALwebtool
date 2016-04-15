@@ -214,19 +214,13 @@ class FormDefinitionController extends Controller
 
     }
 
-    public function show(FormDefinition $formDef){
+    public function show(FormDefinition $form){
 
-        $fields = new Collection();
-        foreach ($formDef->fields()->get() as $fieldDef) {
-            $field = new Collection();
-            $field->put('type', $fieldDef->type);
-            $field->put('id', $fieldDef->field_id);
-            $field->put('name', $fieldDef->name);
-            $field->put('options', new Collection(json_decode($fieldDef->options)));
-            $fields->push($field);
-        }
-
-        return view('formdefinitions.show', compact('formDef', 'fields', 'formGroup'));
+        $new_submissions = $form->submissions()->where('status','Reviewing')->get();
+        $moderated_submissions = $form->submissions()->where('status','Judging')->get();
+        $accepted_submissions = $form->submissions()->where('status','Approved')->get();
+        $rejected_submissions = $form->submissions()->where('status','Denied')->get();
+        return view('formdefinitions.show', compact('form','new_submissions','moderated_submissions','accepted_submissions','rejected_submissions'));
     }
 
 

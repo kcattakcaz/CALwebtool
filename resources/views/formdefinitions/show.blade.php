@@ -4,91 +4,125 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
+            <h1>{{$form->name}}</h1>
+            {{--
             <div class="panel panel-default">
-                <div class="panel-heading">{{$formDef->name}}</div>
-
+                <div class="panel-heading">Form Settings</div>
                 <div class="panel-body">
-
                     <div class="btn-group pull-right" role="group" aria-label="...">
-
-                        <a href="{{action('FormDefinitionController@edit', compact('formDef'))}}"><button type="button" class="btn btn-default">
+                        <a href="{{action('FormDefinitionController@edit', compact('form'))}}"><button type="button" class="btn btn-default">
                                 <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Edit Form
                             </button>
                         </a>
-
                        <a> <button type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
                         </button> </a>
-
                     </div>
-                    <p>
-                        Form Definitions allow you to express the layout and content of a Form.
-                    </p>
-
-                    <p>
-                        Note that Form Definitions belong to the group as a whole, and not to a specific user.
-                        Any user with sufficient permission in this group will be able to modify it.
-                    </p>
-
-
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-
-                    <form role="form">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <label for="name">Form Name:</label>
-                            <input name="name" type="text" class="form-control" id="name" value="{{$formDef->name}}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="description">Description:</label>
-                            <textarea name="description" rows="3" class="form-control" id="description">{{$formDef->description}}</textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="group_id">Group:</label>
-                            <select name="group_id" class="form-control" id="group_id">
-                                <option value="{{$formGroup->id}}">{{$formGroup->name}}</option>
-                            </select>
-                        </div>
-
-                        <div id="formdef_creator" class="form-group row">
-                            <label for="ftype_select" class="col-xs-2">
-                                Field Type:
-                            </label>
-                            <select class="col-xs-3" id="ftype_select" name="ftype_select">
-                                <option value="Text">Text</option>
-                                <option value="Checkbox">Checkbox</option>
-                                <option value="Radio">Radio Group</option>
-                                <option value="Select">Select Dropdown</option>
-                                <option value="File">File</option>
-                            </select>
-                            <label for="ftype_name" class="col-xs-1">
-                                Name:
-                            </label>
-                            <input id="ftype_name" name="ftype_name" class="col-xs-4" type="text"/>
-                            <button type="button" id="btn_addField" class="btn btn-default col-xs-offset-1 col-xs-1">Add</button>
-
-                        </div>
-
-                        <div class="col-xs-12" id="formdef_viewer">
-                        </div>
-
-
-
-                        <button id="btn_save_formdef" type="button" class="btn btn-default">Save</button>
-                    </form>
                 </div>
             </div>
+
+            --}}
+
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Form Settings
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            @if($form->status == "Drafting")
+                                A draft of the form has been saved, but it hasn't been scheduled yet.  It will <strong>NOT</strong> open for submissions until you schedule it!
+                            @elseif($form->status == "Scheduled")
+                                The form is scheduled to open on {{$form->submissions_start}}
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Submissions Requiring Moderation
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <ul class="list-group">
+                            @foreach($new_submissions as $submission)
+                                <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item clearfix">
+                                    #{{$submission->id}}- <strong>{{$submission->name}}</strong> ({{$submission->email}})
+                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submission->submitted)->toCookieString()}}</em>
+                                </a>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Submissions Awaiting Judging
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <ul class="list-group">
+                            @foreach($moderated_submissions as $submission)
+                                <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item clearfix">
+                                    #{{$submission->id}}- <strong>{{$submission->name}}</strong> ({{$submission->email}})
+                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submission->submitted)->toCookieString()}}</em>
+                                </a>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingFour">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                Submissions Accepted by Judges
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                        <ul class="list-group">
+                            @foreach($accepted_submissions as $submission)
+                                <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item clearfix">
+                                    #{{$submission->id}}- <strong>{{$submission->name}}</strong> ({{$submission->email}})
+                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submission->submitted)->toCookieString()}}</em>
+                                </a>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingFive">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                Submissions Rejected
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                        <ul class="list-group">
+                            @foreach($rejected_submissions as $submission)
+                                <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item clearfix">
+                                    #{{$submission->id}}- <strong>{{$submission->name}}</strong> ({{$submission->email}})
+                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submission->submitted)->toCookieString()}}</em>
+                                </a>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>
@@ -96,52 +130,6 @@
 <script src="{{secure_asset('js/fieldcontroller.js')}}"></script>
 
 <script>
-
-    var Field_Manager = new FieldController($("#formdef_viewer")); //Refer to public/js/fieldcontroller.js
-
-    $("#btn_addField").on( "click", function() {
-        var selected_field_type = $("#ftype_select").val();
-        var entered_name = $("#ftype_name").val();
-        if(entered_name.length == 0){
-            alert("Please provide a name");
-            return;
-        }
-        else {
-            Field_Manager.newField(selected_field_type, entered_name);
-            $("#ftype_name").val("");
-        }
-
-    });
-
-    $("#btn_save_formdef").on("click",function(){
-
-        var formdef = {};
-        var fields = Field_Manager.getFieldDefinitions();
-
-        formdef['name'] = $("#name").val();
-        formdef['description'] = $("#description").val();
-        formdef['group'] = $("#group_id").val();
-        formdef['definition'] = fields;
-
-
-        if(formdef === null){
-            alert("Error");
-            console.log("FormDef:");
-            console.log(Field_Manager.getErrors());
-        }
-        else{
-            $.ajax({
-                url:"{{action('FormDefinitionController@update')}}",
-                headers:{'X-CSRF-TOKEN':"{{csrf_token()}}"},
-                method:"POST",
-                data:formdef
-            }).done(function(data,textStatus,jqXHR){
-                console.log(data);
-            }).fail(function (jqXHR,textStatus,errorThrown) {
-                console.log("Error:"+errorThrown);
-            })
-        }
-    })
 
 
 </script>
