@@ -219,8 +219,9 @@ class FormDefinitionController extends Controller
         $new_submissions = $form->submissions()->where('status','Reviewing')->get();
         $moderated_submissions = $form->submissions()->where('status','Judging')->get();
         $accepted_submissions = $form->submissions()->where('status','Approved')->get();
+        $judged_submissions = $form->submissions()->where('status','Judged')->get();
         $rejected_submissions = $form->submissions()->where('status','Denied')->get();
-        return view('formdefinitions.show', compact('form','new_submissions','moderated_submissions','accepted_submissions','rejected_submissions'));
+        return view('formdefinitions.show', compact('form','new_submissions','moderated_submissions','accepted_submissions','rejected_submissions','judged_submissions'));
     }
 
 

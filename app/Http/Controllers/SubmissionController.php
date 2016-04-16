@@ -247,4 +247,84 @@ class SubmissionController extends Controller
         }
     }
 
+    public static function reject(Submission $submissions){
+        if(Auth::user()->can('reject',$submissions)) {
+            $submissions->status = "Denied";
+            $submissions->save();
+            flash()->overlay("The submission has been rejected.","Rejected!");
+            return redirect()->back();
+        }
+        else{
+            flash()->overlay("You do not have permission to reject submissions in this team.","Not Authorized");
+            return redirect()->back();
+        }
+    }
+
+    public static function approve(Submission $submissions){
+        if(Auth::user()->can('approve',$submissions)) {
+
+            $submissions->status = "Approve";
+            $submissions->save();
+
+            flash()->overlay("The submission was approved","Approved!");
+            return redirect()->back();
+        }
+        else{
+            flash()->overlay("You do not have permission to approve submissions in this team.","Not Authorized");
+            return redirect()->back();
+        }
+    }
+
+    public static function judge(Submission $submissions){
+        if(Auth::user()->can('judge',$submissions)) {
+
+            $submissions->status = "Judged";
+            $submissions->save();
+
+            flash()->overlay("The submission was judged!","Judged!");
+            return redirect()->back();
+        }
+        else{
+            flash()->overlay("You do not have permission to approve submissions in this team.","Not Authorized");
+            return redirect()->back();
+        }
+    }
+
+    public static function moderate(Submission $submissions){
+        if(Auth::user()->can('moderate',$submissions)) {
+
+            $submissions->status = "Judging";
+            $submissions->save();
+        }
+        else{
+            flash()->overlay("You do not have permission to moderate submissions in this team.","Not Authorized");
+            return redirect()->back();
+        }
+    }
+    public static function unlock(Submission $submissions){
+        if(Auth::user()->can('reject',$submissions)) {
+
+            $submissions->status = "Reopened";
+            $submissions->save();
+            flash()->overlay("This feature has not been implemented.","Submission Editing Enabled");
+            return redirect()->back();
+        }
+        else{
+            flash()->overlay("You do not have permission to unlock submissions in this team.","Not Authorized");
+            return redirect()->back();
+        }
+    }
+
+
+    public static function delete(Submission $submissions){
+        if(Auth::user()->can('delete',$submissions)){
+            $submissions->delete();
+            //return response()->json(["error"=>false,"message"=>"The submission was deleted"]);
+        }
+        else{
+            flash()->overlay("You do not have permission to delete submissions in this team.","Not Authorized");
+            return redirect()->back();
+            //return response()->json(["error"=>true,"message"=>"You are not authorized to delete this submission"]);
+        }
+    }
 }

@@ -51,6 +51,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('submissions','SubmissionController');
     Route::get('public/forms/{formDef}','FormDefinitionController@displayForm');
     Route::post('public/forms/{formDef}','SubmissionController@store');
+
+    Route::get('moderation/reject/{submissions}','SubmissionController@reject');
+    Route::get('moderation/moderate/{submissions}','SubmissionController@moderate');
+    Route::get('moderation/unlock/{submissions}','SubmissionController@unlock');
+    Route::get('moderation/reject/{submissions}','SubmissionController@reject');
     
     //Scores
     Route::resource('submissions.scores','ScoreController');

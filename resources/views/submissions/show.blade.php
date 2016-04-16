@@ -9,6 +9,31 @@
 
                 <div class="panel-body">
 
+                    <div class="btn-group pull-right" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
+                        </button>
+
+                        <a href="{{action('SubmissionController@moderate',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Send to Judges
+                            </button>
+                        </a>
+                        <a href="{{action('SubmissionController@reject',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Reject
+                            </button>
+                        </a>
+                        <a href="{{action('SubmissionController@unlock',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Allow Editing
+                            </button>
+                        </a>
+                        {{--<a href="{{action('SubmissionController@delete',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                            </button>
+                        </a> --}}
+                    </div>
+
+                    <div class="clearfix"></div>
+
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">Received</span>

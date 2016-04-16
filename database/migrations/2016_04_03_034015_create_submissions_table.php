@@ -20,7 +20,7 @@ class CreateSubmissionsTable extends Migration
             $table->string('email');
             $table->string('password')->nullable();
             $table->dateTime('submitted');
-            $table->enum('status',array('Reviewing','Judging','Approved','Denied','Reopened','Special'));
+            $table->enum('status',array('Reviewing','Judging','Judged','Approved','Denied','Reopened','Special'));
             $table->mediumText('options');
             $table->timestamps();
 

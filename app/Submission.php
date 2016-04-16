@@ -19,4 +19,8 @@ class Submission extends Model
     public function formdefinition(){
         return $this->belongsTo('CALwebtool\FormDefinition','form_definition_id');
     }
+
+    public function group(){
+        return $this->formdefinition()->first()->group()->first();
+    }
 }
