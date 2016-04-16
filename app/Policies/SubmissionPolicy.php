@@ -41,6 +41,19 @@ class SubmissionPolicy
         }
     }
 
+    public function judge(User $user, Submission $submission){
+        $group = $submission->group()->first();
+        if($group->isJudge($user)){
+            return true;
+        }
+        else if($group->isAdmin($user)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public function reject(User $user, Submission $submission)
     {
         $group = $submission->group()->first();

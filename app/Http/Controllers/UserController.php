@@ -39,6 +39,7 @@ class UserController extends Controller
             'name' => 'required|unique:groups|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
+            'initial_group' => 'required:array'
         ]);
 
 

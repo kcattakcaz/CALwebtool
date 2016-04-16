@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 
 use CALwebtool\Http\Requests;
 use CALwebtool\Http\Controllers\Controller;
+use CALwebtool\Submission;
 
-class Scores extends Controller
+class ScoreController extends Controller
 {
     //
     
@@ -15,8 +16,9 @@ class Scores extends Controller
         
     }
 
-    public function create(){
-        
+    public function create(Submission $submissions){
+
+        return view('scores.create',compact('submissions'));
     }
     
     public function store(){

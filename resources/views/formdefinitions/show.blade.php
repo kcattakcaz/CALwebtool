@@ -55,7 +55,7 @@
                             @foreach($new_submissions as $submission)
                                 <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item clearfix">
                                     #{{$submission->id}}- <strong>{{$submission->name}}</strong> ({{$submission->email}})
-                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submission->submitted)->toCookieString()}}</em>
+                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$submission->submitted)->toCookieString()}}</em>
                                 </a>
                             @endforeach
                         </ul>
@@ -74,7 +74,7 @@
                             @foreach($moderated_submissions as $submission)
                                 <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item clearfix">
                                     #{{$submission->id}}- <strong>{{$submission->name}}</strong> ({{$submission->email}})
-                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submission->submitted)->toCookieString()}}</em>
+                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$submission->submitted)->toCookieString()}}</em>
                                 </a>
                             @endforeach
                         </ul>
@@ -94,7 +94,7 @@
                             @foreach($moderated_submissions as $submission)
                                 <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item clearfix">
                                     #{{$submission->id}}- <strong>{{$submission->name}}</strong> ({{$submission->email}})
-                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submission->submitted)->toCookieString()}}</em>
+                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$submission->submitted)->toCookieString()}}</em>
                                 </a>
                             @endforeach
                         </ul>
@@ -114,7 +114,7 @@
                             @foreach($accepted_submissions as $submission)
                                 <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item clearfix">
                                     #{{$submission->id}}- <strong>{{$submission->name}}</strong> ({{$submission->email}})
-                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submission->submitted)->toCookieString()}}</em>
+                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$submission->submitted)->toCookieString()}}</em>
                                 </a>
                             @endforeach
                         </ul>
@@ -134,7 +134,7 @@
                             @foreach($rejected_submissions as $submission)
                                 <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item clearfix">
                                     #{{$submission->id}}- <strong>{{$submission->name}}</strong> ({{$submission->email}})
-                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submission->submitted)->toCookieString()}}</em>
+                                    <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$submission->submitted)->toCookieString()}}</em>
                                 </a>
                             @endforeach
                         </ul>

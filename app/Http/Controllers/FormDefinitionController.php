@@ -228,12 +228,12 @@ class FormDefinitionController extends Controller
     public function displayForm(FormDefinition $formDef)
     {
         if($formDef->submissions_start > Carbon::now()){
-            $date = Carbon::createFromFormat('Y-m-d h:i:s',$formDef->submissions_start)->toDayDateTimeString();
+            $date = Carbon::createFromFormat('Y-m-d H:i:s',$formDef->submissions_start)->toDayDateTimeString();
             return view('formdefinitions.unstarted',compact('formDef','date'));
         }
 
         if($formDef->submissions_end < Carbon::now()){
-            $date = Carbon::createFromFormat('Y-m-d h:i:s',$formDef->submissions_end)->toDayDateTimeString();
+            $date = Carbon::createFromFormat('Y-m-d H:i:s',$formDef->submissions_end)->toDayDateTimeString();
             return view('formdefinitions.closed',compact('formDef','date'));
         }
 

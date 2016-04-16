@@ -295,6 +295,8 @@ class SubmissionController extends Controller
 
             $submissions->status = "Judging";
             $submissions->save();
+            flash()->overlay("The judges will see this in their dashboard immediately.  They'll get an e-mail about it too","Moderated!");
+            return redirect()->back();
         }
         else{
             flash()->overlay("You do not have permission to moderate submissions in this team.","Not Authorized");
@@ -326,5 +328,9 @@ class SubmissionController extends Controller
             return redirect()->back();
             //return response()->json(["error"=>true,"message"=>"You are not authorized to delete this submission"]);
         }
+    }
+    
+    public static function notify(){
+        $forms = FormDefinition::where('status','Reviewing');
     }
 }

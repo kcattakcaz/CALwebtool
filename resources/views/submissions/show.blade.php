@@ -14,18 +14,35 @@
                             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
                         </button>
 
+                        @can('moderate',$submissions)
                         <a href="{{action('SubmissionController@moderate',compact('submissions'))}}"><button type="button" class="btn btn-default">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Send to Judges
                             </button>
                         </a>
+                        @endcan
+
+                        @can('reject',$submissions)
                         <a href="{{action('SubmissionController@reject',compact('submissions'))}}"><button type="button" class="btn btn-default">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Reject
                             </button>
                         </a>
+                        @endcan
+
+                        @can('judge',$submissions)
+                        <a href="{{action('ScoreController@create',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Judge
+                            </button>
+                        </a>
+                        @endcan
+
+                        @can('unlock',$submissions)
                         <a href="{{action('SubmissionController@unlock',compact('submissions'))}}"><button type="button" class="btn btn-default">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Allow Editing
                             </button>
                         </a>
+                        @endcan
+
+
                         {{--<a href="{{action('SubmissionController@delete',compact('submissions'))}}"><button type="button" class="btn btn-default">
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
                             </button>
@@ -34,10 +51,19 @@
 
                     <div class="clearfix"></div>
 
+                    <br>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Status</span>
+                            <input disabled type="text" class="form-control" aria-describedby="basic-addon1" value="{{$submissions->status}}">
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">Received</span>
-                            <input disabled type="text" class="form-control" aria-describedby="basic-addon1" value="{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submissions->created_at)->toCookieString()}}">
+                            <input disabled type="text" class="form-control" aria-describedby="basic-addon1" value="{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$submissions->created_at)->toCookieString()}}">
                         </div>
                     </div>
 
@@ -45,7 +71,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1">Edited</span>
-                                <input disabled type="text" class="form-control" aria-describedby="basic-addon1" value="{{\Carbon\Carbon::createFromFormat("Y-m-d h:i:s",$submissions->submitted)->toCookieString()}}">
+                                <input disabled type="text" class="form-control" aria-describedby="basic-addon1" value="{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$submissions->submitted)->toCookieString()}}">
                             </div>
                         </div>
                     @endif
