@@ -23,4 +23,8 @@ class Submission extends Model
     public function group(){
         return $this->formdefinition()->first()->group()->first();
     }
+
+    public function scores(){
+        return $this->hasMany("CALwebtool\Scores","submission_id");
+    }
 }

@@ -18,7 +18,7 @@ class CreateFormDefinitionTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description');
-            $table->integer('group_id')->unsigned();
+            $table->mediumText('group_id')->unsigned();
             $table->integer('user_id')->unsigned()->nullable();
             $table->dateTime('submissions_start');
             $table->dateTime('submissions_end');

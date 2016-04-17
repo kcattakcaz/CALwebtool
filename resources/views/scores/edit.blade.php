@@ -19,9 +19,11 @@
                         </div>
                     @endif
 
-                    <form method="post" action="{{action("ScoreController@store",compact('submissions'))}}">
+                    <form method="post" action="{{action("ScoreController@update",compact('submissions','scores'))}}">
 
                         {{csrf_field()}}
+
+                        <input type="hidden" name="_method" value="PUT">
 
                         <div class="form-group">
                             <label for="numerical_score">Score:</label>
@@ -45,6 +47,7 @@
                             <label for="comment">Comment:</label>
 
                             <textarea id="comment" name="comment">
+                                {!! $scores->comment !!}
                             </textarea>
 
                         </div>
@@ -65,6 +68,7 @@
 <script>
 
     CKEDITOR.replace('comment');
+    //CKEDITOR.instances.comment.setData("{!! $scores->comment!!}");
 
 </script>
 
