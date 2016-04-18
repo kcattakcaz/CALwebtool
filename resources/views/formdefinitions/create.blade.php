@@ -153,7 +153,7 @@
             }
         }).on('changeDate', function(ev) {
             if (ev.date.valueOf() > end_date.date.valueOf()) {
-                var newDate = new Date(ev.date)
+                var newDate = new Date(ev.date);
                 newDate.setDate(newDate.getDate() + 1);
                 end_date.setValue(newDate);
             }
@@ -167,7 +167,7 @@
             }
         }).on('changeDate', function(ev) {
             if (ev.date.valueOf() > scores_date.date.valueOf()) {
-                var newDate = new Date(ev.date)
+                var newDate = new Date(ev.date);
                 newDate.setDate(newDate.getDate() + 1);
                 scores_date.setValue(newDate);
             }
@@ -187,7 +187,7 @@
 
        var ckeditor_description = CKEDITOR.replace( 'description' );
 
-        var Field_Manager = new FieldController($("#formdef_viewer")); //Refer to public/js/fieldcontroller.js
+        var Field_Manager = new FieldController($("#formdef_viewer"),null); //Refer to public/js/fieldcontroller.js
 
         $("#btn_addField").on( "click", function() {
                 var selected_field_type = $("#ftype_select").val();
