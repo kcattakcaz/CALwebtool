@@ -68,7 +68,7 @@ class UserController extends Controller
         return view('users.show', compact('user'));
     }
 
-    public function update(Request $request){
+    public function update(Request $request, User $user){
 
         $this->validate($request,[
             'name' => 'unique:groups|max:255',
@@ -76,10 +76,10 @@ class UserController extends Controller
             'password' => 'min:6|confirmed',
         ]);
 
-        //$user->name = $request->input('name');
-        //$user->name = $request->input('email');
-        //$user->name = $request->input('password');
-        //$user->save();
+        $user->name = $request->input('name');
+        $user->name = $request->input('email');
+        $user->name = $request->input('password');
+        $user->save();
     }
 
     public function destroy(){

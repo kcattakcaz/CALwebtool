@@ -73,9 +73,9 @@ class Group extends Model
     public function addUser($user, $creator = false, $moderator = false, $adjudicator = false){
         try {
             $this->users()->save($user, ['administrator' => false,
-                                            'creator' => $creator,
-                                            'moderator' => $moderator,
-                                            'adjudicator' => $adjudicator]);
+                'creator' => $creator,
+                'moderator' => $moderator,
+                'adjudicator' => $adjudicator]);
             return true;
         }
         catch(QueryException $e){
@@ -90,7 +90,7 @@ class Group extends Model
             $this->users()->sync([$user->id => ['adjudicator' => $adjudicator]], false);
             return true;
         }
-        catch(QueryException $e){
+        catch(\Exception $e){
             return false;
         }
     }
