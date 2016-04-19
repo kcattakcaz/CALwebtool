@@ -9,12 +9,10 @@
 
                 <div class="panel-body">
 
-                    <p>
-                        User modification is unavailable at this time.
-                    </p>
-
                     <form role="form" method="post" action="{{action('UserController@update', compact('user'))}}">
                         {{ csrf_field() }}
+                        <input type="hidden" name="_method" value="PUT">
+                        <input type="hidden" name="action" value="modUser">
                             <div class="form-group">
                                 <label for="name">User Name:</label>
                                 <input name="name" type="text" class="form-control" id="name" value="{{$user->name}}">
@@ -34,48 +32,88 @@
                                 <label for="password_confirmation">Confirm Password:</label>
                                 <input name="password_confirmation" type="password" class="form-control" id="password_confirmation">
                             </div>
-
-                        <!--
                             <button type="submit" class="btn btn-default">Submit</button>
-                        -->
+
 
                         </form>
 
 
                 </div>
             </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Notification Preferences</div>
+
+                <div class="panel-body">
+
+                    <p>Note that your permissions in a specific team will override the settings below.
+                        For example, if you enable Submissions to Score for Judges, you will only receive e-mails
+                        if you are actually a judge in that team.</p>
+
+                    <form role="form" method="post" action="{{action('UserController@update', compact('user'))}}">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="_method" value="PUT">
+                        <input type="hidden" name="action" value="modNotifications">
+
+                        <div class="form-group">
+                            <label for="notify_new_subs">New Unmoderated Submissions (Daily)</label>
+                            <input name="notify_new_subs" id="notify_new_subs" class="form-control" type="checkbox" value="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notify_must_score">Submissions to Score for Judges (weekly)</label>
+                            <input name="notify_must_score" id="notify_must_score" class="form-control" type="checkbox" value="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notify_scoring_complete">All Judges' Scores Received (as needed)</label>
+                            <input name="notify_scoring_complete" id="notify_scoring_complete" class="form-control" type="checkbox" value="1">
+                        </div>
+
+                        <button type="submit" class="btn btn-default">Save</button>
+
+
+                    </form>
+
+
+                </div>
+            </div>
+
             <div class="panel panel-default">
 
-                <div class="panel-heading">Groups that {{$user->name}} is a member of:</div>
+                <div class="panel-heading">Teams that {{$user->name}} is a member of:</div>
 
                 <div class="panel-body">
 
                     <!-- this should be a table instead of another panel-->
                     @foreach($user->groups()->get() as $group)
+                        <a href="{{action("GroupController@show",compact('group'))}}" class=" list-group-item">{{$group->name}}
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading">{{$group->name}}</div>
+                            @if($group->isAdmin($user->id))
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-briefcase"> </span>
+                            @else
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                            @endif
 
-                            <div class="panel-body">
-                                @if($group->users()->find($user->id)->pivot->administrator)
-                                    <p>Group Administrator</p>
-                                @endif
-                                @if($group->users()->find($user->id)->pivot->moderator)
-                                    <p>Moderator</p>
-                                @endif
-                                @if($group->users()->find($user->id)->pivot->creator)
-                                    <p>Creator</p>
-                                @endif
-                                @if($group->users()->find($user->id)->pivot->adjudicator)
-                                    <p>Adjudicator</p>
-                                @endif
-                            </div>
+                            @if($group->isMod($user->id))
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-inbox"> </span>
+                            @else
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                            @endif
 
-                            <!--
-                            CHANGE GROUP PERMISSIONS HERE
-                            -->
+                            @if($group->isCreator($user->id))
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-pencil"> </span>
+                            @else
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                            @endif
 
-                        </div>
+                            @if($group->isJudge($user->id))
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
+                            @else
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
+                            @endif
+
+                        </a>
                     @endforeach
                 </div>
             </div>

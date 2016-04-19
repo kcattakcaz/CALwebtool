@@ -63,7 +63,7 @@ class FormDefinitionController extends Controller
             ]); */
 
         if(!(Carbon::createFromFormat("m#d#y",$request->input('start_date')) <  Carbon::createFromFormat("m#d#y",$request->input('end_date'))) || !(Carbon::createFromFormat("m#d#y",$request->input('end_date')) < Carbon::createFromFormat("m#d#y",$request->input('scores_date')))){
-            return response()->json(["status"]);
+            return response()->json(["error"=>true,"The dates you provided are not valid"]);
         }
 
         $fieldErrors = new Collection();
@@ -95,8 +95,6 @@ class FormDefinitionController extends Controller
                     'name' => 'required',
                     'required'=>'required|boolean',
                     'text_type'=>'required|in:any,num,alpha,email,phone,date,time,multiline',
-                    'maxlength'=>'required|integer',
-                    'minlength'=>'required|integer'
                 ]);
 
                 if($validator->fails()){
@@ -106,8 +104,6 @@ class FormDefinitionController extends Controller
                     $field_options = new Collection();
                     $field_options->put('required',$fieldDef->get('required'));
                     $field_options->put('text_type',$fieldDef->get('text_type'));
-                    $field_options->put('maxlength',$fieldDef->get('maxlength'));
-                    $field_options->put('minlength',$fieldDef->get('minlength'));
 
                     $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
                     $field->save();
@@ -207,7 +203,13 @@ class FormDefinitionController extends Controller
         }
         else{
             $formDef->forceDelete();
-            return response()->json($fieldErrors,422);
+            $errorBag = new Collection();
+            foreach($fieldErrors as $fieldError){
+                foreach($fieldError->messages() as $error){
+                    $errorBag->push($error);
+                }
+            }
+            return response()->json($errorBag,422);
         }
 
 
@@ -258,11 +260,24 @@ class FormDefinitionController extends Controller
     }
 
     public static function getDefinition($form){
+        $formDef= new Collection();
+        foreach($form->fields()->get() as $field){
+            $fieldDef = new Collection();
+            $fieldDef->put("id",$field->field_id);
+            $fieldDef->put("type",$field->type);
+            $fieldDef->put("name",$field->name);
+            $fieldDef->put("order",$field->order);
+            $fieldDef->put("options",$field->options);
+            $formDef->push($fieldDef);
+        }
+        return $formDef->toJson();
         return "[{\"type\":\"Text\",\"id\":\"Text_1\",\"name\":\"test_text\",\"required\":\"1\",\"text_type\":\"any\",\"maxlength\":255,\"minlength\":1},{\"type\":\"Checkbox\",\"id\":\"Checkbox_1\",\"name\":\"test_check\",\"required\":\"1\",\"value_checked\":\"True\",\"value_unchecked\":\"False\"},{\"type\":\"RadioGroup\",\"id\":\"Radio_1\",\"name\":\"test_radio\",\"required\":\"1\",\"options\":[{\"label\":\"test_radio_label_1\",\"value\":\"test_radio_value_1\"},{\"label\":\"test_radio_label_2\",\"value\":\"test_radio_value_2\"}]},{\"type\":\"Select\",\"id\":\"Select_1\",\"name\":\"test_select\",\"required\":\"1\",\"multipleselect\":\"0\",\"options\":[{\"label\":\"test_select_label_1\",\"value\":\"test_select_value_1\"},{\"label\":\"test_select_label_2\",\"value\":\"test_select_value_2\"}]},{\"type\":\"Address\",\"id\":\"Address_1\",\"name\":\"test_address\",\"required\":\"1\"}]";
     }
 
-    public function update(){
-
+    public function update(FormDefinition $form, Request $request){
+        if($form->status != "Drafting" ){
+            return repsonse()->json(["status"=>false,"message"=>"You cannot edit a form that has already opened"]);
+        }
     }
 
     public function destroy(){

@@ -17,7 +17,7 @@
                     <h1>Create a Form</h1>
 
                    <p>
-                       Form Definitions allow you to express the layout and content of a Form.
+                       Form Definitions really allow you to express the layout and content of a Form.
                     </p>
 
                     <p>
@@ -230,8 +230,27 @@
                     data:formdef
                 }).done(function(data,textStatus,jqXHR){
                     console.log(data);
+                    //location.replace("{{action('FormDefinitionController@index')}}");
                 }).fail(function (jqXHR,textStatus,errorThrown) {
                     console.log("Error:"+errorThrown);
+                    var errorsJson = JSON.parse(jqXHR.responseText);
+                    console.log(errorsJson);
+                    var errorString = "The form couldn't be saved due to the following errors:\n\n";
+                    for(fields in errorsJson){
+                        console.log(fields);
+                        if(fields == "status"){
+                            alert(errorsJson.message);
+                            return;
+                        }
+                        else{
+                           console.log(errorsJson[fields]);
+                            for(var i =0; i<errorsJson[fields].length; i++){
+                                errorString += fields + " : " + errorsJson[fields][i] +"\n";
+                            }
+                        }
+                    }
+                    alert(errorString);
+
                 })
             }
         })

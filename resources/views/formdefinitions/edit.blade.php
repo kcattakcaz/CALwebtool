@@ -188,6 +188,8 @@
         var ckeditor_description = CKEDITOR.replace( 'description' );
 
         var previousValuesObj = eval({!!\CALwebtool\Http\Controllers\FormDefinitionController::getDefinition($form)!!});
+        console.log("prveious Values");
+        console.log(previousValuesObj);
 
         var Field_Manager = new FieldController($("#formdef_viewer"),previousValuesObj); //Refer to public/js/fieldcontroller.js
 
@@ -228,14 +230,32 @@
             }
             else{
                 $.ajax({
-                    url:"{{action('FormDefinitionController@store')}}",
+                    url:"{{action('FormDefinitionController@update',compact('form'))}}",
                     headers:{'X-CSRF-TOKEN':"{{csrf_token()}}"},
-                    method:"POST",
+                    method:"PUT",
                     data:formdef
                 }).done(function(data,textStatus,jqXHR){
                     console.log(data);
                 }).fail(function (jqXHR,textStatus,errorThrown) {
                     console.log("Error:"+errorThrown);
+                    //console.log("Error:"+errorThrown);
+                    var errorsJson = JSON.parse(jqXHR.responseText);
+                    console.log(errorsJson);
+                    var errorString = "The form couldn't be saved due to the following errors:\n\n";
+                    for(fields in errorsJson){
+                        console.log(fields);
+                        if(fields == "status"){
+                            alert(errorsJson.message);
+                            return;
+                        }
+                        else{
+                            console.log(errorsJson[fields]);
+                            for(var i =0; i<errorsJson[fields].length; i++){
+                                errorString += fields + " : " + errorsJson[fields][i] +"\n";
+                            }
+                        }
+                    }
+                    alert(errorString);
                 })
             }
         })
