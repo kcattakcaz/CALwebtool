@@ -128,9 +128,45 @@ class UserController extends Controller
     }
 
     public function deactivatedIndex(){
-        $users = User::where('deleted_at','not',null)->get();
+        $users = User::onlyTrashed()->get();
         return view('users.deactivated',compact('users'));
     }
+
+    public function reactivate(Request $request){
+        if($request->has('user')){
+            try{
+                $user = User::onlyTrashed()->findOrFail($request->input('user'));
+                $user->restore();
+                flash()->overlay($user->name."'s profile is active again.  All previous team memberships and permissions are active as well.  The account password is the last one used, if needed you can reset it manually for the user, or they can request a password reset link from the login page.","Profile Reactivated");
+
+            }
+            catch(\Exception $e){
+                flash()->overlay('The profile cannot be reactivated.  Make sure the user has not been deleted already and try again<br>'.$e->getMessage(),'Reactivation Failed');
+            }
+        }
+        else{
+            flash()->overlay('No user was specified','Reactivation Failed');
+        }
+       return redirect()->back();
+    }
+
+    public function forceDelete(Request $request){
+        if($request->has('user')){
+            try{
+                $user = User::withTrashed()->findOrFail($request->input('user'));
+                $user->forceDelete();
+                flash()->overlay("The user and all associated data owned by the user have been deleted.  Remember, forms are owned by team, so any forms the user created will continue to exist.  Scores for judging, however, have been deleted","User Deleted");
+
+            }
+            catch(\Exception $e){
+                dd($e);
+                flash()->overlay('The profile cannot be deleted.  This is likely because the user owns an object that cannot be safely deleted or they are the only System Administrator.  The recommended course of action is to deactivate the profile, as this will prevent the user from signing-in, but will preserve the integrity of the system data.  If you must delete this user no matter what, you must manually inspect the database and determine why the row cannot be deleted (most likely a foreign key constraint would be violated).  You should consult the assistance of a database administrator.','Force Delete Failed');
+            }
+        }
+        else{
+            flash()->overlay('No user was specified','Reactivation Failed');
+        }
+        return redirect(action('UserController@index'));}
 
     public function activate(){
 

@@ -13,7 +13,7 @@
 
         <p>Your account for CAL Awards has been created, but you need to set your password.</p>
 
-        <a href="{{action('UserController@activate',compact('user','register_token'))}}">Click here to activate your account</a>
+        <a href="{{action('UserController@register',compact('user','register_token'))}}">Click here to activate your account</a>
 
         <br>
         <br>

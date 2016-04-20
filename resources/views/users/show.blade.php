@@ -147,9 +147,10 @@
 
                         </form>
 
-                        <form role="form" method="post" action="{{action('UserController@destroy', compact('user'))}}">
+                        <form role="form" method="get" action="{{action('UserController@forceDelete', compact('user'))}}">
                             {{ csrf_field() }}
-                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_method" value="GET">
+                            <input type="hidden" name="user" value="{{$user->id}}">
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-danger">Force Delete</button>

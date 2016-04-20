@@ -44,8 +44,12 @@ Route::group(['middleware' => 'web'], function () {
 
     //user
     Route::get('settings/user/deactivated','UserController@deactivatedIndex');
+    Route::get('settings/user/forceDelete','UserController@forceDelete');
+    Route::get('users/reactivate','UserController@reactivate');
     Route::resource('settings/user','UserController');
-    Route::get('users/activate','UserController@activate');
+    Route::post('users/activate','UserController@activate');
+    Route::get('users/activate','UserController@register');
+
 
     //forms / submissions
     Route::resource('form','FormDefinitionController');

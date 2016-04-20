@@ -30,12 +30,18 @@
 
                     <hr>
 
-                    <div class="list-group">
+                    <ul class="list-group">
 
                         @foreach($users as $user)
-                        <a href="{{action('UserController@show',['user'=>$user->id])}}" class="list-group-item">{{$user->name}}</a>
+                            <li class="list-group-item">
+                                {{$user->name}}
+                                <a style="margin-left:5px;" href="{{action('UserController@forceDelete',compact('user'))}}" class="pull-right"><button class="btn btn-sm btn-danger">Force Delete</button></a>
+                                <a href="{{action('UserController@reactivate',compact('user'))}}" class="pull-right"><button class="btn btn-sm btn-primary">Reactivate</button></a>
+                                <div class="clearfix"></div>
+                            </li>
+                        {{--<a href="{{action('UserController@show',['user'=>$user->id])}}" class="list-group-item">{{$user->name}}</a> --}}
                         @endforeach
-                    </div>
+                    </ul>
 
 
                 </div>
