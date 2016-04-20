@@ -271,12 +271,12 @@ class FormDefinitionController extends Controller
             $formDef->push($fieldDef);
         }
         return $formDef->toJson();
-        return "[{\"type\":\"Text\",\"id\":\"Text_1\",\"name\":\"test_text\",\"required\":\"1\",\"text_type\":\"any\",\"maxlength\":255,\"minlength\":1},{\"type\":\"Checkbox\",\"id\":\"Checkbox_1\",\"name\":\"test_check\",\"required\":\"1\",\"value_checked\":\"True\",\"value_unchecked\":\"False\"},{\"type\":\"RadioGroup\",\"id\":\"Radio_1\",\"name\":\"test_radio\",\"required\":\"1\",\"options\":[{\"label\":\"test_radio_label_1\",\"value\":\"test_radio_value_1\"},{\"label\":\"test_radio_label_2\",\"value\":\"test_radio_value_2\"}]},{\"type\":\"Select\",\"id\":\"Select_1\",\"name\":\"test_select\",\"required\":\"1\",\"multipleselect\":\"0\",\"options\":[{\"label\":\"test_select_label_1\",\"value\":\"test_select_value_1\"},{\"label\":\"test_select_label_2\",\"value\":\"test_select_value_2\"}]},{\"type\":\"Address\",\"id\":\"Address_1\",\"name\":\"test_address\",\"required\":\"1\"}]";
+
     }
 
     public function update(FormDefinition $form, Request $request){
-        if($form->status != "Drafting" ){
-            return repsonse()->json(["status"=>false,"message"=>"You cannot edit a form that has already opened"]);
+        if($form->status != "Drafting" ) {
+            return repsonse()->json(["status" => false, "message" => "You cannot edit a form that has already opened"]);
         }
     }
 

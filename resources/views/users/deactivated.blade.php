@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">User Management
+                <div class="panel-heading">Deactivated User Management
 
                 </div>
 
@@ -17,8 +17,8 @@
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New User
                         </button>
                         </a>
-                        <a href="{{action('UserController@deactivatedIndex')}}"<button type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> Deactivated Users
+                        <a href="{{action('UserController@index')}}"<button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Active Users
                         </button>
                         </a>
                         <button type="button" class="btn btn-default">

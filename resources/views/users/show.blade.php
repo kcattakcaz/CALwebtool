@@ -4,8 +4,19 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
+
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="panel panel-default">
-                <div class="panel-heading">{{$user->name}}</div>
+                <div class="panel-heading">{{$user->name}}'s Profile</div>
 
                 <div class="panel-body">
 
@@ -55,19 +66,19 @@
                         <input type="hidden" name="_method" value="PUT">
                         <input type="hidden" name="action" value="modNotifications">
 
-                        <div class="form-group">
-                            <label for="notify_new_subs">New Unmoderated Submissions (Daily)</label>
-                            <input name="notify_new_subs" id="notify_new_subs" class="form-control" type="checkbox" value="1">
+                        <div class="checkbox">
+                            <label for="notify_new_subs"> <input name="notify_new_subs" id="notify_new_subs" class="" type="checkbox" value="1">New Submissions for Moderators (Daily)</label>
+
                         </div>
 
-                        <div class="form-group">
-                            <label for="notify_must_score">Submissions to Score for Judges (weekly)</label>
-                            <input name="notify_must_score" id="notify_must_score" class="form-control" type="checkbox" value="1">
+                        <div class="checkbox">
+                            <label for="notify_must_score"> <input name="notify_must_score" id="notify_must_score" class="" type="checkbox" value="1">New Submissions for Judges (Weekly)</label>
+
                         </div>
 
-                        <div class="form-group">
-                            <label for="notify_scoring_complete">All Judges' Scores Received (as needed)</label>
-                            <input name="notify_scoring_complete" id="notify_scoring_complete" class="form-control" type="checkbox" value="1">
+                        <div class="checkbox">
+                            <label for="notify_scoring_complete"><input name="notify_scoring_complete" id="notify_scoring_complete" class="" type="checkbox" value="1">Judging Complete for Judges and Moderators (As Needed)</label>
+
                         </div>
 
                         <button type="submit" class="btn btn-default">Save</button>
@@ -117,6 +128,49 @@
                     @endforeach
                 </div>
             </div>
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Advanced User Management</div>
+
+                    <div class="panel-body">
+
+                        <p>Take EXTREME care with these options</p>
+
+                        <form role="form" method="post" action="{{action('UserController@destroy', compact('user'))}}">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="_method" value="DELETE">
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-danger">Deactivate Profile</button>
+                            </div>
+
+                        </form>
+
+                        <form role="form" method="post" action="{{action('UserController@destroy', compact('user'))}}">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="_method" value="DELETE">
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-danger">Force Delete</button>
+                            </div>
+
+                        </form>
+
+                        <form role="form" method="post" action="{{action('UserController@destroy', compact('user'))}}">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="_method" value="DELETE">
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-danger">Reactivate Profile</button>
+                            </div>
+
+                        </form>
+
+
+                    </div>
+                </div>
+
 
 
         </div>

@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->boolean('system_admin');
             $table->string('register_token',60);
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
