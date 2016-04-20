@@ -267,22 +267,6 @@ function TextField(id,name,currentValuesObj){
             );
         texttype_group.append(this.elementref_texttype);
         parentElementRef.append(texttype_group);
-
-
-
-        //Min Length Input Field
-        var minlength_group = $("<div class='form-group'>");
-        minlength_group.append("<label for='name'>Min Length</label>");
-        this.elementref_minlength = $("<input class='form-control' type='text' name='"+this.id+"_minlength' id='"+this.id+"_minlength'>").val(1);
-        minlength_group.append(this.elementref_minlength);
-        parentElementRef.append(minlength_group);
-
-        //Max Length Input Field
-        var maxlength_group = $("<div class='form-group'>");
-        maxlength_group.append("<label for='name'>Max Length</label>");
-        this.elementref_maxlength = $("<input class='form-control' type='text' name='"+this.id+"_maxlength' id='"+this.id+"_maxlength'>").val(255);
-        maxlength_group.append(this.elementref_maxlength);
-        parentElementRef.append(maxlength_group);
     };
 
     this.renderView = function(){
@@ -298,8 +282,8 @@ function TextField(id,name,currentValuesObj){
         values.required = this.elementref_required.val();
         values.text_type = this.elementref_texttype.val();
         //values.multiline = this.elementref_multiline.val();
-        values.maxlength = parseInt(this.elementref_maxlength.val(),10);
-        values.minlength = parseInt(this.elementref_minlength.val(),10);
+        //values.maxlength = parseInt(,10);
+        //values.minlength = parseInt(this.elementref_minlength.val(),10);
         return values;
     }
 
@@ -462,6 +446,15 @@ function SelectField(id,name,currentValuesObj){
         parentElementRef.append(multipleselect_group);
 
         //Option Values-Labels Group
+        if (currentValuesObj.option_list_item !== null){
+            for (var i=0; i< currentValuesObj.option_list_item; i++ )
+            console.log("Label: "+currentValuesObj.option_list_item[i].option_label.val() + " with Value: "+currentValuesObj.option_list_item[i].option_value.val());
+            var new_option_list_item2 = $("<li class='list-group-item'>");
+            var new_option_div = $("<div>");
+            new_option_div.append($("<span>").text("Label: "+currentValuesObj.option_list_item[i].option_label.val() + " Value: "+currentValuesObj.option_list_item[i].option_value.val()));
+            new_option_list_item2.append(new_option_div);
+            event.data.select_field.elementref_options_display_area.append(new_option_list_item2);
+        }
         var option_values_labels_panel = $("<div class='panel panel-default'>");
         var option_values_labels_group = $("<div class='panel-body'>");
         option_values_labels_group.append("<p >").text("Enter what you want to be seen in the Label field. Value field is for what is saved on the server.");
