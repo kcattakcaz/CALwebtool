@@ -14,27 +14,31 @@ class FormDefinition extends Model
      *
      * @var array
      */
-   /* protected $fillable = [
-        'group_id','user_id', 'name','description', 'submissions_start','submissions_end','scores_due'
-    ];*/
-    protected $fillable= [
-            'name','description','group_id','user_id','submissions_start','submissions_end','scores_due','status','created_at','updated_at'
+    /* protected $fillable = [
+         'group_id','user_id', 'name','description', 'submissions_start','submissions_end','scores_due'
+     ];*/
+    protected $fillable = [
+        'name', 'description', 'group_id', 'user_id', 'submissions_start', 'submissions_end', 'scores_due', 'status', 'created_at', 'updated_at'
     ];
 
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo('CALwebtool\User');
     }
 
-    public function group(){
+    public function group()
+    {
         return $this->belongsTo('CALwebtool\Group');
     }
 
-    public function fields(){
+    public function fields()
+    {
         return $this->hasMany('CALwebtool\Field');
     }
 
-    public function submissions(){
-        return $this->hasMany('CALwebtool\Submission','form_definition_id');
+    public function submissions()
+    {
+        return $this->hasMany('CALwebtool\Submission', 'form_definition_id');
     }
 }

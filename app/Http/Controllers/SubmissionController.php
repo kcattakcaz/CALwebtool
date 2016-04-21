@@ -87,9 +87,16 @@ class SubmissionController extends Controller
         if($errors->count() > 0){
             //return response()->json(["The submission was REJECTED and errors follow",$errors],422);
             return redirect()->back()->withErrors($errors);
+            //return view('formdefinitions.display', compact('fields', 'errors'));
         }
 
-        $submission = new Submission(["form_definition_id"=>$formDef->id,"name"=>$request->input('name'),"email"=>$request->input('email'),"password"=>null,"submitted"=>Carbon::now(),"status"=>'Reviewing',"options"=>$fields->toJson()]);
+        $submission = new Submission(["form_definition_id"=>$formDef->id,
+                                                    "name"=>$request->input('name'),
+                                                    "email"=>$request->input('email'),
+                                                    "password"=>null,
+                                                    "submitted"=>Carbon::now(),
+                                                    "status"=>'Reviewing',
+                                                    "options"=>$fields->toJson()]);
         $submission->save();
         //return response()->json(["The submission was accepted and follows",$submission],200);
         return view('formdefinitions.accepted',compact('formDef','submission'));
@@ -331,6 +338,7 @@ class SubmissionController extends Controller
             return redirect()->back();
         }
     }
+    
     public static function unlock(Submission $submissions){
         if(Auth::user()->can('reject',$submissions)) {
 
@@ -344,8 +352,7 @@ class SubmissionController extends Controller
             return redirect()->back();
         }
     }
-
-
+    
     public static function delete(Submission $submissions){
         if(Auth::user()->can('delete',$submissions)){
             $submissions->delete();

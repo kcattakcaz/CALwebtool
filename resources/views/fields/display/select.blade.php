@@ -5,6 +5,7 @@
     @else
         <select class="form-control" name="{{$select_field->get('id')}}" id="{{$select_field->get('id')}}">
     @endif
+        <option value="">Choose one...</option>
         @foreach(json_decode($select_field->get('options'))->options as $option)
             <option value="{{$option->value}}">{{$option->label}}</option>
         @endforeach
