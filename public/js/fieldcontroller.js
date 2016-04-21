@@ -238,20 +238,8 @@ function TextField(id,name,currentValuesObj){
             );
         required_group.append(this.elementref_required);
         parentElementRef.append(required_group);
-        /*
-        //Multiline Select Field
-        var multiline_group = $("<div class='form-group'>");
-        multiline_group.append("<label for='required'>Multiline</label>");
-        this.elementref_multiline = $("<select class='form-control' name='"+this.id+"_multiline' id='"+this.id+"_multiline'>")
-            .append(
-                $("<option value='0'>False: Is Single Line</option>"),
-                $("<option value='1'> True: Mutli Line</option>")
-            );
-        multiline_group.append(this.elementref_multiline);
-        parentElementRef.append(multiline_group);
-        */
+
         //TextType Select Field
-        //Multiline Select Field
         var texttype_group = $("<div class='form-group'>");
         texttype_group.append("<label for='required'>Text Type</label>");
         this.elementref_texttype = $("<select class='form-control' name='"+this.id+"_texttype' id='"+this.id+"_texttype'>")
@@ -391,7 +379,8 @@ function SelectField(id,name,currentValuesObj){
         this.id = currentValuesObj.id;
         this.name = currentValuesObj.name;
         this.required = currentValuesObj.required;
-        this.options = currentValuesObj.options;
+        this.options = [];
+        //this.options = currentValuesObj.options;
     }
 
     this.elementref_name = null;
@@ -446,15 +435,6 @@ function SelectField(id,name,currentValuesObj){
         parentElementRef.append(multipleselect_group);
 
         //Option Values-Labels Group
-        if (currentValuesObj.option_list_item !== null){
-            for (var i=0; i< currentValuesObj.option_list_item; i++ )
-            console.log("Label: "+currentValuesObj.option_list_item[i].option_label.val() + " with Value: "+currentValuesObj.option_list_item[i].option_value.val());
-            var new_option_list_item2 = $("<li class='list-group-item'>");
-            var new_option_div = $("<div>");
-            new_option_div.append($("<span>").text("Label: "+currentValuesObj.option_list_item[i].option_label.val() + " Value: "+currentValuesObj.option_list_item[i].option_value.val()));
-            new_option_list_item2.append(new_option_div);
-            event.data.select_field.elementref_options_display_area.append(new_option_list_item2);
-        }
         var option_values_labels_panel = $("<div class='panel panel-default'>");
         var option_values_labels_group = $("<div class='panel-body'>");
         option_values_labels_group.append("<p >").text("Enter what you want to be seen in the Label field. Value field is for what is saved on the server.");
@@ -476,6 +456,32 @@ function SelectField(id,name,currentValuesObj){
         option_value_group.append("<label for='value'>Value</label>");
         this.option_value = $("<input class='form-control' type='text' name='"+this.id+"_option_value' id='"+this.id+"_option_value'>");
         option_value_group.append(this.option_value);
+
+        //Load prior values if they exist
+
+        //console.log("selectopts: "+currentValuesObj.options);
+        var field_options = JSON.parse(currentValuesObj.options);
+        //console.log(field_options.options);
+
+
+        if (field_options.options !== null){
+            console.log("Previous values exist and are loading!");
+            for (var i=0; i< field_options.options.length; i++ ) {
+                console.log("Label: " + field_options.options[i].label + " with Value: " + field_options.options[i].value);
+                var new_option_object= this.addOption(field_options.options[i].label,field_options.options[i].value);
+                var new_option_list_item = $("<li class='list-group-item'>'");
+                var new_option_div = $("<div>");
+                new_option_div.append("<span>").text("Label: "+field_options.options[i].label + " Value:" + field_options.options[i].value);
+                new_option_div.append($("<a href='#remove_item' class='pull-right glyphicon glyphicon-remove'>"))
+                    .on('click',{select_field:this,option_list_item:new_option_list_item,option_object:new_option_object},function(event){
+                        event.data.select_field.delOption(event.data.option_object);
+                        event.data.option_list_item.remove();
+                    });
+                new_option_list_item.append(new_option_div);
+                this.elementref_options_display_area.append(new_option_list_item);
+            }
+        }
+
         option_values_labels_group.append(option_value_group);
 
 
@@ -521,6 +527,8 @@ function SelectField(id,name,currentValuesObj){
 
     this.addOption = function(label,value){
         var option_object = {label:label,value:value};
+        console.log(option_object);
+        console.log(this.options);
         this.options.push(option_object);
         return option_object;
     };
@@ -550,7 +558,8 @@ function RadioGroupField(id,name,currentValuesObj){
         this.id = currentValuesObj.id;
         this.name = currentValuesObj.name;
         this.required = currentValuesObj.required;
-        this.options = currentValuesObj.options;
+        this.options = [];
+       // this.options = currentValuesObj.options;
     }
 
     this.elementref_name = null;
@@ -616,6 +625,33 @@ function RadioGroupField(id,name,currentValuesObj){
         this.option_value = $("<input class='form-control' type='text' name='"+this.id+"_option_value' id='"+this.id+"_option_value'>");
         option_value_group.append(this.option_value);
         option_values_labels_group.append(option_value_group);
+
+
+        //Load prior values if they exist
+
+        //console.log("selectopts: "+currentValuesObj.options);
+        var field_options = JSON.parse(currentValuesObj.options);
+        //console.log(field_options.options);
+
+
+        if (field_options.options !== null){
+            console.log("Previous values exist and are loading!");
+            for (var i=0; i< field_options.options.length; i++ ) {
+                console.log("Label: " + field_options.options[i].label + " with Value: " + field_options.options[i].value);
+                var new_option_object= this.addOption(field_options.options[i].label,field_options.options[i].value);
+                var new_option_list_item = $("<li class='list-group-item'>'");
+                var new_option_div = $("<div>");
+                new_option_div.append("<span>").text("Label: "+field_options.options[i].label + " Value:" + field_options.options[i].value);
+                new_option_div.append($("<a href='#remove_item' class='pull-right glyphicon glyphicon-remove'>"))
+                    .on('click',{select_field:this,option_list_item:new_option_list_item,option_object:new_option_object},function(event){
+                        event.data.select_field.delOption(event.data.option_object);
+                        event.data.option_list_item.remove();
+                    });
+                new_option_list_item.append(new_option_div);
+                this.elementref_options_display_area.append(new_option_list_item);
+            }
+        }
+
 
         var option_add_btn = $("<button type='button' class='btn btn-default' >Add</button>")
             .on('click',{select_field:this},function(event){
