@@ -52,11 +52,12 @@ Route::group(['middleware' => 'web'], function () {
 
 
     //forms / submissions
+    Route::get('form/{form}/schedule','FormDefinitionController@schedule');
+    Route::post('form/{form}/schedule','FormDefinitionController@updateSchedule');
+    Route::post('form/{form}/status','FormDefinitionController@updateStatus');
     Route::resource('form','FormDefinitionController');
     Route::get('submissions/form/{form}','SubmissionController@getForm');
     Route::resource('submissions','SubmissionController');
-    Route::get('public/forms/{formDef}','FormDefinitionController@displayForm');
-    Route::post('public/forms/{formDef}','SubmissionController@store');
 
     Route::get('moderation/reject/{submissions}','SubmissionController@reject');
     Route::get('moderation/moderate/{submissions}','SubmissionController@moderate');
@@ -66,4 +67,9 @@ Route::group(['middleware' => 'web'], function () {
     //Scores
     Route::resource('submissions.scores','ScoreController');
 
+});
+
+Route::group([],function(){
+    Route::get('public/forms/{formDef}','FormDefinitionController@displayForm');
+    Route::post('public/forms/{formDef}','SubmissionController@store');
 });

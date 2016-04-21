@@ -227,6 +227,7 @@ class FormDefinitionController extends Controller
     }
 
 
+
     public function displayForm(FormDefinition $formDef)
     {
         if($formDef->submissions_start > Carbon::now()){
@@ -274,9 +275,194 @@ class FormDefinitionController extends Controller
     }
 
     public function update(FormDefinition $form, Request $request){
-        if($form->status != "Drafting" ) {
-            return repsonse()->json(["status" => false, "message" => "You cannot edit a form that has already opened"]);
+        if($form->status != "Drafting" || $form->submissions()->get()->count() > 0 ) {
+            return repsonse()->json(["status" => false, "message" => "You cannot edit a form that has already opened or has submissions"]);
         }
+        else{
+
+            $fieldErrors = new Collection();
+            $old_fields = $form->fields()->get();
+            $new_fields = new Collection();
+            $formDef = $form;
+
+            foreach($request->input('definition') as $fieldArray){
+                $fieldDef = collect($fieldArray);
+                $type = $fieldDef->get("type");
+
+                if($type == "Text"){
+                    $validator = Validator::make($fieldArray,[
+                        'id' => 'required|alpha_dash',
+                        'name' => 'required',
+                        'required'=>'required|boolean',
+                        'text_type'=>'required|in:any,num,alpha,email,phone,date,time,multiline',
+                    ]);
+
+                    if($validator->fails()){
+                        $fieldErrors->push($validator->errors());
+                    }
+                    else{
+                        $field_options = new Collection();
+                        $field_options->put('required',$fieldDef->get('required'));
+                        $field_options->put('text_type',$fieldDef->get('text_type'));
+
+                        $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                        $field->save();
+                    }
+                }
+                else if($type == "Checkbox"){
+                    $validator = Validator::make($fieldArray,[
+                        'id' => 'required|alpha_dash',
+                        'name' => 'required',
+                        'required'=>'required',
+                        'value_checked'=>'required',
+                        'value_unchecked'=>'required',
+                    ]);
+                    if($validator->fails()){
+                        $fieldErrors->push($validator->errors());
+                    }
+                    else{
+                        $field_options = new Collection();
+                        $field_options->put('required',$fieldDef->get('required'));
+                        $field_options->put('value_unchecked',$fieldDef->get('value_unchecked'));
+                        $field_options->put('value_checked',$fieldDef->get('value_checked'));
+
+                        $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                        $field->save();
+                    }
+                }
+                else if($type == "Select"){
+                    $validator = Validator::make($fieldArray,[
+                        'id' => 'required|alpha_dash',
+                        'name' => 'required',
+                        'required'=>'required',
+                        'multipleselect'=>'required|boolean',
+                        'options'=>'required|array',
+                        'options.*.label'=>'required',
+                        'options.*.value'=>'required',
+                    ]);
+                    if($validator->fails()){
+                        $fieldErrors->push($validator->errors());
+                    }
+                    else{
+                        $field_options = new Collection();
+                        $field_options->put('required',$fieldDef->get('required'));
+                        $field_options->put('multipleselect',$fieldDef->get('multipleselect'));
+                        $field_options->put('options',$fieldDef->get('options'));
+
+                        $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                        $field->save();
+                    }
+                }
+                else if($type == "RadioGroup"){
+                    $validator = Validator::make($fieldArray,[
+                        'id' => 'required|alpha_dash',
+                        'name' => 'required',
+                        'required'=>'required',
+                        'options'=>'required|array',
+                        'options.*.label'=>'required',
+                        'options.*.value'=>'required',
+                    ]);
+                    if($validator->fails()){
+                        $fieldErrors->push($validator->errors());
+                    }
+                    else{
+                        $field_options = new Collection();
+                        $field_options->put('required',$fieldDef->get('required'));
+                        $field_options->put('options',$fieldDef->get('options'));
+
+                        $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                        $field->save();
+                    }
+                }
+                else if($type == "Address"){
+                    $validator = Validator::make($fieldArray,[
+                        'id' => 'required|alpha_dash',
+                        'name' => 'required',
+                        'required'=>'required'
+                    ]);
+                    if($validator->fails()){
+                        $fieldErrors->push($validator->errors());
+                    }
+                    else{
+                        $field_options = new Collection();
+                        $field_options->put('required',$fieldDef->get('required'));
+                        $field_options->put('options',$fieldDef->get('options'));
+
+                        $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                        $field->save();
+                    }
+                }
+                else{
+                    $fieldErrors->push(["Unknown field type in submission"]);
+                }
+
+                $new_fields->push($field);
+            }
+
+            if($fieldErrors->count() == 0){
+                foreach($old_fields as $old_field){
+                    $old_field->delete();
+                }
+                return response()->json([$formDef->id],200);
+            }
+            else{
+                $formDef->forceDelete();
+                $errorBag = new Collection();
+                foreach($fieldErrors as $fieldError){
+                    foreach($fieldError->messages() as $error){
+                        $errorBag->push($error);
+                    }
+                }
+                return response()->json($errorBag,422);
+            }
+
+        }
+    }
+
+
+    public function schedule(FormDefinition $form, Request $request){
+        if($form->status == "Archived" ) {
+            flash()->overlay("It is not possible to modify an archived form.","Status Change Failed");
+            return redirect()->back();
+        }
+        return view('formdefinitions.schedule',compact('form'));
+    }
+
+
+    public function updateSchedule(FormDefinition $form, Request $request){
+        $this->validate($request,[
+            'start_date'=>'required|date_format:m#d#Y',
+            'end_date'=>'required|date_format:m#d#Y',
+            'scores_date'=>'required|date_format:m#d#Y']
+        );
+
+    }
+
+    public function updateStatus(FormDefinition $form, Request $request){
+        $this->validate($request,[
+                'status'=>'required|in:Drafting,Scheduled,Accepting,Reviewing,Scored,Archived'
+            ]
+        );
+
+        if($form->submissions()->get()->count() > 0 && ($request->input("status") == "Drafting" || $request->input("status") == "Scheduled")) {
+            flash()->overlay("This form already has submissions.  It is not possible to change to Draft or Scheduled status at this point, as these would permit modifying the form definition, and that would corrupt all submissions","Status Change Failed");
+        }
+        if($form->status == "Archived"){
+            flash()->overlay("It is not possible to modify the status of an archived form.","Status Change Failed");
+        }
+        else{
+            try{
+                $form->status = $request->input("status");
+                $form->save();
+                flash()->overlay("The form status has been updated.","Status Changed");
+            }
+            catch(\Exception $e){
+                flash()->overlay("The status cannot be changed due to a technical problem.","Status Change Failed");
+            }
+
+        }
+
+        return redirect(action('FormDefinitionController@show',compact('form')));
     }
 
     public function destroy(){

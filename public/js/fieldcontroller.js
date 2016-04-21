@@ -35,8 +35,9 @@ function FieldController(parentElement, previousValues)  {
                 alert("There was a problem creating a field of the type you selected, please sign out, close all browser windows, then try again.  If the problem persists, please refer to the documentation.")
                 return;
             }
-            this.field_objects[field_id] =  newField;
+
             var field_id = previousValues[i].id;
+            this.field_objects[field_id] =  newField;
             var name = previousValues[i].name;
             var panel_group = $("<div class='panel-group'>").attr("id","panel_group_"+field_id);
 

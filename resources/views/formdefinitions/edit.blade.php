@@ -14,7 +14,7 @@
                     <div class="panel-body">
 
                     -->
-                <h1>Create a Form</h1>
+                <h1>Edit a Form</h1>
 
                 <p>
                     Form Definitions allow you to express the layout and content of a Form.
@@ -48,38 +48,6 @@
                         <label for="description">Description:</label>
                         <textarea name="description" rows="3" class="form-control" id="description">{{$form->description}}</textarea>
                     </div>
-
-                    <div class="row">
-                        <div class="form-group col-xs-6">
-                            <label for="start_date">Submissions Start Date:</label>
-                            <input name="start_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="start_date" >
-                        </div>
-
-                        <div class="form-group col-xs-6">
-                            <label for="end_date">Submissions End Date:</label>
-                            <input name="end_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="end_date" >
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-xs-6">
-                            <label for="scores_date">Judge's Scores Due</label>
-                            <input name="scores_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="scores_date" >
-                        </div>
-
-                        <div class="form-group col-xs-6">
-                            <label for="group_id">Group:</label>
-                            <select name="group_id" class="form-control" id="group_id">
-                                @foreach($groups as $group)
-                                    <option value="{{$group->id}}">{{$group->name}}</option>
-
-                                @endforeach
-                            </select>
-                        </div>
-
-                    </div>
-
 
                     <hr>
 
@@ -142,47 +110,6 @@
     <script>
 
         // $('#scores_due_date').datepicker();
-
-
-        var nowTemp = new Date();
-        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-
-        var start_date = $('#start_date').datepicker({
-            onRender: function(date) {
-                return date.valueOf() < now.valueOf() ? 'disabled' : '';
-            }
-        }).on('changeDate', function(ev) {
-            if (ev.date.valueOf() > end_date.date.valueOf()) {
-                var newDate = new Date(ev.date)
-                newDate.setDate(newDate.getDate() + 1);
-                end_date.setValue(newDate);
-            }
-            start_date.hide();
-            $('#end_date')[0].focus();
-        }).data('datepicker');
-
-        var end_date = $('#end_date').datepicker({
-            onRender: function(date) {
-                return date.valueOf() <= start_date.date.valueOf() ? 'disabled' : '';
-            }
-        }).on('changeDate', function(ev) {
-            if (ev.date.valueOf() > scores_date.date.valueOf()) {
-                var newDate = new Date(ev.date)
-                newDate.setDate(newDate.getDate() + 1);
-                scores_date.setValue(newDate);
-            }
-            end_date.hide();
-            $('#scores_date')[0].focus();
-        }).data('datepicker');
-
-        var scores_date = $('#scores_date').datepicker({
-            onRender: function(date) {
-                return date.valueOf() <= end_date.date.valueOf() ? 'disabled' : '';
-            }
-        }).on('changeDate', function(ev) {
-            scores_date.hide();
-            $('#scores_date')[0].focus();
-        }).data('datepicker');
 
 
         var ckeditor_description = CKEDITOR.replace( 'description' );

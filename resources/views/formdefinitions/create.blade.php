@@ -230,7 +230,7 @@
                     data:formdef
                 }).done(function(data,textStatus,jqXHR){
                     console.log(data);
-                    //location.replace("{{action('FormDefinitionController@index')}}");
+                    location.replace("{{action('FormDefinitionController@index')}}");
                 }).fail(function (jqXHR,textStatus,errorThrown) {
                     console.log("Error:"+errorThrown);
                     var errorsJson = JSON.parse(jqXHR.responseText);
