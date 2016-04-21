@@ -100,6 +100,8 @@
                                 @include('fields.submission.checkbox',['checkbox_field'=>$field])
                             @elseif($field->get('fieldDef')->type == 'RadioGroup')
                                 @include('fields.submission.radiogroup',['radiogroup_field'=>$field])
+                            @elseif($field->get('fieldDef')->type == 'Address')
+                                @include('fields.submission.address',['address_field'=>$field])
                             @else
                                 {{json_encode($field)}}<br>
                             @endif
