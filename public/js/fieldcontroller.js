@@ -460,9 +460,15 @@ function SelectField(id,name,currentValuesObj){
         //Load prior values if they exist
 
         //console.log("selectopts: "+currentValuesObj.options);
-        var field_options = JSON.parse(currentValuesObj.options);
+       // var field_options = JSON.parse(currentValuesObj.options);
         //console.log(field_options.options);
 
+        if(currentValuesObj !== null){
+            var field_options = JSON.parse(currentValuesObj.options);
+        }
+        else{
+            var field_options = {options:null};
+        }
 
         if (field_options.options !== null){
             console.log("Previous values exist and are loading!");
@@ -630,7 +636,13 @@ function RadioGroupField(id,name,currentValuesObj){
         //Load prior values if they exist
 
         //console.log("selectopts: "+currentValuesObj.options);
-        var field_options = JSON.parse(currentValuesObj.options);
+        if(currentValuesObj !== null){
+            var field_options = JSON.parse(currentValuesObj.options);
+        }
+        else{
+            var field_options = {options:null};
+        }
+
         //console.log(field_options.options);
 
 
