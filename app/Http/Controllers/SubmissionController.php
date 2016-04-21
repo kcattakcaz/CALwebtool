@@ -254,6 +254,7 @@ class SubmissionController extends Controller
                 $field->field_id."_line2" => 'string',
                 $field->field_id."_city" => 'required|string',
                 $field->field_id."_state"=>'required|string',
+                $field->field_id."_country"=>'required|string',
                 $field->field_id."_zip"=>'required|numeric'
             ]);
 
