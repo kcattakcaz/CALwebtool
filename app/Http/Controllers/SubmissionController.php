@@ -12,6 +12,8 @@ use CALwebtool\Http\Requests;
 use CALwebtool\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class SubmissionController extends Controller
@@ -52,12 +54,19 @@ class SubmissionController extends Controller
             'email' => 'required|email',
         ]);
 
+
+
         $fields = new Collection();
         $errors = new Collection();
 
+        if($formDef->submissions()->where('email',$request->input('email'))->get()->count() > 0){
+            $errors->push("A submission already exists for the e-mail you used: ". $request->input("email"));
+        }
+
+
         foreach($formDef->fields()->get() as $field){
             $options = json_decode($field->options);
-            if($options->required && !$request->has($field->field_id)){
+            if($options->required && !$request->has($field->field_id) && $field->type != 'Checkbox'){
                 $errors->push("Missing required field named ".$field->name." with ID".$field->field_id);
             }
             elseif(!$request->has($field->field_id)){
@@ -82,7 +91,8 @@ class SubmissionController extends Controller
 
         $submission = new Submission(["form_definition_id"=>$formDef->id,"name"=>$request->input('name'),"email"=>$request->input('email'),"password"=>null,"submitted"=>Carbon::now(),"status"=>'Reviewing',"options"=>$fields->toJson()]);
         $submission->save();
-        return response()->json(["The submission was accepted and follows",$submission],200);
+        //return response()->json(["The submission was accepted and follows",$submission],200);
+        return view('formdefinitions.accepted',compact('formDef','submission'));
 
     }
 
@@ -221,6 +231,24 @@ class SubmissionController extends Controller
                     $field->field_id . ".*" => 'required|string',
                 ]);
             }
+
+            if($validator->fails()){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        elseif($field->type == "Address"){
+            //dd();
+            //$fieldArray = [$field->field_id=$value];
+            $validator = Validator::make(\Illuminate\Support\Facades\Request::input(),[
+                $field->field_id."_line1" => 'required',
+                $field->field_id."_line2" => 'string',
+                $field->field_id."_city" => 'required|string',
+                $field->field_id."_state"=>'required|string',
+                $field->field_id."_zip"=>'required|numeric'
+            ]);
 
             if($validator->fails()){
                 return false;

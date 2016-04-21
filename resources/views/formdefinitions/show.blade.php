@@ -37,7 +37,9 @@
                             @if($form->status == "Drafting")
                                 A draft of the form has been saved, but it hasn't been scheduled yet.  It will <strong>NOT</strong> open for submissions until you schedule it!
                             @elseif($form->status == "Scheduled")
-                                The form is scheduled to open on {{$form->submissions_start}}
+                                The form is scheduled to open on {{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$form->submissions_start)->toDayDateTimeString()}} (It's {{\Carbon\Carbon::now()->toDayDateTimeString()}} right now)
+                                @elseif($form->status == "Accepting")
+                                The form is now accepting submissions until {{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$form->submissions_end)->toDayDateTimeString()}} (It's {{\Carbon\Carbon::now()->toDayDateTimeString()}}
                             @endif
                         </div>
                     </div>

@@ -35,6 +35,6 @@ class FormDefinition extends Model
     }
 
     public function submissions(){
-        return $this->hasMany('CALwebtool\Submission');
+        return $this->hasMany('CALwebtool\Submission','form_definition_id');
     }
 }
