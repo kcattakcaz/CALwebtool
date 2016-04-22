@@ -8,10 +8,16 @@
     <div class="input-group">
         <span class="input-group-addon" id="basic-addon1">{{$select_field->get('fieldDef')->name}}</span>
         <select disabled multiple class="form-control" aria-describedby="basic-addon1">
-@foreach($select_field->get('submission') as $opt)
-<option>{{$opt}}</option>
-@endforeach
+            @if($select_field->get('submission') !== null)
+                @foreach($select_field->get('submission') as $opt)
+                    <option>{{$opt}}</option>
+                @endforeach
+            @else
+                <option>No Selection</option>
+            @endif
             </select>
+
+
 
 
     </div>

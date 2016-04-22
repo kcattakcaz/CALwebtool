@@ -55,6 +55,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('form/{form}/schedule','FormDefinitionController@schedule');
     Route::post('form/{form}/schedule','FormDefinitionController@updateSchedule');
     Route::post('form/{form}/status','FormDefinitionController@updateStatus');
+    Route::get('form/confirmDelete','FormDefinitionController@delete');
     Route::resource('form','FormDefinitionController');
     Route::get('submissions/form/{form}','SubmissionController@getForm');
     Route::resource('submissions','SubmissionController');

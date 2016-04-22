@@ -163,11 +163,12 @@
                     data:formdef
                 }).done(function(data,textStatus,jqXHR){
                     console.log(data);
+                    alert("The changes have been saved.");
+                    location.reload();
                 }).fail(function (jqXHR,textStatus,errorThrown) {
-                    console.log("Error:"+errorThrown);
+                    //console.log("Error:"+errorThrown);
                     //console.log("Error:"+errorThrown);
                     var errorsJson = JSON.parse(jqXHR.responseText);
-                    console.log(errorsJson);
                     var errorString = "The form couldn't be saved due to the following errors:\n\n";
                     for(fields in errorsJson){
                         console.log(fields);

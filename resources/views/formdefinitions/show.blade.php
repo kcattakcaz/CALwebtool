@@ -5,23 +5,6 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <h1>{{$form->name}}</h1>
-            {{--
-            <div class="panel panel-default">
-                <div class="panel-heading">Form Settings</div>
-                <div class="panel-body">
-                    <div class="btn-group pull-right" role="group" aria-label="...">
-                        <a href="{{action('FormDefinitionController@edit', compact('form'))}}"><button type="button" class="btn btn-default">
-                                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Edit Form
-                            </button>
-                        </a>
-                       <a> <button type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
-                        </button> </a>
-                    </div>
-                </div>
-            </div>
-
-            --}}
 
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default">
@@ -38,9 +21,29 @@
                                 A draft of the form has been saved, but it hasn't been scheduled yet.  It will <strong>NOT</strong> open for submissions until you schedule it!
                             @elseif($form->status == "Scheduled")
                                 The form is scheduled to open on {{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$form->submissions_start)->toDayDateTimeString()}} (It's {{\Carbon\Carbon::now()->toDayDateTimeString()}} right now)
-                                @elseif($form->status == "Accepting")
+                            @elseif($form->status == "Accepting")
                                 The form is now accepting submissions until {{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$form->submissions_end)->toDayDateTimeString()}} (It's {{\Carbon\Carbon::now()->toDayDateTimeString()}}
+                            @elseif($form->status == "Reviewing")
+
+                            @elseif($form->status == "Scored")
+
+                            @elseif($form->status == "Archived")
+                                The form is archived.
                             @endif
+
+                            <br>
+
+                            <div class="btn-group" role="group" aria-label="...">
+                                <a href="{{action('FormDefinitionController@schedule',compact('form'))}}">
+                                    <button type="button" class="btn btn-primary">Schedule</button>
+                                </a>
+                                <a href="{{action('FormDefinitionController@edit',compact('form'))}}">
+                                    <button type="button" class="btn btn-default">Edit</button>
+                                </a>
+                                <a href="{{action('FormDefinitionController@delete',compact('form'))}}">
+                                    <button type="button" class="btn btn-danger">Delete</button>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

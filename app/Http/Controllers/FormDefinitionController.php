@@ -256,6 +256,12 @@ class FormDefinitionController extends Controller
     public function edit(FormDefinition $form){
         $groups = Auth::user()->creatorGroups()->get();
             //return view('formdefinitions.create',compact('groups'));
+
+        if($form->submissions()->get()->count() > 0){
+            flash()->overlay("You cannot edit a form after it has opened and received submissions","Form Edit");
+            return redirect()->back();
+        }
+
         return view('formdefinitions.edit',compact('form','groups'));
     }
 
@@ -276,7 +282,7 @@ class FormDefinitionController extends Controller
 
     public function update(FormDefinition $form, Request $request){
         if($form->status != "Drafting" || $form->submissions()->get()->count() > 0 ) {
-            return repsonse()->json(["status" => false, "message" => "You cannot edit a form that has already opened or has submissions"]);
+            return response()->json(["error" => true, "message" => "You cannot edit a form that has already opened or has submissions"],405);
         }
         else{
 
@@ -403,7 +409,7 @@ class FormDefinitionController extends Controller
                 foreach($old_fields as $old_field){
                     $old_field->delete();
                 }
-                return response()->json([$formDef->id],200);
+                return response()->json(["id"=>$formDef->id,"new_fields"=>$new_fields,"old_fields"=>$old_fields],200);
             }
             else{
                 $formDef->forceDelete();
@@ -465,7 +471,35 @@ class FormDefinitionController extends Controller
         return redirect(action('FormDefinitionController@show',compact('form')));
     }
 
-    public function destroy(){
+    public function delete(Request $request){
+        if($request->has('form')){
+            try{
+                $form = FormDefinition::findOrFail($request->input('form'));
+            }
+            catch(\Exception $e){
+                flash()->overlay("The form you specified couldn't be found","Form Not Found");
+                return redirect()->back();
+            }
+        }
+        else{
+            flash()->overlay("You did not specify a form to delete.","No Form Specified");
+            return redirect()->back();
+        }
+        flash()->overlay("<form action='".action('FormDefinitionController@destroy',compact('form'))."' method='post'>". csrf_field(). "<input type='hidden' name='_method' value='DELETE'> <strong>Are you sure you want to delete this form?  All associated data including form defintion, submissions, and scores will be destroyed.</strong> <br><input class='btn btn-danger' type='submit' value='Yes, I want to DELETE this form'></form>","Are you sure?");
+        return redirect()->back();
+    }
+
+    public function destroy(FormDefinition $form){
+
+        try {
+            $form->delete();
+            flash()->overlay("The form has been deleted.","Form Deleted");
+            return redirect(action('FormDefinitionController@index'));
+        }
+        catch(\Exception $e){
+            flash()->overlay("The form cannot be deleted.","Form Not Deleted");
+            return redirect()->back();
+        }
 
     }
 }
