@@ -1,0 +1,32 @@
+html, body {
+    height: 100%;
+}
+
+html {
+    background-color: #9d9d9d;
+    display: table;
+    margin: auto;
+    padding: 0.5em;
+}
+
+body {
+    display: table-cell;
+    vertical-align: middle;
+    font-family: 'Lato';
+    border: 1px black solid;
+    padding:2em;
+    box-shadow: 10px 7px 5px #7c7c7c;
+}
+.fa-btn {
+    margin-right: 6px;
+}
+
+#addressField{
+    border: 1px #cccccc solid;
+    padding: 1em;
+    border-radius:5px;
+}
+
+#addressName{
+    padding-top:1em;
+}

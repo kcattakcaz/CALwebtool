@@ -1,7 +1,7 @@
-<div class="form-group">
+<label id="addressName" for="{{$address_field->get('id')}}">{{$address_field->get('name')}}</label>
+<input type="hidden" name="{{$address_field->get('id')}}[]"/>
 
-    <label for="{{$address_field->get('id')}}">{{$address_field->get('name')}}</label>
-    <input type="hidden" name="{{$address_field->get('id')}}[]"/>
+<div class="form-group" id="addressField">
 
     <div class="form-group">
         <label for="{{$address_field->get('id')}}_line1">Address Line 1</label>
@@ -13,12 +13,12 @@
         <input class="form-control" name="{{$address_field->get('id')}}_line2" type="text" id="{{$address_field->get('id')}}_line2">
     </div>
 
-    <div class="form-group col-md-4">
-        <label for="{{$address_field->get('id')}}_city">City</label>
-        <input class="form-control" name="{{$address_field->get('id')}}_city" type="text" id="{{$address_field->get('id')}}_city">
-    </div>
-
     <div class="row">
+        <div class="form-group col-md-4">
+            <label for="{{$address_field->get('id')}}_city">City</label>
+            <input class="form-control" name="{{$address_field->get('id')}}_city" type="text" id="{{$address_field->get('id')}}_city">
+        </div>
+
         <div class="form-group col-md-4">
             <label for="{{$address_field->get('id')}}_state">State</label>
             <select class="form-control" name="{{$address_field->get('id')}}_state" id="{{$address_field->get('id')}}_state">
@@ -83,6 +83,7 @@
             <select class="form-control" name="{{$address_field->get('id')}}_country" id="{{$address_field->get('id')}}_country">
                 <option value="">Select a country:</option>
                 <option value="" disabled>--------------------</option>
+                <option value="USA">United States</option>
                 <option value="AFG">Afghanistan</option>
                 <option value="ALA">Åland Islands</option>
                 <option value="ALB">Albania</option>
@@ -318,7 +319,6 @@
                 <option value="UKR">Ukraine</option>
                 <option value="ARE">United Arab Emirates</option>
                 <option value="GBR">United Kingdom</option>
-                <option value="USA">United States</option>
                 <option value="UMI">United States Minor Outlying Islands</option>
                 <option value="URY">Uruguay</option>
                 <option value="UZB">Uzbekistan</option>

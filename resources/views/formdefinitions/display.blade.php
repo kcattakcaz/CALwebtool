@@ -14,15 +14,7 @@
         <!-- Styles -->
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
         {{-- <link href="{{ elixir('custom/app.custom') }}" rel="stylesheet"> --}}
-        <style>
-            body {
-                font-family: 'Lato';
-            }
-
-            .fa-btn {
-                margin-right: 6px;
-            }
-        </style>
+        <link rel='stylesheet' href="{{secure_asset('css/forms.css')}}">
 
         <!-- JavaScripts -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -39,7 +31,7 @@
 
 
     <div class="container">
-        <div class="col-md-10 col-md-offset-1">
+        <div>
 
         <h1>{{$formDef->name}}</h1>
 
