@@ -34,13 +34,10 @@
         <div>
 
         <h1>{{$formDef->name}}</h1>
-
-
-        <div class="row">
-            <div class="col-md-10 form-group">
+            
+            <div class="form-group">
                 {!! $formDef->description!!}
             </div>
-        </div>
 
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
