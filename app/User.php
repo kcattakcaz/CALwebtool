@@ -57,6 +57,6 @@ class User extends Authenticatable
     }
 
     public function judgingForms(){
-        return $this->belongsToMany('CALwebtool\FormDefinition','form_users','user_id','form_id');
+        return $this->belongsToMany('CALwebtool\FormDefinition','form_users','user_id','form_id')->withTimestamps();
     }
 }

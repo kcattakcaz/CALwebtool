@@ -35,10 +35,13 @@
 
                             <div class="btn-group" role="group" aria-label="...">
                                 <a href="{{action('FormDefinitionController@schedule',compact('form'))}}">
-                                    <button type="button" class="btn btn-primary">Schedule</button>
+                                    <button type="button" class="btn btn-default">Schedule</button>
                                 </a>
                                 <a href="{{action('FormDefinitionController@displayForm',compact('form'))}}">
                                     <button type="button" class="btn btn-default">View Form</button>
+                                </a>
+                                <a href="{{action('FormDefinitionController@judges',compact('form'))}}">
+                                    <button type="button" class="btn btn-default">Judges</button>
                                 </a>
                                 <a href="{{action('FormDefinitionController@edit',compact('form'))}}">
                                     <button type="button" class="btn btn-default">Edit</button>

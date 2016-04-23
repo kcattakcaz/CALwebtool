@@ -483,7 +483,7 @@
                     }
                     alert(errorString);
 
-                })
+                });
             }
         });
 

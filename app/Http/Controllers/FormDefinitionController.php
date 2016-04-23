@@ -267,6 +267,16 @@ class FormDefinitionController extends Controller
             }
         }
 
+        try{
+            foreach ($judges as $judge){
+                $formDef->judges()->save($judge);
+            }
+
+        }catch(\Exception $e){
+            $formDef->forceDelete();
+            return response()->json(['Error Creating Form'=>["Failed to add a judge",$e->getMessage()]],500);
+        }
+
         if($fieldErrors->count() == 0){
             return response()->json([$formDef->id],200);
         }
@@ -572,6 +582,60 @@ class FormDefinitionController extends Controller
 
     }
 
+    public function judges(FormDefinition $form){
+        $current_judges = $form->judges()->get();
+        $available_judges = $form->group()->first()->adjudicatorUsers()->get()->diff($current_judges);
+
+        return view('formdefinitions.judges',compact('form','current_judges','available_judges'));
+    }
+
+    public function updateJudges(FormDefinition $form, Request $request){
+        $this->validate($request, [
+           'judges' => 'required|array',
+            'judges.*'=>'exists:users,id'
+        ]);
+
+        $error_list = new Collection();
+
+        $updated_judges = new Collection();
+
+        foreach($request->input('judges') as $new_judge_id) {
+            try {
+                $judge = $form->group()->first()->adjudicatorUsers()->findOrFail($new_judge_id);
+                $updated_judges->put($judge->id,$judge);
+            } catch (\Exception $e) {
+                $error_list->push("Judge with User ID of " . $new_judge_id . " not found and thus not added!");
+
+            }
+        }
+
+        $current_judges = $form->judges()->get();
+
+        foreach($current_judges as $cur_judge){
+            if(!$updated_judges->has($cur_judge->id)){
+                $form->judges()->detach($cur_judge->id);
+            }
+            $updated_judges->forget($cur_judge->id);
+        }
+        
+        foreach ($updated_judges as $new_judge){
+            $form->judges()->save($new_judge);
+        }
+
+        if($error_list->count() > 0){
+            $error_string = "";
+            foreach($error_list as $error){
+                $error_string = $error_string . "<br>$error";
+            }
+            flash()->overlay("Something went wrong, and not all the judges may have been added correctly.  Double check the results.".$error_string,"Error");
+            return redirect()->back();
+        }
+        else{
+            flash()->overlay("The judges have been added to the form","Form Updated");
+            return redirect()->back();
+        }
+    }
+
     public static function scheduleForms(){
         $forms = FormDefinition::where('status','!=','archived')->get();
         $time = Carbon::now('America/Detroit');
@@ -604,4 +668,5 @@ class FormDefinitionController extends Controller
             $form->save();
         }
     }
+
 }

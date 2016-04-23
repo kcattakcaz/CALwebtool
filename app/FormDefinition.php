@@ -14,7 +14,7 @@ class FormDefinition extends Model
      *
      * @var array
      */
-    
+
     protected $fillable = [
         'name', 'description', 'group_id', 'user_id', 'submissions_start', 'submissions_end', 'scores_due', 'status', 'created_at', 'updated_at', 'notify_completed_sent', 'sub_accept_action', 'sub_accept_content', 'use_custom_css', 'custom_css_url'
     ];
@@ -42,6 +42,6 @@ class FormDefinition extends Model
 
     public function judges()
     {
-        return $this->belongsToMany('CALwebtool\Users','form_users','form_id','user_id');
+        return $this->belongsToMany('CALwebtool\User','form_users','form_id','user_id')->withTimestamps();
     }
 }
