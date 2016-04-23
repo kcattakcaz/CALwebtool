@@ -14,23 +14,26 @@
                 <div class="panel-body">
 
                 -->
+
+            <div class="row">
                     <h1>Create a Form</h1>
 
                    <p>
-                       Form Definitions really allow you to express the layout and content of a Form.
-                    </p>
+                       Form Definitions allow you to express the layout and content of a Form.
+                   </p>
+            </div>
 
-                    <p>
-                        Note that Form Definitions belong to the group as a whole, and not to a specific user.
-                        Any user with sufficient permission in this group will be able to modify it.
-                    </p>
 
-            <ul class="nav nav-tabs">
-                <li id="nav_tab_name" role="presentation" class="active"><a href="#">1- Name</a></li>
-                <li id="nav_tab_schedule" role="presentation"><a href="#">2- Schedule</a></li>
-                <li id="nav_tab_definition" role="presentation"><a href="#">3- Definition</a></li>
-                <li id="nav_tab_judges" role="presentation"><a href="#">4- Judges</a></li>
-            </ul>
+            <div class="row">
+
+
+                <ul class="nav nav-tabs">
+                    <li id="nav_tab_name" role="presentation" class="form_switch_to_name active"><a href="#">1- Name</a></li>
+                    <li id="nav_tab_schedule" role="presentation" class="form_switch_to_schedule"><a href="#">2- Schedule</a></li>
+                    <li id="nav_tab_definition" role="presentation" class="form_switch_to_definition"><a href="#">3- Definition</a></li>
+                    <li id="nav_tab_judges" role="presentation" class="form_switch_to_judges"><a href="#">4- Judges</a></li>
+                </ul>
+            </div>
 
 
                     @if (count($errors) > 0)
@@ -47,21 +50,35 @@
                     <form role="form">
                         {{ csrf_field() }}
 
-                        <div id="form_tab_name">
-                            <div class="form-group">
-                                <label for="name">Form Name:</label>
-                                <input name="name" type="text" class="form-control" id="name">
+                        <div class="row">
+                            <br>
+                            <div id="form_tab_name">
+                                <div class="form-group">
+                                    <label for="name">Form Name:</label>
+                                    <input name="name" type="text" class="form-control" id="name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Description:</label>
+                                    <textarea name="description" rows="3" class="form-control" id="description"></textarea>
+                                </div>
+
+                                <div>
+                                    <a href="#" class="form_switch_to_schedule">
+                                        <button type="button" class="btn btn-info pull-right">Next</button>
+                                    </a>
+                                </div>
+
                             </div>
 
-                            <div class="form-group">
-                                <label for="description">Description:</label>
-                                <textarea name="description" rows="3" class="form-control" id="description"></textarea>
-                            </div>
+
+
                         </div>
 
                         <div id="form_tab_schedule" style="display:none;">
 
                             <div class="row">
+                                <br>
                                 <div class="form-group col-xs-6">
                                     <label for="start_date">Submissions Start Date:</label>
                                     <input name="start_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="start_date" >
@@ -92,10 +109,21 @@
 
                             </div>
 
+                            <div>
+                                <a href="#" class="form_switch_to_name">
+                                    <button class="btn btn-info pull-left">Previous</button>
+                                </a>
+
+                                <a href="#" class="form_switch_to_definition">
+                                    <button class="btn btn-info pull-right">Next</button>
+                                </a>
+                            </div>
+
                         </div>
 
 
                         <div id="form_tab_definition" style="display:none;">
+                            <br>
                             <div class="row">
                                 <div id="formdef_creator" class="form-group">
                                     <label for="ftype_select" class="col-md-2">
@@ -125,12 +153,33 @@
                                 </div>
                             </div>
 
+                            <div>
+                                <a href="#" class="form_switch_to_schedule pull-left">
+                                    <button class="btn btn-info">Previous</button>
+                                </a>
 
-                            <button id="btn_save_formdef" type="button" class="btn btn-default">Save</button>
+                                <a href="#" class="form_switch_to_judges pull-right">
+                                    <button class="btn btn-info">Next</button>
+                                </a>
+                            </div>
+
                         </div>
 
                         <div id="form_tab_judges" style="display:none;">
                             <h1>Judges</h1>
+
+                            <div>
+                                <a href="#" class="form_switch_to_definition">
+                                    <button class="btn btn-info">Previous</button>
+                                </a>
+
+                                <button id="btn_save_formdef" type="button" class="btn btn-success pull-right">Save</button>
+
+                            </div>
+
+
+
+
                         </div>
 
                     </form>
@@ -160,9 +209,8 @@
 
        // $('#scores_due_date').datepicker();
 
-
-       $("#nav_tab_schedule").on('click',function(){
-           $(this).addClass('active');
+       function switchToSchedule() {
+           $("#nav_tab_schedule").addClass('active');
 
            $("#form_tab_name").slideUp('fast');
            $("#form_tab_definition").slideUp('fast');
@@ -172,26 +220,22 @@
            $("#nav_tab_name").removeClass('active');
            $("#nav_tab_judges").removeClass('active');
            $("#nav_tab_definition").removeClass('active');
+       }
 
-       });
-
-
-       $("#nav_tab_name").on('click',function(){
-           $(this).addClass('active');
+       function switchToName(){
+           $("#nav_tab_name").addClass('active');
            $("#form_tab_definition").slideUp('fast');
            $("#form_tab_schedule").slideUp('fast');
            $("#form_tab_judges").slideUp('fast');
            $("#form_tab_name").slideDown('slow');
-
-
+           
            $("#nav_tab_judges").removeClass('active');
            $('#nav_tab_schedule').removeClass('active');
            $("#nav_tab_definition").removeClass('active');
-       });
-
-
-       $("#nav_tab_definition").on('click',function(){
-           $(this).addClass('active');
+       }
+       
+       function switchToDefintion(){
+           $("#nav_tab_definition").addClass('active');
            $("#form_tab_name").slideUp('fast');
            $("#form_tab_schedule").slideUp('fast');
            $("#form_tab_judges").slideUp('fast');
@@ -201,11 +245,10 @@
            $("#nav_tab_judges").removeClass('active');
            $('#nav_tab_schedule').removeClass('active');
            $("#nav_tab_name").removeClass('active');
-       });
-
-
-       $("#nav_tab_judges").on('click',function(){
-           $(this).addClass('active');
+       }
+       
+       function switchToJudges() {
+           $("#nav_tab_judges").addClass('active');
            $("#form_tab_definition").slideUp('fast');
            $("#form_tab_schedule").slideUp('fast');
            $("#form_tab_name").slideUp('fast');
@@ -215,6 +258,26 @@
            $("#nav_tab_name").removeClass('active');
            $('#nav_tab_schedule').removeClass('active');
            $("#nav_tab_definition").removeClass('active');
+       }
+
+
+       $(".form_switch_to_schedule").on('click',function(){
+           switchToSchedule();
+       });
+
+
+       $(".form_switch_to_name").on('click',function(){
+           switchToName();
+       });
+
+
+       $(".form_switch_to_definition").on('click',function(){
+           switchToDefintion();
+       });
+
+
+       $(".form_switch_to_judges").on('click',function(){
+           switchToJudges();
        });
 
         var nowTemp = new Date();

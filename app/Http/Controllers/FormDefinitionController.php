@@ -64,11 +64,11 @@ class FormDefinitionController extends Controller
             $group = Group::findOrFail($request->input('group'));
         }
         catch(\Exception $e){
-            flash()->overlay("The group cannot be found, it may have been deleted."."Group Not Found");
+            flash()->overlay("The team cannot be found, it may have been deleted."."Team Not Found");
         }
         
         if(Auth::user()->cannot('createForm-group',$group)){
-
+            return response()->json(["Not authorized."=>["You do not have permission to create forms in this team"]],403);
         }
         
 
