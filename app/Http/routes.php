@@ -71,6 +71,11 @@ Route::group(['middleware' => 'web'], function () {
     //Scores
     Route::resource('submissions.scores','ScoreController');
 
+
+    //Testing
+
+    Route::get('schedform','FormDefinitionController@scheduleForms');
+
 });
 
 Route::group([],function(){
