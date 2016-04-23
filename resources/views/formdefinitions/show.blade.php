@@ -37,6 +37,9 @@
                                 <a href="{{action('FormDefinitionController@schedule',compact('form'))}}">
                                     <button type="button" class="btn btn-primary">Schedule</button>
                                 </a>
+                                <a href="{{action('FormDefinitionController@displayForm',compact('form'))}}">
+                                    <button type="button" class="btn btn-default">View Form</button>
+                                </a>
                                 <a href="{{action('FormDefinitionController@edit',compact('form'))}}">
                                     <button type="button" class="btn btn-default">Edit</button>
                                 </a>
