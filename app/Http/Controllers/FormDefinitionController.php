@@ -37,6 +37,9 @@ class FormDefinitionController extends Controller
     }
 
     public function create(){
+        
+        
+        
         $groups = Auth::user()->creatorGroups()->get();
         if ($groups->count() > 0) {
             return view('formdefinitions.create',compact('groups'));
@@ -49,7 +52,7 @@ class FormDefinitionController extends Controller
     public function store(Request $request){
         $this->validate($request,[
             'name' => 'required|unique:formdefinitions|max:255',
-            'description' => 'required|max:1000',
+            'description' => 'required',
             'group'=>'required|integer',
             'definition'=>'required|array',
             'start_date'=>'required|date_format:m#d#Y',
@@ -57,10 +60,17 @@ class FormDefinitionController extends Controller
             'scores_date'=>'required|date_format:m#d#Y'
         ]);
 
-      /* dd(['submissions_start'=> Carbon::createFromFormat("m#d#y",$request->input('start_date')),
-                    'submissions_end'=> Carbon::createFromFormat("m#d#y",$request->input('end_date')),
-                    'scores_due'=> Carbon::createFromFormat("m#d#y",$request->input('scores_date')),
-            ]); */
+        try{
+            $group = Group::findOrFail($request->input('group'));
+        }
+        catch(\Exception $e){
+            flash()->overlay("The team cannot be found, it may have been deleted."."Team Not Found");
+        }
+        
+        if(Auth::user()->cannot('createForm-group',$group)){
+            return response()->json(["Not authorized."=>["You do not have permission to create forms in this team"]],403);
+        }
+        
 
         if(!(Carbon::createFromFormat("m#d#y",$request->input('start_date')) <  Carbon::createFromFormat("m#d#y",$request->input('end_date'))) || !(Carbon::createFromFormat("m#d#y",$request->input('end_date')) < Carbon::createFromFormat("m#d#y",$request->input('scores_date')))){
             return response()->json(["error"=>true,"The dates you provided are not valid"]);
@@ -501,5 +511,38 @@ class FormDefinitionController extends Controller
             return redirect()->back();
         }
 
+    }
+
+    public static function scheduleForms(){
+        $forms = FormDefinition::where('status','!=','archived')->get();
+        $time = Carbon::now('America/Detroit');
+
+        foreach($forms as $form){
+            echo "<hr>";
+            echo "TIME NOW: $time <br>";
+            echo "Form Start: ".$form->submissions_start."<br>";
+            echo "Form Stop: ".$form->submissions_end."<br>";
+            echo "Scores Due: ".$form->scores_due."<br>";
+            if($form->submissions_start < $time){
+                echo "Form needs to open!<br>";
+                $form->status = "Accepting";
+            }
+            if($form->submissions_end < $time){
+                echo "Form needs to close!<br>";
+                $form->status = "Reviewing";
+            }
+            if($form->scores_due < $time){
+                echo "Form needs to complete<br>";
+                $form->status = "Scored";
+            }
+
+            echo "<br>";
+            echo $form->name. "  status is now: ". $form->status;
+            echo "<br>";
+            echo "<br>";
+            echo "<hr>";
+
+            $form->save();
+        }
     }
 }

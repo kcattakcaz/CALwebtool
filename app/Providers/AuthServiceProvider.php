@@ -3,7 +3,9 @@
 namespace CALwebtool\Providers;
 
 use CALwebtool\FormDefinition;
+use CALwebtool\Group;
 use CALwebtool\Policies\FormPolicy;
+use CALwebtool\Policies\GroupPolicy;
 use CALwebtool\Policies\SubmissionPolicy;
 use CALwebtool\Submission;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
@@ -19,7 +21,8 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         'CALwebtool\Model' => 'CALwebtool\Policies\ModelPolicy',
         Submission::class => SubmissionPolicy::class,
-        FormDefinition::class => FormPolicy::class
+        FormDefinition::class => FormPolicy::class,
+        Group::class=>GroupPolicy::class
     ];
 
     /**

@@ -14,16 +14,26 @@
                 <div class="panel-body">
 
                 -->
+
+            <div class="row">
                     <h1>Create a Form</h1>
 
                    <p>
-                       Form Definitions really allow you to express the layout and content of a Form.
-                    </p>
+                       Form Definitions allow you to express the layout and content of a Form.
+                   </p>
+            </div>
 
-                    <p>
-                        Note that Form Definitions belong to the group as a whole, and not to a specific user.
-                        Any user with sufficient permission in this group will be able to modify it.
-                    </p>
+
+            <div class="row">
+
+
+                <ul class="nav nav-tabs">
+                    <li id="nav_tab_name" role="presentation" class="form_switch_to_name active"><a href="#">1- Name</a></li>
+                    <li id="nav_tab_schedule" role="presentation" class="form_switch_to_schedule"><a href="#">2- Schedule</a></li>
+                    <li id="nav_tab_definition" role="presentation" class="form_switch_to_definition"><a href="#">3- Definition</a></li>
+                    <li id="nav_tab_judges" role="presentation" class="form_switch_to_judges"><a href="#">4- Judges</a></li>
+                </ul>
+            </div>
 
 
                     @if (count($errors) > 0)
@@ -39,82 +49,138 @@
 
                     <form role="form">
                         {{ csrf_field() }}
-                        <div class="form-group">
-                            <label for="name">Form Name:</label>
-                            <input name="name" type="text" class="form-control" id="name">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="description">Description:</label>
-                            <textarea name="description" rows="3" class="form-control" id="description"></textarea>
-                        </div>
 
                         <div class="row">
-                            <div class="form-group col-xs-6">
-                                <label for="start_date">Submissions Start Date:</label>
-                                <input name="start_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="start_date" >
+                            <br>
+                            <div id="form_tab_name">
+                                <div class="form-group">
+                                    <label for="name">Form Name:</label>
+                                    <input name="name" type="text" class="form-control" id="name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Description:</label>
+                                    <textarea name="description" rows="3" class="form-control" id="description"></textarea>
+                                </div>
+
+                                <div>
+                                    <a href="#" class="form_switch_to_schedule">
+                                        <button type="button" class="btn btn-info pull-right">Next</button>
+                                    </a>
+                                </div>
+
                             </div>
 
-                            <div class="form-group col-xs-6">
-                                <label for="end_date">Submissions End Date:</label>
-                                <input name="end_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="end_date" >
+
+
+                        </div>
+
+                        <div id="form_tab_schedule" style="display:none;">
+
+                            <div class="row">
+                                <br>
+                                <div class="form-group col-xs-6">
+                                    <label for="start_date">Submissions Start Date:</label>
+                                    <input name="start_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="start_date" >
+                                </div>
+
+                                <div class="form-group col-xs-6">
+                                    <label for="end_date">Submissions End Date:</label>
+                                    <input name="end_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="end_date" >
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <label for="scores_date">Judge's Scores Due</label>
+                                    <input name="scores_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="scores_date" >
+                                </div>
+
+                                <div class="form-group col-xs-6">
+                                    <label for="group_id">Group:</label>
+                                    <select name="group_id" class="form-control" id="group_id">
+                                        @foreach($groups as $group)
+                                            <option value="{{$group->id}}">{{$group->name}}</option>
+
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <a href="#" class="form_switch_to_name">
+                                    <button class="btn btn-info pull-left">Previous</button>
+                                </a>
+
+                                <a href="#" class="form_switch_to_definition">
+                                    <button class="btn btn-info pull-right">Next</button>
+                                </a>
                             </div>
 
                         </div>
 
-                        <div class="row">
-                            <div class="form-group col-xs-6">
-                                <label for="scores_date">Judge's Scores Due</label>
-                                <input name="scores_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="scores_date" >
+
+                        <div id="form_tab_definition" style="display:none;">
+                            <br>
+                            <div class="row">
+                                <div id="formdef_creator" class="form-group">
+                                    <label for="ftype_select" class="col-md-2">
+                                        Field Type:
+                                    </label>
+                                    <select class="col-md-3" id="ftype_select" name="ftype_select">
+                                            <option value="Text">Text</option>
+                                            <option value="Checkbox">Checkbox</option>
+                                            <option value="Radio">Radio Group</option>
+                                            <option value="Select">Select Dropdown</option>
+                                            <option value="Address">Address</option>
+                                            <option value="File">File</option>
+                                    </select>
+                                    <label for="ftype_name" class="col-md-1">
+                                        Name:
+                                    </label>
+                                    <input id="ftype_name" name="ftype_name" class="col-md-4" type="text"/>
+                                    <button type="button" id="btn_addField" class="btn btn-default col-md-offset-1 col-md-1">Add</button>
+
+                                </div>
                             </div>
 
-                            <div class="form-group col-xs-6">
-                                <label for="group_id">Group:</label>
-                                <select name="group_id" class="form-control" id="group_id">
-                                    @foreach($groups as $group)
-                                        <option value="{{$group->id}}">{{$group->name}}</option>
+                            <hr>
 
-                                    @endforeach
-                                </select>
+                            <div class="row">
+                                <div class="col-xs-12" id="formdef_viewer">
+                                </div>
+                            </div>
+
+                            <div>
+                                <a href="#" class="form_switch_to_schedule pull-left">
+                                    <button class="btn btn-info">Previous</button>
+                                </a>
+
+                                <a href="#" class="form_switch_to_judges pull-right">
+                                    <button class="btn btn-info">Next</button>
+                                </a>
                             </div>
 
                         </div>
 
+                        <div id="form_tab_judges" style="display:none;">
+                            <h1>Judges</h1>
 
-                        <hr>
+                            <div>
+                                <a href="#" class="form_switch_to_definition">
+                                    <button class="btn btn-info">Previous</button>
+                                </a>
 
-                        <div class="row">
-                            <div id="formdef_creator" class="form-group">
-                                <label for="ftype_select" class="col-md-2">
-                                    Field Type:
-                                </label>
-                                <select class="col-md-3" id="ftype_select" name="ftype_select">
-                                        <option value="Text">Text</option>
-                                        <option value="Checkbox">Checkbox</option>
-                                        <option value="Radio">Radio Group</option>
-                                        <option value="Select">Select Dropdown</option>
-                                        <option value="Address">Address</option>
-                                        <option value="File">File</option>
-                                </select>
-                                <label for="ftype_name" class="col-md-1">
-                                    Name:
-                                </label>
-                                <input id="ftype_name" name="ftype_name" class="col-md-4" type="text"/>
-                                <button type="button" id="btn_addField" class="btn btn-default col-md-offset-1 col-md-1">Add</button>
+                                <button id="btn_save_formdef" type="button" class="btn btn-success pull-right">Save</button>
 
                             </div>
+
+
+
+
                         </div>
-
-                        <hr>
-
-                        <div class="row">
-                            <div class="col-xs-12" id="formdef_viewer">
-                            </div>
-                        </div>
-
-
-                        <button id="btn_save_formdef" type="button" class="btn btn-default">Save</button>
-
 
                     </form>
 
@@ -143,6 +209,76 @@
 
        // $('#scores_due_date').datepicker();
 
+       function switchToSchedule() {
+           $("#nav_tab_schedule").addClass('active');
+
+           $("#form_tab_name").slideUp('fast');
+           $("#form_tab_definition").slideUp('fast');
+           $("#form_tab_judges").slideUp('fast');
+           $("#form_tab_schedule").slideDown('slow');
+
+           $("#nav_tab_name").removeClass('active');
+           $("#nav_tab_judges").removeClass('active');
+           $("#nav_tab_definition").removeClass('active');
+       }
+
+       function switchToName(){
+           $("#nav_tab_name").addClass('active');
+           $("#form_tab_definition").slideUp('fast');
+           $("#form_tab_schedule").slideUp('fast');
+           $("#form_tab_judges").slideUp('fast');
+           $("#form_tab_name").slideDown('slow');
+           
+           $("#nav_tab_judges").removeClass('active');
+           $('#nav_tab_schedule').removeClass('active');
+           $("#nav_tab_definition").removeClass('active');
+       }
+       
+       function switchToDefintion(){
+           $("#nav_tab_definition").addClass('active');
+           $("#form_tab_name").slideUp('fast');
+           $("#form_tab_schedule").slideUp('fast');
+           $("#form_tab_judges").slideUp('fast');
+           $("#form_tab_definition").slideDown('slow');
+
+
+           $("#nav_tab_judges").removeClass('active');
+           $('#nav_tab_schedule').removeClass('active');
+           $("#nav_tab_name").removeClass('active');
+       }
+       
+       function switchToJudges() {
+           $("#nav_tab_judges").addClass('active');
+           $("#form_tab_definition").slideUp('fast');
+           $("#form_tab_schedule").slideUp('fast');
+           $("#form_tab_name").slideUp('fast');
+           $("#form_tab_judges").slideDown('slow');
+
+
+           $("#nav_tab_name").removeClass('active');
+           $('#nav_tab_schedule').removeClass('active');
+           $("#nav_tab_definition").removeClass('active');
+       }
+
+
+       $(".form_switch_to_schedule").on('click',function(){
+           switchToSchedule();
+       });
+
+
+       $(".form_switch_to_name").on('click',function(){
+           switchToName();
+       });
+
+
+       $(".form_switch_to_definition").on('click',function(){
+           switchToDefintion();
+       });
+
+
+       $(".form_switch_to_judges").on('click',function(){
+           switchToJudges();
+       });
 
         var nowTemp = new Date();
         var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
