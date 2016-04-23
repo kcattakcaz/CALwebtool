@@ -23,6 +23,11 @@ class CreateFormDefinitionTable extends Migration
             $table->dateTime('submissions_start');
             $table->dateTime('submissions_end');
             $table->dateTime('scores_due');
+            $table->boolean('notify_completed_sent');
+            $table->string('sub_accept_action');
+            $table->boolean('use_custom_css');
+            $table->string('custom_css_url');
+            $table->mediumText('sub_accept_content');
             $table->enum('status',array('Drafting','Scheduled','Accepting','Reviewing','Scored','Archived'));
             $table->timestamps();
 

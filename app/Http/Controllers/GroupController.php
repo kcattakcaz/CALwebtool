@@ -25,7 +25,13 @@ class GroupController extends Controller
     }
 
     public function index(){
-        $groups = Auth::user()->adminGroups()->get();
+        if(Auth::user()->isSystemAdmin()){
+            $groups = Group::all();
+        }
+        else{
+            $groups = Auth::user()->adminGroups()->get();
+        }
+
         return view('groups.index',compact('groups'));
     }
 

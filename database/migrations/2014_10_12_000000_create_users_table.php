@@ -20,6 +20,9 @@ class CreateUsersTable extends Migration
             $table->boolean('active');
             $table->boolean('system_admin');
             $table->string('register_token',60);
+            $table->boolean('notify_unmoderated');
+            $table->boolean('notify_unscored');
+            $table->boolean('notify_completed');
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name','email', 'password', 'active',
+        'name','email', 'password', 'active', 'notify_unmoderated', 'notify_unscored', 'notify_completed'
     ];
 
     /**
@@ -36,6 +36,10 @@ class User extends Authenticatable
         return $this->belongsToMany('CALwebtool\Group');
     }
 
+    public function forms(){
+        return $this->hasMany('CALwebtool\FormDefinition');
+    }
+
     public function creatorGroups(){
         return $this->groups()->wherePivot('creator',true);
     }
@@ -52,7 +56,7 @@ class User extends Authenticatable
         return $this->system_admin;
     }
 
-    public function formDefinitions(){
-        return $this->hasMany('CALwebtool\FormDefinition');
+    public function judgingForms(){
+        return $this->belongsToMany('CALwebtool\FormDefinition','form_users','user_id','form_id');
     }
 }

@@ -32,6 +32,8 @@
                     <li id="nav_tab_schedule" role="presentation" class="form_switch_to_schedule"><a href="#">2- Schedule</a></li>
                     <li id="nav_tab_definition" role="presentation" class="form_switch_to_definition"><a href="#">3- Definition</a></li>
                     <li id="nav_tab_judges" role="presentation" class="form_switch_to_judges"><a href="#">4- Judges</a></li>
+                    <li id="nav_tab_advanced" role="presentation" class="form_switch_to_advanced"><a href="#">Advanced</a></li>
+
                 </ul>
             </div>
 
@@ -97,25 +99,15 @@
                                     <input name="scores_date" type="text" class="form-control" value="" data-date-format="mm/dd/yy" id="scores_date" >
                                 </div>
 
-                                <div class="form-group col-xs-6">
-                                    <label for="group_id">Group:</label>
-                                    <select name="group_id" class="form-control" id="group_id">
-                                        @foreach($groups as $group)
-                                            <option value="{{$group->id}}">{{$group->name}}</option>
-
-                                        @endforeach
-                                    </select>
-                                </div>
-
                             </div>
 
                             <div>
                                 <a href="#" class="form_switch_to_name">
-                                    <button class="btn btn-info pull-left">Previous</button>
+                                    <button type="button" class="btn btn-info pull-left">Previous</button>
                                 </a>
 
                                 <a href="#" class="form_switch_to_definition">
-                                    <button class="btn btn-info pull-right">Next</button>
+                                    <button type="button" class="btn btn-info pull-right">Next</button>
                                 </a>
                             </div>
 
@@ -155,11 +147,11 @@
 
                             <div>
                                 <a href="#" class="form_switch_to_schedule pull-left">
-                                    <button class="btn btn-info">Previous</button>
+                                    <button type="button" class="btn btn-info">Previous</button>
                                 </a>
 
                                 <a href="#" class="form_switch_to_judges pull-right">
-                                    <button class="btn btn-info">Next</button>
+                                    <button type="button" class="btn btn-info">Next</button>
                                 </a>
                             </div>
 
@@ -167,6 +159,29 @@
 
                         <div id="form_tab_judges" style="display:none;">
                             <h1>Judges</h1>
+                            <div class="row">
+
+                                <div class="form-group col-xs-12">
+                                    <label for="group_id">Group:</label>
+                                    <select name="group_id" class="form-control" id="group_id">
+                                        <option value="null">None</option>
+                                        @foreach($groups as $group)
+                                            <option value="{{$group->id}}">{{$group->name}}</option>
+
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-xs-12">
+                                    <label for="judges">Group:</label>
+                                    <select multiple name="judges[]" class="form-control" id="judges">
+
+                                    </select>
+                                </div>
+                            </div>
 
                             <div>
                                 <a href="#" class="form_switch_to_definition">
@@ -179,6 +194,56 @@
 
 
 
+
+                        </div>
+
+                        <div id="form_tab_advanced" style="display: none;">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="sub_accept_action">Action after a successful submission:</label>
+                                    <select id="sub_accept_action" name="sub_accept_action" class="form-control">
+                                        <option value="default">Show Default Message</option>
+                                        <option value="custom_message">Custom Message</option>
+                                        <option value="custom_redir">Custom Redirect</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div id="form_adv_def" class="row">
+                                <p>Thanks, USER NAME, your submission has been accepted.</p>
+                            </div>
+
+                            <div id="form_adv_redir" class="row" style="display:none;">
+                                <div class="form-group">
+                                    <label for="sub_accept_redir">Redirect to URL:</label>
+                                    <input id="sub_accept_redir" type="text" class="form-control" name="sub_accept_redir" placeholder="http://">
+                                </div>
+                            </div>
+                            <div id="form_adv_msg" class="row" style="display:none;">
+                                <div class="form-group">
+                                    <label for="sub_accept_content">Custom Message:</label>
+                                    <textarea id="sub_accept_content" name="sub_accept_content" class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="use_custom_css">
+                                        Use custom CSS on form:
+                                    </label>
+                                    <select id="use_custom_css" class="form-control" name="use_custom_css">
+                                        <option value="false">No, use default stylesheet</option>
+                                        <option value="true">Yes, use custom stylesheet</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="custom_css_url">
+                                        Custom Stylesheet URL:
+                                    </label>
+                                    <input id="custom_css_url" class="form-control" name="custom_css_url" type="text" placeholder="https://www.calawards.org/public/css/forms.css">
+                                </div>
+                            </div>
 
                         </div>
 
@@ -220,6 +285,7 @@
            $("#nav_tab_name").removeClass('active');
            $("#nav_tab_judges").removeClass('active');
            $("#nav_tab_definition").removeClass('active');
+           $("#nav_tab_advanced").removeClass('active');
        }
 
        function switchToName(){
@@ -227,11 +293,13 @@
            $("#form_tab_definition").slideUp('fast');
            $("#form_tab_schedule").slideUp('fast');
            $("#form_tab_judges").slideUp('fast');
+           $("#form_tab_advanced").slideUp('fast');
            $("#form_tab_name").slideDown('slow');
            
            $("#nav_tab_judges").removeClass('active');
            $('#nav_tab_schedule').removeClass('active');
            $("#nav_tab_definition").removeClass('active');
+           $("#nav_tab_advanced").removeClass('active');
        }
        
        function switchToDefintion(){
@@ -239,12 +307,14 @@
            $("#form_tab_name").slideUp('fast');
            $("#form_tab_schedule").slideUp('fast');
            $("#form_tab_judges").slideUp('fast');
+           $("#form_tab_advanced").slideUp('fast');
            $("#form_tab_definition").slideDown('slow');
 
 
            $("#nav_tab_judges").removeClass('active');
            $('#nav_tab_schedule').removeClass('active');
            $("#nav_tab_name").removeClass('active');
+           $("#nav_tab_advanced").removeClass('active');
        }
        
        function switchToJudges() {
@@ -252,14 +322,30 @@
            $("#form_tab_definition").slideUp('fast');
            $("#form_tab_schedule").slideUp('fast');
            $("#form_tab_name").slideUp('fast');
+           $("#form_tab_advanced").slideUp('fast');
            $("#form_tab_judges").slideDown('slow');
 
 
            $("#nav_tab_name").removeClass('active');
            $('#nav_tab_schedule').removeClass('active');
            $("#nav_tab_definition").removeClass('active');
+           $("#nav_tab_advanced").removeClass('active');
        }
 
+       function switchToAdvanced(){
+           $("#nav_tab_advanced").addClass('active');
+           $("#form_tab_definition").slideUp('fast');
+           $("#form_tab_schedule").slideUp('fast');
+           $("#form_tab_name").slideUp('fast');
+           $("#form_tab_judges").slideUp('fast');
+           $("#form_tab_advanced").slideDown('slow');
+
+
+           $("#nav_tab_name").removeClass('active');
+           $('#nav_tab_schedule').removeClass('active');
+           $("#nav_tab_definition").removeClass('active');
+           $("#nav_tab_judges").removeClass('active');
+       }
 
        $(".form_switch_to_schedule").on('click',function(){
            switchToSchedule();
@@ -279,6 +365,10 @@
        $(".form_switch_to_judges").on('click',function(){
            switchToJudges();
        });
+
+       $(".form_switch_to_advanced").on('click',function(){
+           switchToAdvanced();
+       })
 
         var nowTemp = new Date();
         var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
@@ -323,9 +413,9 @@
 
        var ckeditor_description = CKEDITOR.replace( 'description' );
 
-        var Field_Manager = new FieldController($("#formdef_viewer"),null); //Refer to public/js/fieldcontroller.js
+       var Field_Manager = new FieldController($("#formdef_viewer"),null); //Refer to public/js/fieldcontroller.js
 
-        $("#btn_addField").on( "click", function() {
+       $("#btn_addField").on( "click", function() {
                 var selected_field_type = $("#ftype_select").val();
                 var entered_name = $("#ftype_name").val();
                 if(entered_name.length == 0){
@@ -339,7 +429,7 @@
 
         });
 
-        $("#btn_save_formdef").on("click",function(){
+       $("#btn_save_formdef").on("click",function(){
 
             var formdef = {};
             var fields = Field_Manager.getFieldDefinitions();
@@ -351,6 +441,12 @@
             formdef['end_date'] = $("#end_date").val();
             formdef['scores_date'] = $("#scores_date").val();
             formdef['definition'] = fields;
+            formdef['sub_accept_action'] = $("#sub_accept_action").val();
+            formdef['sub_accept_redir'] = $("#sub_accept_redir").val();
+            formdef['sub_accept_content'] = $("#sub_accept_content").val();
+            formdef['judges'] = $("#judges").val();
+            formdef['use_custom_css'] = $("#use_custom_css").val();
+            formdef['custom_css_url'] = $("#custom_css_url").val();
 
 
             if(formdef === null){
@@ -389,8 +485,43 @@
 
                 })
             }
-        })
+        });
 
+
+       $("#group_id").on('change',function () {
+           var judge_select = $("#judges");
+           judge_select.empty();
+           var users = group_users[$(this).val()];
+           console.log(users);
+           $.each(users,function (value,key) {
+               judge_select.append($("<option>").attr('value',key.id).text(key.name));
+           })
+       });
+
+       $("#sub_accept_action").on('change',function(){
+           var new_val = $(this).val();
+
+           console.log(new_val);
+
+           if(new_val == "default"){
+               $("#form_adv_def").show();
+               $("#form_adv_msg").hide();
+               $('#form_adv_redir').hide();
+           }
+           else if(new_val == "custom_message"){
+               $("#form_adv_def").hide();
+               $("#form_adv_msg").show();
+               $('#form_adv_redir').hide();
+           }
+           else if(new_val == "custom_redir"){
+               $("#form_adv_def").hide();
+               $("#form_adv_msg").hide();
+               $('#form_adv_redir').show();
+           }
+       });
+
+
+        var group_users = {!! $judges->toJson() !!};
 
     </script>
 

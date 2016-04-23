@@ -35,6 +35,10 @@ class Group extends Model
         return $this->users()->wherePivot('administrator',false);
     }
 
+    public function adjudicatorUsers(){
+        return $this->users()->wherePivot('administrator',false)->wherePivot('adjudicator',true);
+    }
+
     public function makeAdmin($user){
         try {
             if ($this->users()->find($user->id) !== null){

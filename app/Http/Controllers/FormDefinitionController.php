@@ -7,7 +7,9 @@ use CALwebtool\FormDefinition;
 use CALwebtool\Group;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+//use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
+use CALwebtool\User;
 
 use CALwebtool\Http\Requests;
 use CALwebtool\Http\Controllers\Controller;
@@ -41,8 +43,14 @@ class FormDefinitionController extends Controller
         
         
         $groups = Auth::user()->creatorGroups()->get();
+        $judges = new Collection();
+        foreach($groups as $group){
+            $judges->put($group->id,$group->adjudicatorUsers()->get());
+        }
+
+
         if ($groups->count() > 0) {
-            return view('formdefinitions.create',compact('groups'));
+            return view('formdefinitions.create',compact('groups','judges'));
         } else {
             Flash()->overlay("You do not hve sufficient permission to perform this action. Please contact your group's administrator.", 'Authorization Error');
             return redirect()->back();
@@ -57,7 +65,13 @@ class FormDefinitionController extends Controller
             'definition'=>'required|array',
             'start_date'=>'required|date_format:m#d#Y',
             'end_date'=>'required|date_format:m#d#Y',
-            'scores_date'=>'required|date_format:m#d#Y'
+            'scores_date'=>'required|date_format:m#d#Y',
+            'sub_accept_action'=>'required|in:default,custom_message,custom_redir',
+            'sub_accept_redir'=>'required_if:sub_accept_action,custom_redir|url',
+            'sub_accept_content'=>'required_if:sub_accept_action,custom_message|string',
+            'use_custom_css'=>'required|in:true,false',
+            'custom_css_url'=>'required_if:use_custom_css,true',
+            'judges'=>'required|array'
         ]);
 
         try{
@@ -76,7 +90,47 @@ class FormDefinitionController extends Controller
             return response()->json(["error"=>true,"The dates you provided are not valid"]);
         }
 
+        if($request->input('sub_accept_action') == 'default'){
+            $sub_accept_content = '';
+        }
+        elseif($request->input('sub_accept_action') == 'custom_message'){
+            $sub_accept_content = $request->input('sub_accept_content');
+        }
+        elseif($request->input('sub_accept_action') == 'custom_redir'){
+            $sub_accept_content = $request->input('sub_accept_redir');
+        }
+        else{
+            $sub_accept_content = '';
+        }
+
+        if($request->input('use_custom_css') == 'true'){
+            $use_custom_css = true;
+            $custom_css_url = $request->input("custom_css_url");
+        }
+        else{
+            $use_custom_css = false;
+            $custom_css_url = "";
+        }
+
         $fieldErrors = new Collection();
+
+        $judges = new Collection();
+
+        try {
+            foreach ($request->input('judges') as $judge) {
+                try {
+                    $judge = User::findOrFail($judge);
+                    $judges->push($judge);
+                }
+                catch(\Exception $e){
+                    //$fieldErrors->push(["Judges"=>"Judge with ID of $judge not found!"]);
+                    return response()->json(["Problem with Judges: "=>["The user with ID ".$judge." cannot be found."]],422);
+                }
+            }
+        }
+        catch(\Exception $e){
+            return response()->json(["Problem with Judges: "=>["There is a problem with one or more judges selected: ".$e->getMessage()]],422);
+        }
         try {
             $formDef = new FormDefinition([
                     "name" => $request->input('name'),
@@ -86,13 +140,18 @@ class FormDefinitionController extends Controller
                     'submissions_start'=> Carbon::createFromFormat("m#d#y",$request->input('start_date'))->setTime(0,0,0),
                     'submissions_end'=> Carbon::createFromFormat("m#d#y",$request->input('end_date'))->setTime(0,0,0),
                     'scores_due'=> Carbon::createFromFormat("m#d#y",$request->input('scores_date'))->setTime(0,0,0),
+                    'notify_completed_sent'=>false,
+                    'sub_accept_action'=>$request->input('sub_accept_action'),
+                    'sub_accept_content'=>$sub_accept_content,
+                    'use_custom_css'=>$use_custom_css,
+                    'custom_css_url'=>$custom_css_url
             ]);
 
             $formDef->save();
 
        }
         catch(\Exception $e){
-            return response()->json(['message'=>"Error creating FormDefinition",'error'=>$e->getMessage()],500);
+            return response()->json(['Error Creating Form'=>["Error creating FormDefinition",$e->getMessage()]],500);
         }
 
         foreach($request->input('definition') as $fieldArray){

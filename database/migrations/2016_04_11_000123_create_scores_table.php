@@ -18,6 +18,7 @@ class CreateScoresTable extends Migration
             $table->integer('form_definition_id')->unsigned();
             $table->integer('submission_id')->unsigned();
             $table->integer('user_id')->unsigned()->nullable();
+            $table->string('user_name');
             $table->tinyInteger('score');
             $table->mediumText('comment');
             $table->enum('status',array('Provisional','Final'));
