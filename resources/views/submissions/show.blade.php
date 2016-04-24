@@ -10,26 +10,35 @@
                 <div class="panel-body">
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
+                        <a href="#">
                         <button type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
                         </button>
+                        </a>
 
                         @can('moderate',$submissions)
-                        <a href="{{action('SubmissionController@moderate',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                        <a href="{{action('SubmissionController@moderate',compact('submissions'))}}"><button type="button" class="btn btn-success">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Send to Judges
                             </button>
                         </a>
                         @endcan
 
                         @can('reject',$submissions)
-                        <a href="{{action('SubmissionController@reject',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                        <a href="{{action('SubmissionController@reject',compact('submissions'))}}"><button type="button" class="btn btn-danger">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Reject
                             </button>
                         </a>
                         @endcan
 
+                        @can('reject',$submissions)
+                        <a href="{{action('SubmissionController@rejectNotify',compact('submissions'))}}"><button type="button" class="btn btn-danger">
+                                <span class="glyphicon glyphicon-envelope"></span> Reject with Message
+                            </button>
+                        </a>
+                        @endcan
+
                         @can('judge',$submissions)
-                        <a href="{{action('ScoreController@create',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                        <a href="{{action('ScoreController@create',compact('submissions'))}}"><button type="button" class="btn btn-info">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Judge
                             </button>
                         </a>

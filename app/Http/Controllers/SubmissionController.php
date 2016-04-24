@@ -312,6 +312,33 @@ class SubmissionController extends Controller
         }
     }
 
+    public function rejectNotify(Submission $submissions){
+        if(Auth::user()->can('reject',$submissions)){
+            flash()->overlay(view('submissions.message',compact('submissions'))->render(),"Reject with Message");
+            return redirect()->back();
+        }
+    }
+
+    public function sendRejectNotify(Submission $submissions, Request $request){
+        $this->validate($request,[
+            'recipient'=>'required|email',
+            'subject'=>'string|max:40',
+            'message'=>'string'
+        ]);
+        if(Auth::user()->can('reject',$submissions)){
+            
+            $submissions->status = "Denied";
+            $submissions->save();
+
+            flash()->overlay("The submission was rejected, and the message sent.",'Rejected and Notified');
+            return redirect()->back();
+        }
+        else{
+            flash()->overlay("You do not have permission to reject submissions in this team","Not Authorized");
+            return redirect()->back();
+        }
+    }
+
     public static function approve(Submission $submissions){
         if(Auth::user()->can('approve',$submissions)) {
 
