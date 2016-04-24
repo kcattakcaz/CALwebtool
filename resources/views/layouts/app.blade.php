@@ -12,9 +12,10 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
 
     <!-- Styles -->
-    <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
-    <link href="{{secure_asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{secure_asset('css/bootstrap-theme.min.css')}}" rel="stylesheet">
+    <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"> -->
+    <!--<link href="{{secure_asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{secure_asset('css/bootstrap-theme.min.css')}}" rel="stylesheet"> -->
+    <link href="{{secure_asset('css/flatly_bootstrap.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{secure_asset("css/selectize.css")}}">
     <link rel="stylesheet" href="{{secure_asset("css/selectize.bootstrap3.css")}}">
 
@@ -69,8 +70,12 @@
                     <li><a href="{{ url('/home') }}">My Dashboard</a></li>
                     <li><a href="{{action('FormDefinitionController@index')}}">Forms</a></li>
                     <li><a href="{{action('SubmissionController@index')}}">Submissions</a></li>
-                    @if(Auth::check() && Auth::user()->isSystemAdmin() || Auth::check() && Auth::user()->adminGroups()->count() > 0)
-                        <li><a href="{{url('/settings')}}">Admin Settings</a></li>
+                    <li><a href="#">Scores</a></li>
+                    <li><a href="#">Teams</a></li>
+                    @if(Auth::check() && Auth::user()->isSystemAdmin() || (Auth::check() && Auth::user()->adminGroups()->count() > 0))
+                        <li><a href="{{url('/settings')}}">Settings</a></li>
+                    @else
+                        <li><a href="#">Profile</a></li>
                     @endif
                 </ul>
 

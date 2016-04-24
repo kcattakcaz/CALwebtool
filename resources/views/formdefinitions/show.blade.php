@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
-            <h1>{{$form->name}}</h1>
+            <h1>{{$form->name}} <small>{{$form->group()->first()->name}}</small></h1>
 
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default">

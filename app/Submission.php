@@ -25,6 +25,6 @@ class Submission extends Model
     }
 
     public function scores(){
-        return $this->hasMany("CALwebtool\Scores","submission_id");
+        return $this->hasMany('CALwebtool\Scores',"submission_id");
     }
 }

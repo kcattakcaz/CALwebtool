@@ -309,26 +309,31 @@ class FormDefinitionController extends Controller
 
     public function displayForm(FormDefinition $formDef)
     {
-        if($formDef->submissions_start > Carbon::now()){
+        //if($formDef->submissions_start > Carbon::now()){
+        if($formDef->status == "Scheduled"){
             $date = Carbon::createFromFormat('Y-m-d H:i:s',$formDef->submissions_start)->toDayDateTimeString();
             return view('formdefinitions.unstarted',compact('formDef','date'));
         }
+        elseif($formDef->status == "Accepting"){
+            $fields = new Collection();
+            foreach ($formDef->fields()->get() as $fieldDef) {
+                $field = new Collection();
+                $field->put('type', $fieldDef->type);
+                $field->put('id', $fieldDef->field_id);
+                $field->put('name', $fieldDef->name);
+                $field->put('options', new Collection(json_decode($fieldDef->options)));
+                $fields->push($field);
+            }
+            return view('formdefinitions.display', compact('fields', 'formDef'));
+        }
 
-        if($formDef->submissions_end < Carbon::now()){
+        //if($formDef->submissions_end < Carbon::now()){
+        else{
             $date = Carbon::createFromFormat('Y-m-d H:i:s',$formDef->submissions_end)->toDayDateTimeString();
             return view('formdefinitions.closed',compact('formDef','date'));
         }
 
-        $fields = new Collection();
-        foreach ($formDef->fields()->get() as $fieldDef) {
-            $field = new Collection();
-            $field->put('type', $fieldDef->type);
-            $field->put('id', $fieldDef->field_id);
-            $field->put('name', $fieldDef->name);
-            $field->put('options', new Collection(json_decode($fieldDef->options)));
-            $fields->push($field);
-        }
-        return view('formdefinitions.display', compact('fields', 'formDef'));
+
 
     }
 
@@ -617,7 +622,7 @@ class FormDefinitionController extends Controller
             }
             $updated_judges->forget($cur_judge->id);
         }
-        
+
         foreach ($updated_judges as $new_judge){
             $form->judges()->save($new_judge);
         }
@@ -641,11 +646,15 @@ class FormDefinitionController extends Controller
         $time = Carbon::now('America/Detroit');
 
         foreach($forms as $form){
+            continue; //for now
             echo "<hr>";
             echo "TIME NOW: $time <br>";
             echo "Form Start: ".$form->submissions_start."<br>";
             echo "Form Stop: ".$form->submissions_end."<br>";
             echo "Scores Due: ".$form->scores_due."<br>";
+            if($form->status == 'Drafting'){
+                continue;
+            }
             if($form->submissions_start < $time){
                 echo "Form needs to open!<br>";
                 $form->status = "Accepting";

@@ -3,7 +3,9 @@
 namespace CALwebtool\Http\Controllers;
 
 use App\Http\Requests;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -27,7 +29,33 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('home', compact('user'));
+        $groups = $user->groups()->get();
+        $judge = false;
+        $moderator = false;
+        $team_admin = false;
+        $system_admin = false;
+
+        $judge_groups = new Collection();
+
+        foreach ($groups as $group){
+            if($group->isJudge($user->id)){
+                $judge_groups->push($group);
+            }
+        }
+
+        $hour = Carbon::now('America/Detroit')->hour;
+
+        if($hour > 5 && $hour < 12){
+            $time = "morning";
+        }
+        elseif($hour < 18 && $hour > 12){
+            $time = "afternoon";
+        }
+        else{
+            $time = "evening";
+        }
+
+        return view('dashboard.index',compact('user','groups','moderator_groups','judge_groups','admin_groups','time'));
     }
 
     public function settings(){

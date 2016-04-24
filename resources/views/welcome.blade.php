@@ -18,7 +18,7 @@
                         </p>
 
                         <p>
-                            If you are having difficulty accessing your account, contact your group administrator.
+                            If you are having difficulty accessing your account, contact your team administrator.
                         </p>
                     @endif
                 </div>

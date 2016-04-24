@@ -1,16 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
+          {{--}}  <div class="panel panel-default">
                 <div class="panel-heading"><h3 class="panel-title">Forms</h3>
 
                 </div>
 
-                <div class="panel-body">
+                <div class="panel-body"> --}}
 
+            <h1>Forms <small>Select a form to manage</small></h1>
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
                         <button type="button" class="btn btn-default">
@@ -23,7 +24,7 @@
                         </a>
                     </div>
 
-                    <br>
+                    <br><br>
 
                     <hr>
 

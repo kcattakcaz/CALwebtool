@@ -4,6 +4,7 @@ namespace CALwebtool;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
 
 class Group extends Model
 {

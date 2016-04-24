@@ -3,7 +3,9 @@
 namespace CALwebtool\Http\Controllers;
 
 use CALwebtool\FormDefinition;
+use CALwebtool\User;
 use CALwebtool\Group;
+use CALwebtool\Scores;
 use CALwebtool\Submission;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -351,6 +353,47 @@ class SubmissionController extends Controller
         else{
             flash()->overlay("You do not have permission to unlock submissions in this team.","Not Authorized");
             return redirect()->back();
+        }
+    }
+
+    public static function getScored(User $user, FormDefinition $form){
+        try {
+            $submissions = new Collection();
+            $scores = Scores::where('form_definition_id', $form->id)->where('user_id', $user->id)->get();
+            foreach($scores as $score){
+                $submissions->push($score->formdefinition()->first());
+            }
+            return $submissions;
+        }
+        catch(\Exception $e){
+            return new Collection();
+        }
+    }
+
+    public static function getCompleted(FormDefinition $form){
+        try{
+            return $form->submissions()->where('status','Judged')->get();
+
+        }
+        catch(\Exception $e){
+            return new Collection();
+        }
+    }
+
+    public static function getUnscored(User $user, FormDefinition $form){
+        try{
+            $unscored = new Collection();
+            $submissions = $form->submissions()->where('status','Judging')->get();
+            foreach($submissions as $submission){
+                if($submission->scores()->where('user_id')->get()->count() == 0){
+                    $unscored->push($submission);
+                }
+            }
+
+            return $unscored;
+        }
+        catch(\Exception $e){
+            return new Collection();
         }
     }
     

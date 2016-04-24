@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
 
@@ -118,22 +118,30 @@
                             <br>
                             <div class="row">
                                 <div id="formdef_creator" class="form-group">
-                                    <label for="ftype_select" class="col-md-2">
-                                        Field Type:
-                                    </label>
-                                    <select class="col-md-3" id="ftype_select" name="ftype_select">
+                                    <div class="form-group-sm col-md-5">
+                                        <label for="ftype_select" class="">
+                                            Field Type:
+                                        </label>
+                                        <select class="form-control" id="ftype_select" name="ftype_select">
                                             <option value="Text">Text</option>
                                             <option value="Checkbox">Checkbox</option>
                                             <option value="Radio">Radio Group</option>
                                             <option value="Select">Select Dropdown</option>
                                             <option value="Address">Address</option>
                                             <option value="File">File</option>
-                                    </select>
-                                    <label for="ftype_name" class="col-md-1">
-                                        Name:
-                                    </label>
-                                    <input id="ftype_name" name="ftype_name" class="col-md-4" type="text"/>
-                                    <button type="button" id="btn_addField" class="btn btn-default col-md-offset-1 col-md-1">Add</button>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group-sm col-md-5">
+                                        <label for="ftype_name">
+                                            Name:
+                                        </label>
+                                    <input id="ftype_name" name="ftype_name" class="form-control" type="text"/>
+                                    </div>
+                                    <div class="form-group-sm col-md-offset-1 col-md-1">
+                                        <label>Add to Form</label>
+                                        <button type="button" id="btn_addField" class="btn btn-default form-control">Add</button>
+                                    </div>
 
                                 </div>
                             </div>
