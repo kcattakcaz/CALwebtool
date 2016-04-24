@@ -48,7 +48,7 @@ class HomeController extends Controller
         if($hour > 5 && $hour < 12){
             $time = "morning";
         }
-        elseif($hour < 18 && $hour > 12){
+        elseif($hour < 18 && $hour >= 12){
             $time = "afternoon";
         }
         else{

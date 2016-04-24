@@ -25,6 +25,10 @@ class ScoreController extends Controller
             flash()->overlay("You do not have permission to judge submissions in this group","Not Authorized");
             return redirect()->back();
         }
+        $scores = $submissions->scores()->where('user_id',Auth::user()->id)->first();
+        if($scores !== null){
+            return redirect(action('ScoreController@edit',compact('submissions','scores')));
+        }
         return view('scores.create',compact('submissions'));
     }
     
@@ -59,6 +63,7 @@ class ScoreController extends Controller
                 'user_id'=>Auth::user()->id,
                 "submission_id" => $submissions->id,
                 "score" => $request->input("numerical_score"),
+                'user_name'=>Auth::user()->name,
                 "comment" => $request->input("comment"),
                 "status" => "Provisional"
             ]);
@@ -83,6 +88,37 @@ class ScoreController extends Controller
             return redirect()->back();
         }
         return view("scores.edit",compact('submissions','scores'));
+    }
+
+    public static function autoSubmissionStatus(){
+        echo "<hr><br>Starting automated update of status of submissions in judging queue at ".Carbon::now('America/Detroit')->toDayDateTimeString()."<br>";
+        $submissions = Submission::where('status','Judging')->get();
+        foreach($submissions as $submission){
+            $form = $submission->formdefinition()->first();
+            echo "<hr>";
+            echo "Submission: ".$submission->id." by ".$submission->name." for ".$form->name."<br>";
+
+            $judges = $form->judges()->get();
+            $count = 0;
+            foreach($judges as $judge){
+                if($submission->scores()->where('user_id',$judge->id)->get()->count() ==0){
+                    echo "Judge ".$judge->name." has no score recorded<br>";
+                    continue;
+                }
+                else{
+                    echo "Judge ".$judge->name." has a recorded score<br>";
+                    $count++;
+                }
+
+            }
+            if($count == $judges->count()){
+                echo "All judges have scored, submission status is now Judged.<br>";
+                $submission->status = "Judged";
+                $submission->save();
+            }
+
+        }
+        echo "<br>Ending automated update of status of submissions in judging queue at ".Carbon::now('America/Detroit')->toDayDateTimeString()."<br><hr>";
     }
     
     public function update(){

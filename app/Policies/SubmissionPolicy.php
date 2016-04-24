@@ -2,6 +2,10 @@
 
 namespace CALwebtool\Policies;
 
+use CALwebtool\User;
+use CALwebtool\Group;
+use CALwebtool\Submission;
+
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SubmissionPolicy
@@ -33,7 +37,7 @@ class SubmissionPolicy
     public function approve(User $user, Submission $submission)
     {
         $group = $submission->group()->first();
-        if($group->isJudge($user)){
+        if($group->isJudge($user->id)){
             return true;
         }
         else{
@@ -43,10 +47,10 @@ class SubmissionPolicy
 
     public function judge(User $user, Submission $submission){
         $group = $submission->group()->first();
-        if($group->isJudge($user)){
+        if($group->isJudge($user->id)){
             return true;
         }
-        else if($group->isAdmin($user)){
+        else if($group->isAdmin($user->id)){
             return true;
         }
         else{
@@ -60,7 +64,7 @@ class SubmissionPolicy
         if ($group->isJudge($user)) {
             return true;
         }
-        elseif($group->isMod($user)){
+        elseif($group->isMod($user->id)){
             return true;
         }
         else{
@@ -70,10 +74,10 @@ class SubmissionPolicy
 
     public function delete(User $user, Submission $submission){
         $group = $submission->group()->first();
-        if($group->isAdmin($user)){
+        if($group->isAdmin($user->id)){
             return true;
         }
-        elseif($group->isMod($user)){
+        elseif($group->isMod($user->id)){
             return true;
         }
         else{
@@ -88,10 +92,10 @@ class SubmissionPolicy
 
     public function sendToJudges(User $user, Submission $submission){
         $group = $submission->group()->first();
-        if($group->isAdmin($user)){
+        if($group->isAdmin($user->id)){
             return true;
         }
-        elseif($group->isMod($user)){
+        elseif($group->isMod($user->id)){
             return true;
         }
         else{

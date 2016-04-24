@@ -8,7 +8,7 @@ class Scores extends Model
 {
     //
     protected $fillable = [
-        'user_id','form_definition_id','submission_id','score','comment','status'
+        'user_id','form_definition_id','submission_id','user_name','score','comment','status'
     ];
 
     public function formdefinition(){

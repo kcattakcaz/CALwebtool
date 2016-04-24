@@ -10,9 +10,9 @@
             @if($form->status == 'Reviewing')
                 <h4>{{$form->name}} (Ready for Scoring)</h4>
                 <div class="list-group">
-                    <a href="#" class="list-group-item">New Submissions<span class="badge pull-right">{{\CALwebtool\Http\Controllers\SubmissionController::getUnscored(Auth::user(),$form)->count()}}</span></a>
-                    <a href="#" class="list-group-item">Submissions You've Scored <span class="badge pull-right">{{\CALwebtool\Http\Controllers\SubmissionController::getScored(Auth::user(),$form)->count()}}</span></a>
-                    <a href="#" class="list-group-item">Submissions Completed <span class="badge pull-right">{{\CALwebtool\Http\Controllers\SubmissionController::getCompleted($form)->count()}}</span></a>
+                    <a href="{{action('SubmissionController@unscored',compact('form'))}}" class="list-group-item">New Submissions<span class="badge pull-right">{{\CALwebtool\Http\Controllers\SubmissionController::getUnscored(Auth::user(),$form)->count()}}</span></a>
+                    <a href="{{action('SubmissionController@scored',compact('form'))}}" class="list-group-item">Submissions You've Scored <span class="badge pull-right">{{\CALwebtool\Http\Controllers\SubmissionController::getScored(Auth::user(),$form)->count()}}</span></a>
+                    <a href="{{action('SubmissionController@completed',compact('form'))}}" class="list-group-item">Submissions Completed <span class="badge pull-right">{{\CALwebtool\Http\Controllers\SubmissionController::getCompleted($form)->count()}}</span></a>
                 </div>
             @elseif($form->status == 'Scored')
                 <hr>

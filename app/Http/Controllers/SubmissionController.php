@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\DomCrawler\Form;
 
 class SubmissionController extends Controller
 {
@@ -36,16 +37,29 @@ class SubmissionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $user = Auth::user();
+        $user_groups = $user->groups()->get();
+        $form_groups = new Collection();
         $forms = new Collection();
-        foreach(Auth::user()->moderatorGroups()->get() as $group){
+        foreach(Auth::user()->groups()->get() as $group){
             $forms = $forms->merge($group->formDefinitions()->get());
         }
-        if ($forms->count() > 0) {
-            return view('submissions.index',compact('forms'));
-        } else {
-            Flash()->overlay("You do not have sufficient permission to perform this action. Please contact your group's administrator.", 'Authorization Error');
-            return redirect()->back();
-        }
+        return view('submissions.index',compact('forms'));
+    }
+
+    public function unscored(FormDefinition $form){
+        $submissions = $this->getUnscored(Auth::user(),$form);
+        return view('submissions.unscored',compact('submissions','form'));
+    }
+
+    public function scored(FormDefinition $form){
+        $submissions = $this->getScored(Auth::user(),$form);
+        return view('submissions.scored',compact('submissions','form'));
+    }
+
+    public function completed(FormDefinition $form){
+        $submissions = $this->getCompleted($form);
+        return view('submissions.completed',compact('submissions','form'));
     }
 
     public function store(Request $request, FormDefinition $formDef){
@@ -361,7 +375,7 @@ class SubmissionController extends Controller
             $submissions = new Collection();
             $scores = Scores::where('form_definition_id', $form->id)->where('user_id', $user->id)->get();
             foreach($scores as $score){
-                $submissions->push($score->formdefinition()->first());
+                $submissions->push($score->submission()->first());
             }
             return $submissions;
         }
@@ -385,7 +399,7 @@ class SubmissionController extends Controller
             $unscored = new Collection();
             $submissions = $form->submissions()->where('status','Judging')->get();
             foreach($submissions as $submission){
-                if($submission->scores()->where('user_id')->get()->count() == 0){
+                if($submission->scores()->where('user_id',$user->id)->get()->count() == 0){
                     $unscored->push($submission);
                 }
             }

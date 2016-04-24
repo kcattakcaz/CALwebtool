@@ -11,7 +11,7 @@
 
                 <div class="panel-body"> --}}
 
-            <h1>Forms <small>Select a form to manage</small></h1>
+            <h1>Forms <small>All Teams</small></h1>
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
                         <button type="button" class="btn btn-default">
