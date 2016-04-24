@@ -52,6 +52,9 @@ class User extends Authenticatable
         return $this->groups()->wherePivot('administrator',true);
     }
 
+    public function scores(){
+        return $this->hasMany('CALwebtool\Scores');
+    }
     public function isSystemAdmin(){
         return $this->system_admin;
     }

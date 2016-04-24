@@ -249,7 +249,7 @@
                                     <label for="custom_css_url">
                                         Custom Stylesheet URL:
                                     </label>
-                                    <input id="custom_css_url" class="form-control" name="custom_css_url" type="text" placeholder="https://www.calawards.org/public/css/forms.css">
+                                    <input id="custom_css_url" class="form-control" name="custom_css_url" type="text" placeholder="https://www.msucalawards.org/public/css/forms.css">
                                 </div>
                             </div>
 

@@ -112,5 +112,35 @@
             </div>
         </div>
     </div>
+
+    @foreach($submissions->scores()->get() as $score)
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                @if(!$submissions->formdefinition()->first()->judges()->get()->contains($score->user()->first()))
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            {{$score->user()->first()->name}}
+                        </div>
+                        <div class="panel-body">
+                            <em>This user is not a judge for this form: any score will be ignored</em>
+                                <br>
+                            {!! $score->comment!!}
+                        </div>
+                    </div>
+                @else
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            {{$score->user()->first()->name}}
+                        </div>
+                        <div class="panel-body">
+                            <strong>Score: {{$score->score}}</strong>
+                            <br>
+                            {!! $score->comment!!}
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endforeach
 </div>
 @endsection

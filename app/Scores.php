@@ -18,4 +18,8 @@ class Scores extends Model
     public function submission(){
         return $this->belongsTo('CALwebtool\Submission','submission_id');
     }
+
+    public function user(){
+        return $this->belongsTo('CALwebtool\User','user_id');
+    }
 }
