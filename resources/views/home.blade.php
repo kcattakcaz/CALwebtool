@@ -9,13 +9,13 @@
 
                 <div class="panel-body">
                     @if(Auth::check())
-                        Groups that you are a member of:
+                        Teams that you are a member of:
                         <div class="panel-body">
                             <table class="table table-striped">
                                 <thead class="thead">
                                 <tr>
-                                    <th>Group Name</th>
-                                    <th>Role in group.</th>
+                                    <th>Team Name</th>
+                                    <th>Role in team.</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -38,7 +38,7 @@
                         </p>
 
                         <p>
-                            If you are having difficulty accessing your account, contact your group administrator.
+                            If you are having difficulty accessing your account, contact your team administrator.
                         </p>
                     @endif
                 </div>

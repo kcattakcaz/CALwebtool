@@ -5,18 +5,18 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Create a Group</div>
+                <div class="panel-heading">Create a Team</div>
 
                 <div class="panel-body">
-                   <p> Groups represent a collection of Users, Forms and Ballots that serve a common purpose.  Examples include
+                   <p> Teams represent a collection of Users, Forms and Ballots that serve a common purpose.  Examples include
                     "College of Arts and Letters", "Department of Something", and "Scholarship Committee".
                     </p>
 
                     <p>
-                        Each group is managed by a Group Administrator, who can add/remove users from the group, as well
-                        as reset their passwords.  The Group Administrator can also recover some deleted objects, unlock
+                        Each team is managed by a Team Administrator, who can add/remove users from the team, as well
+                        as reset their passwords.  The Team Administrator can also recover some deleted objects, unlock
                         locked objects, and view detailed audit information.  They can also promote additional users to
-                        be Group Administrators, however most users should not have this level of permissions.
+                        be Team Administrators, however most users should not have this level of permissions.
                     </p>
 
 
@@ -34,7 +34,7 @@
                     <form role="form" method="post" action="{{action('GroupController@store')}}">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <label for="name">Group Name:</label>
+                            <label for="name">Team Name:</label>
                             <input name="name" type="text" class="form-control" id="name">
                         </div>
 
@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="initial_group_administrator">Initial Group Administrator:</label>
+                            <label for="initial_group_administrator">Initial Team Administrator:</label>
                             <select name="initial_group_administrator" class="form-control" id="initial_group_administrator">
                                 @foreach($users as $user)
                                     <option value="{{$user->name}}">{{$user->name}}</option>

@@ -170,7 +170,7 @@
                             <div class="row">
 
                                 <div class="form-group col-xs-12">
-                                    <label for="group_id">Group:</label>
+                                    <label for="group_id">Team:</label>
                                     <select name="group_id" class="form-control" id="group_id">
                                         <option value="null">None</option>
                                         @foreach($groups as $group)
@@ -184,7 +184,7 @@
 
                             <div class="row">
                                 <div class="form-group col-xs-12">
-                                    <label for="judges">Group:</label>
+                                    <label for="judges">Team:</label>
                                     <select multiple name="judges[]" class="form-control" id="judges">
 
                                     </select>

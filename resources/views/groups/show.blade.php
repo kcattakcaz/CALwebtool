@@ -55,7 +55,7 @@
 
                     <div class="list-group">
                         <p>
-                            <strong>Group Members</strong>
+                            <strong>Team Members</strong>
 
                         </p>
 

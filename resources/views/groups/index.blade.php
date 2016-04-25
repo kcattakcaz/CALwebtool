@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Group Management
+                <div class="panel-heading">Team Management
 
                 </div>
 
@@ -14,7 +14,7 @@
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
                         <a href="{{action('GroupController@create')}}"><button type="button" class="btn btn-default">
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Group
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Team
                             </button>
                         </a>
                         <button type="button" class="btn btn-default">

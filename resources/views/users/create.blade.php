@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="initial_group">Initial Group:</label>
+                            <label for="initial_group">Initial Team:</label>
                             <select multiple="multiple" name="initial_group[]" class="form-control" id="initial_group">
                                 @foreach($groups as $group)
                                     <option value="{{$group->id}}">{{$group->name}}</option>

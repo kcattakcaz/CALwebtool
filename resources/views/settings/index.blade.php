@@ -12,11 +12,11 @@
                     <h1>Settings</h1>
 
                    <p>
-                        You are logged in as a System Administrator.  You can add, delete, or edit groups, members, forms, ballots
+                        You are logged in as a System Administrator.  You can add, delete, or edit teams, members, forms, ballots
                         and everything else related to the application.  With great power comes great responsibility.  Be careful!
                    </p>
 
-                    <a href="{{action('GroupController@index')}}" class="list-group-item">Group Management <span class="pull-right glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+                    <a href="{{action('GroupController@index')}}" class="list-group-item">Team Management <span class="pull-right glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
                     <a href="{{action('UserController@index')}}" class="list-group-item">User Management <span class="pull-right glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
                     <a href="{{action('HomeController@unavailable')}}" class="list-group-item">Audit and Log Data (Disabled)<span class="pull-right glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
                     <a href="{{action('HomeController@unavailable')}}" class="list-group-item">System Maintenance (Disabled)<span class="pull-right glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
