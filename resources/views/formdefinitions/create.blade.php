@@ -184,7 +184,7 @@
 
                             <div class="row">
                                 <div class="form-group col-xs-12">
-                                    <label for="judges">Team:</label>
+                                    <label for="judges">Judges:</label>
                                     <select multiple name="judges[]" class="form-control" id="judges">
 
                                     </select>

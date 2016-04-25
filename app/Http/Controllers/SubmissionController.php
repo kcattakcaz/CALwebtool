@@ -126,6 +126,7 @@ class SubmissionController extends Controller
     }
 
     public function show(Submission $submissions){
+        dd();
         $form = $submissions->formdefinition()->first();
         $submission_fields = json_decode($submissions->options);
         $fields = new Collection();

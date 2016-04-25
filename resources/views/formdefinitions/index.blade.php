@@ -31,11 +31,9 @@
                     <div class="list-group">
 
                         @foreach($forms as $form)
-                        <a href="{{action('FormDefinitionController@show',compact('form'))}}" class="list-group-item">{{$form->name}}</a>
+                        <a href="{{action('FormDefinitionController@show',compact('form'))}}" class="list-group-item">{{$form->id}} - {{$form->name}}</a>
                         @endforeach
                     </div>
-
-
                 </div>
             </div>
         </div>
