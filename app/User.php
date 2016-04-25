@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name','email', 'password', 'active', 'notify_unmoderated', 'notify_unscored', 'notify_completed'
+        'name','email', 'password', 'active', 'notify_unmoderated', 'notify_unscored', 'notify_completed','register_token'
     ];
 
     /**
@@ -26,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token'
     ];
 
     protected $dates = ['created_at','updated_at','deleted_at'];

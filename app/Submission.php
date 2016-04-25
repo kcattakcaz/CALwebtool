@@ -13,7 +13,7 @@ class Submission extends Model
      * @var array
      */
     protected $fillable = [
-        'id','form_definition_id','name','email','password','submitted','status','options'
+        'id','form_definition_id','name','email','password','submitted','status','options','judgement'
     ];
 
     public function formdefinition(){

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\DomCrawler\Form;
+use Illuminate\Support\Facades\Mail;
 
 class SubmissionController extends Controller
 {
@@ -326,6 +327,16 @@ class SubmissionController extends Controller
             'message'=>'string'
         ]);
         if(Auth::user()->can('reject',$submissions)){
+
+            $user= Auth::user();
+            $subject = $request->input('subject');
+            $recipient = $request->input('recipient');
+
+            Mail::queue('emails.submission_rejection', ["content"=>$request->input('message')], function ($message) use ($recipient,$user,$subject,$submissions){
+                $message->from($user->email,$user->name);
+                $message->subject($subject);
+                $message->to($recipient,$submissions->name);
+            });
             
             $submissions->status = "Denied";
             $submissions->save();
@@ -438,7 +449,7 @@ class SubmissionController extends Controller
         }
     }
     
-    public static function delete(Submission $submissions){
+    public function trash(Submission $submissions){
         if(Auth::user()->can('delete',$submissions)){
             $submissions->delete();
             //return response()->json(["error"=>false,"message"=>"The submission was deleted"]);

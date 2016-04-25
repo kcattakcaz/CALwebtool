@@ -10,11 +10,6 @@
                 <div class="panel-body">
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
-                        <a href="#">
-                        <button type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
-                        </button>
-                        </a>
 
                         @can('moderate',$submissions)
                         <a href="{{action('SubmissionController@moderate',compact('submissions'))}}"><button type="button" class="btn btn-success">
@@ -30,9 +25,23 @@
                         </a>
                         @endcan
 
+                        @can('unlock',$submissions)
+                        <a href="{{action('SubmissionController@unlock',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Allow Editing
+                            </button>
+                        </a>
+                        @endcan
+
                         @can('reject',$submissions)
                         <a href="{{action('SubmissionController@rejectNotify',compact('submissions'))}}"><button type="button" class="btn btn-danger">
                                 <span class="glyphicon glyphicon-envelope"></span> Reject with Message
+                            </button>
+                        </a>
+                        @endcan
+
+                        @can('accept',$submissions)
+                        <a href="{{action('SubmissionController@moderate',compact('submissions'))}}"><button type="button" class="btn btn-success">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Accept
                             </button>
                         </a>
                         @endcan
@@ -43,19 +52,12 @@
                             </button>
                         </a>
                         @endcan
-
-                        @can('unlock',$submissions)
-                        <a href="{{action('SubmissionController@unlock',compact('submissions'))}}"><button type="button" class="btn btn-default">
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Allow Editing
-                            </button>
-                        </a>
+                        @can('delete',$submissions)
+                            <a href="{{action('SubmissionController@trash',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                                </button>
+                            </a>
                         @endcan
-
-
-                        {{--<a href="{{action('SubmissionController@delete',compact('submissions'))}}"><button type="button" class="btn btn-default">
-                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-                            </button>
-                        </a> --}}
                     </div>
 
                     <div class="clearfix"></div>

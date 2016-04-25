@@ -38,6 +38,6 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             FormDefinitionController::scheduleForms();
-        })->everyTenMinutes();
+        })->everyFiveMinutes();
     }
 }

@@ -64,6 +64,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('submissions/unscored/{form}','SubmissionController@unscored');
     Route::get('submissions/scored/{form}','SubmissionController@scored');
     Route::get('submissions/completed/{form}','SubmissionController@completed');
+    Route::get('submissions/{submissions}/trash','SubmissionController@trash');
     Route::resource('submissions','SubmissionController');
 
     Route::get('moderation/reject/{submissions}','SubmissionController@reject');
@@ -83,9 +84,5 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('schedform','FormDefinitionController@scheduleForms');
     Route::get('scoreupdate','ScoreController@autoSubmissionStatus');
-
-});
-
-Route::group([],function(){
 
 });

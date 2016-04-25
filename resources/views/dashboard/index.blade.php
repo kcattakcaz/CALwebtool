@@ -57,9 +57,18 @@
                 <div class="tab-content">
                     @foreach($groups as $index=>$group)
                         @if($index==0)
-                            @include('dashboard.judge',["active"=>true])
+                            @if($group->isAdmin(Auth::user()->id))
+                                @include('dashboard.teamadmin',["active"=>true])
+                            @elseif($group->isJudge(Auth::user()->id))
+                                @include('dashboard.judge',["active"=>true])
+                            @endif
+
                         @else
-                            @include('dashboard.judge',["active"=>false])
+                            @if($group->isAdmin(Auth::user()->id))
+                                @include('dashboard.teamadmin',["active"=>false])
+                            @elseif($group->isJudge(Auth::user()->id))
+                                @include('dashboard.judge',["active"=>false])
+                            @endif
                         @endif
                     @endforeach
                 </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
@@ -13,20 +13,17 @@
 
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
-                        <a href="{{action('UserController@create')}}"<button type="button" class="btn btn-default">
+                        <a href="{{action('UserController@create')}}"<button type="button" class="btn btn-primary">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New User
                         </button>
                         </a>
-                        <a href="{{action('UserController@index')}}"<button type="button" class="btn btn-default">
+                        <a href="{{action('UserController@index')}}"<button type="button" class="btn btn-info">
                             <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Active Users
                         </button>
                         </a>
-                        <button type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
-                        </button>
                     </div>
 
-                    <br>
+                    <br><br>
 
                     <hr>
 

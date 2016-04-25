@@ -22,7 +22,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth',["except"=>["register","activate"]]);
     }
 
     public function index(){
@@ -40,15 +40,17 @@ class UserController extends Controller
         $this->validate($request,[
             'name' => 'required|unique:groups|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
             'initial_group' => 'required:array'
         ]);
 
+        $password = str_random(40);
+        $token = str_random(60);
 
         $user = new User(['name'=>$request->input('name'),
                             'email'=>$request->input('email'),
-                            'password'=>bcrypt($request->input('password')),
-                            'active'=>true,'system_admin'=>false]);
+                            'password'=>bcrypt($password),
+                            'register_token'=>$token,
+                            'active'=>false,'system_admin'=>false]);
         $user->save();
 
         foreach($request->input('initial_group') as $init_group){
@@ -62,8 +64,8 @@ class UserController extends Controller
             }
         }
 
-        $userdata = ['user'=>$user,'register_token'=>'123'];
-        Mail::send('emails.user_registration',$userdata,function($m) use ($user){
+        $userdata = ['user'=>$user,'token'=>$token];
+        Mail::queue('emails.user_registration',$userdata,function($m) use ($user){
             $m->to($user->email)->subject("Activate Your Account");
         });
         return redirect()->action('UserController@index');
@@ -100,7 +102,7 @@ class UserController extends Controller
                 $this->validate($request,[
                     'password' => 'min:6|confirmed',
                 ]);
-
+                $user->active = true;
                 $user->password = $request->input('password');
             }
 
@@ -168,7 +170,81 @@ class UserController extends Controller
         }
         return redirect(action('UserController@index'));}
 
-    public function activate(){
+    public function activate(Request $request){
+        $this->validate($request,[
+           "user"=>'required|integer',
+            "token"=>'required|string',
+            "password"=>'required|min:6|confirmed'
+        ]);
+        try{
+            $user = User::findOrFail( $request->input('user'));
+            if($user->active){
+                flash()->overlay('The user account is already activated','User Already Active');
+                return redirect(action('HomeController@index'));
+            }
+            if($request->input('token') !== $user->register_token){
+                flash()->overlay("The registration token is invalid.",'Invalid Registration Token');
+                return view('users.error');
+            }
+            else{
+                $user->password = bcrypt($request->input('password'));
+                $user->register_token = str_random(60);
+                $user->active = 1;
+                $user->save();
 
+                if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password')])){
+                    return redirect(action('HomeController@index'));
+                }
+                else{
+                    flash()->overlay('There was a problem updating your account.  Try signing in with the password you set.  If that fails, please contact your Team Administrator','Registration Error');
+                    return redirect(action('HomeController@index'));
+                }
+
+
+            }
+        }
+        catch(\Exception $e){
+            flash()->overlay("The account cannot be activated at this time.  Please contact your team administrator for assistance","Activation Failed");
+            return view('users.error');
+        }
+    }
+
+    public function register(Request $request){
+        if($request->has('user')){
+            $user_id = $request->input('user');
+        }
+        else{
+            flash()->overlay("The user account you tried to activate no longer exists","Missing User ID");
+            return view('users.error');
+        }
+
+        if($request->has('token')){
+            $token = $request->input('token');
+        }
+        else{
+            flash()->overlay('You cannot activate a user account without a valid registration token.  Please contact your Team Administrator and ask them to set a password for you.','Missing Registration Token');
+            return view('users.error');
+        }
+
+        try{
+            $user = User::findOrFail($user_id);
+
+            if($user->active){
+                flash()->overlay('The user account has already been activated.  If you forgot your password, you can reset it from the login screen','User Already Active');
+                return redirect(action("HomeController@index"));
+            }
+
+            if($user->register_token !== $token){
+                flash()->overlay('The registration token is invalid.  Please contact your Team Administrator and ask them to set a password for you.','Invalid Registration Token');
+                return view('users.error');
+            }
+
+        }
+        catch(\Exception $e){
+            flash()->overlay("The user account you tried to activate no longer exists","Invalid User ID");
+            return view('users.error');
+        }
+
+        return view('users.register',compact('user','token'));
     }
 }

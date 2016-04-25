@@ -271,7 +271,10 @@
 
 <link rel="stylesheet" href="{{secure_asset('css/datepicker.css')}}">
 
-<script src="https://cdn.ckeditor.com/4.5.8/standard/ckeditor.js">
+<script src="https://cdn.ckeditor.com/4.5.8/standard/ckeditor.js"></script>
+
+<script>
+
 </script>
 
 
@@ -279,6 +282,9 @@
 </script>
 
     <script>
+
+        var ckeditor_description = CKEDITOR.replace( 'description' );
+        var ckeditor_accept_content = CKEDITOR.replace('sub_accept_content');
 
        // $('#scores_due_date').datepicker();
 
@@ -419,7 +425,7 @@
        }).data('datepicker');
 
 
-       var ckeditor_description = CKEDITOR.replace( 'description' );
+
 
        var Field_Manager = new FieldController($("#formdef_viewer"),null); //Refer to public/js/fieldcontroller.js
 
@@ -451,7 +457,7 @@
             formdef['definition'] = fields;
             formdef['sub_accept_action'] = $("#sub_accept_action").val();
             formdef['sub_accept_redir'] = $("#sub_accept_redir").val();
-            formdef['sub_accept_content'] = $("#sub_accept_content").val();
+            formdef['sub_accept_content'] = ckeditor_accept_content.getData();
             formdef['judges'] = $("#judges").val();
             formdef['use_custom_css'] = $("#use_custom_css").val();
             formdef['custom_css_url'] = $("#custom_css_url").val();

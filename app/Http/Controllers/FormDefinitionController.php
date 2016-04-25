@@ -141,6 +141,7 @@ class FormDefinitionController extends Controller
                     'submissions_end'=> Carbon::createFromFormat("m#d#y",$request->input('end_date'))->setTime(0,0,0),
                     'scores_due'=> Carbon::createFromFormat("m#d#y",$request->input('scores_date'))->setTime(0,0,0),
                     'notify_completed_sent'=>false,
+                    'status'=>'Scheduled',
                     'sub_accept_action'=>$request->input('sub_accept_action'),
                     'sub_accept_content'=>$sub_accept_content,
                     'use_custom_css'=>$use_custom_css,
@@ -310,7 +311,8 @@ class FormDefinitionController extends Controller
     public function displayForm(FormDefinition $formDef)
     {
         //if($formDef->submissions_start > Carbon::now()){
-        if($formDef->status == "Scheduled"){
+
+        if($formDef->status == "Scheduled" || $formDef->status == "Drafting"){
             $date = Carbon::createFromFormat('Y-m-d H:i:s',$formDef->submissions_start)->toDayDateTimeString();
             return view('formdefinitions.unstarted',compact('formDef','date'));
         }
@@ -646,7 +648,6 @@ class FormDefinitionController extends Controller
         $time = Carbon::now('America/Detroit');
 
         foreach($forms as $form){
-            continue; //for now
             echo "<hr>";
             echo "TIME NOW: $time <br>";
             echo "Form Start: ".$form->submissions_start."<br>";
