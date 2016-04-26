@@ -29,7 +29,7 @@
                             </table>
                         </div>
                     @else
-                        <strong>Please login to view your dashboard.</strong>
+                        <strong>Please login to view your dashboard, buddy.</strong>
 
                         <p>
                             This site is for CAL staff, alumni committee and other authorized users, if you are a student

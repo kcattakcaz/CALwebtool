@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(action('HomeController@index'));
 });
 
 /*
@@ -49,7 +49,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('settings/user','UserController');
     Route::post('users/activate','UserController@activate');
     Route::get('users/activate','UserController@register');
-
 
     //forms / submissions
     Route::get('form/{form}/schedule','FormDefinitionController@schedule');
