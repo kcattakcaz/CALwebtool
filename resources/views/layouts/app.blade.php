@@ -73,11 +73,12 @@
                         <li><a href="{{action('SubmissionController@index')}}">Submissions</a></li>
                         <li><a href="#">Scores</a></li>
                         <li><a href="#">Teams</a></li>
-                    @endif
-                    @if(Auth::check() && Auth::user()->isSystemAdmin() || (Auth::check() && Auth::user()->adminGroups()->count() > 0))
+
+                        @if(Auth::user()->isSystemAdmin() || (Auth::user()->adminGroups()->get()->count() > 0))
                         <li><a href="{{url('/settings')}}">Settings</a></li>
-                    @else
+                        @else
                         <li><a href="#">Profile</a></li>
+                        @endif
                     @endif
                 </ul>
 
