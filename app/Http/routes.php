@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Application Routes
+| Application Routes 
 |--------------------------------------------------------------------------
 |
 | This route group applies the "web" middleware group to every route
@@ -67,6 +67,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('submissions/{submissions}/trash','SubmissionController@trash');
     Route::resource('submissions','SubmissionController');
 
+    Route::get('moderation/approve/{submissions}','SubmissionController@accept');
+    Route::post('moderation/approve/{submissions}','SubmissionController@approve');
     Route::get('moderation/reject/{submissions}','SubmissionController@reject');
     Route::get('moderation/moderate/{submissions}','SubmissionController@moderate');
     Route::get('moderation/unlock/{submissions}','SubmissionController@unlock');
@@ -82,7 +84,7 @@ Route::group(['middleware' => 'web'], function () {
 
     //Testing
 
-    Route::get('schedform','FormDefinitionController@scheduleForms');
-    Route::get('scoreupdate','ScoreController@autoSubmissionStatus');
+    //Route::get('schedform','FormDefinitionController@scheduleForms');
+    //Route::get('scoreupdate','ScoreController@autoSubmissionStatus');
 
 });
