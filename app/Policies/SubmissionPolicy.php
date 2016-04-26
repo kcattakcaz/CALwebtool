@@ -47,7 +47,6 @@ class SubmissionPolicy
 
     public function judge(User $user, Submission $submission){
         $group = $submission->group()->first();
-        dd($group->isJudge($user->id));
         if($group->isJudge($user->id)){
             return true;
         }

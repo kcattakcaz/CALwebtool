@@ -73,7 +73,8 @@ class ScoreController extends Controller
                 Carbon::createFromFormat('Y-m-d H:i:s',$form->scores_due)->toDayDateTimeString()
                 .")
             to make changes.  After the due date, all scores are final.","Submission Scored!");
-            return redirect(action("ScoreController@edit",compact('submissions','score')));
+            //return redirect(action("ScoreController@edit",compact('submissions','score')));
+            return redirect(action('SubmissionController@show',compact('submissions')));
         }
         catch(\Exception $e){
             flash()->overlay("There was a technical problem saving the score.  Restart your Internet browser and try again.  If the problem persists, contact your Team or System administrator","Sorry");

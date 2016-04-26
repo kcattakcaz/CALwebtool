@@ -61,18 +61,19 @@
                                 </a>
                             @endcan
                         @elseif($form->judges()->get()->contains((Auth::user())))
-                            <a href="{{action('SubmissionController@reject',compact('submissions'))}}"><button type="button" class="btn btn-danger">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Reject
-                                </button>
-                            </a>
 
                             @if($submissions->status == "Judged")
-                            <a href="{{action('SubmissionController@accept',compact('submissions'))}}"><button type="button" class="btn btn-success">
-                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Final Approval
-                                </button>
-                            </a>
+                                <a href="{{action('SubmissionController@reject',compact('submissions'))}}"><button type="button" class="btn btn-danger">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Reject
+                                    </button>
+                                </a>
+                                <a href="{{action('SubmissionController@accept',compact('submissions'))}}"><button type="button" class="btn btn-success">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Final Approval
+                                    </button>
+                                </a>
+                            @elseif($submissions->status == "Approved" || $submissions->status == "Denied")
+                                The submission has been approved. No further action is needed.
                             @else
-
                             <a href="{{action('ScoreController@create',compact('submissions'))}}"><button type="button" class="btn btn-info">
                                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Judge
                                 </button>
@@ -80,7 +81,7 @@
 
                             @endif
                         @else
-                            <strong>No.</strong>
+                            You are not a judge for this form.
                         @endif
                     </div>
 

@@ -371,7 +371,8 @@ class SubmissionController extends Controller
 
         if(Auth::user()->can('approve',$submissions)) {
 
-            $submissions->status = "Approve";
+            $submissions->status = "Approved";
+            $submissions->judgement = $request->input("message");
             $submissions->save();
 
             flash()->overlay("The submission was approved","Approved!");
@@ -469,7 +470,11 @@ class SubmissionController extends Controller
     
     public function trash(Submission $submissions){
         if(Auth::user()->can('delete',$submissions)){
+            $form = $submissions->formdefinition()->first();
+            $action = action("FormDefinitionController@show",compact('form'));
             $submissions->delete();
+            flash()->overlay("The submission has been deleted.","Submission Deleted");
+            return redirect($action);
             //return response()->json(["error"=>false,"message"=>"The submission was deleted"]);
         }
         else{
