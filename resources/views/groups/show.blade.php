@@ -12,7 +12,7 @@
                     <div class="btn-group pull-right" role="group" aria-label="...">
 
                         <a href="{{action('GroupController@edit',compact('group'))}}"><button type="button" class="btn btn-default">
-                                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Edit Group
+                                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Edit Team
                             </button>
                         </a>
                        <a> <button type="button" class="btn btn-default">
