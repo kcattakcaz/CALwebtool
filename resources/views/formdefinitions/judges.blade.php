@@ -49,7 +49,7 @@
 
                     <div class="row">
                         <div class="form-group">
-                            <label for="avail_judges">Available Judges</label>
+                            <label for="avail_judges">Available Judges:</label>
                             <select multiple id="avail_judges" name="avail_judges" class="form-control">
                                 @foreach($available_judges as $avail_judge)
                                     <option value="{{$avail_judge->id}}">{{$avail_judge->name}} ({{$avail_judge->email}})</option>

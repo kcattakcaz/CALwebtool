@@ -47,7 +47,7 @@
             @if($formDef->sub_accept_action == "custom_message")
                 {!! $formDef->sub_accept_content !!}
             @else
-                <p>Thanks {{$submission->name}}, your submission has been accepted.</p>
+                <p>Thanks, {{$submission->name}}! Your submission has been accepted.</p>
             @endif
         </div>
     </div>

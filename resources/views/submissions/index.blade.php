@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
 
-            <h1>Submissions <small>All Teams</small></h1>
+            <h1>New Submissions <small>for you to judge.</small></h1>
 
 
             @foreach($forms as $form)
