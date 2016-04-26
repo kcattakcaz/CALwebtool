@@ -31,7 +31,7 @@
                         or no permissions at all.
                         <ul style="list-style-type:none">
                             <li>
-                                <span class="glyphicon glyphicon-inbox"> </span>
+                                <span class="glyphicon glyphicon-check"> </span>
                                 <em> - Moderator-</em>Allows the user to approve/reject submissions
                             </li>
                             <li>
@@ -39,11 +39,11 @@
                                 <em> - Creator-</em>Allows the user to create/modify/delete forms
                             </li>
                             <li>
-                                <span class="glyphicon glyphicon-star"> </span>
+                                <span class="glyphicon glyphicon-edit"> </span>
                                 <em> - Adjudicator-</em>Allows the user to score submissions
                             </li>
                             <li>
-                                <span class="glyphicon glyphicon-briefcase"> </span>
+                                <span class="glyphicon glyphicon-star"> </span>
                                 <em> - Administrator-</em>Provides user with all permissions above, and also the ability
                                 to add/remove users and modify permissions of other users
 
@@ -84,13 +84,13 @@
                                 <a href="{{action("UserController@show",compact('user'))}}" class=" list-group-item">{{$user->name}}
 
                                     @if($group->isAdmin($user->id))
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-briefcase"> </span>
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
                                     @else
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                                     @endif
 
                                     @if($group->isMod($user->id))
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-inbox"> </span>
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-check"> </span>
                                     @else
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                                     @endif
@@ -102,7 +102,7 @@
                                     @endif
 
                                     @if($group->isJudge($user->id))
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-edit"> </span>
                                     @else
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                                     @endif

@@ -46,19 +46,19 @@
                         </p>
                         <ul style="list-style-type:none">
                             <li>
-                                <span class="glyphicon glyphicon-inbox"> </span>
-                                <em> - Moderator-</em>Allows the user to approve/reject submissions
+                                <span class="glyphicon glyphicon-edit"> </span>
+                                <em> - Adjudicator-</em>Allows the user to score submissions
                             </li>
                             <li>
                                 <span class="glyphicon glyphicon-pencil"> </span>
                                 <em> - Creator-</em>Allows the user to create/modify/delete forms
                             </li>
                             <li>
-                                <span class="glyphicon glyphicon-star"> </span>
-                                <em> - Adjudicator-</em>Allows the user to score submissions
+                                <span class="glyphicon glyphicon-check"> </span>
+                                <em> - Moderator-</em>Allows the user to approve/reject submissions
                             </li>
                             <li>
-                                <span class="glyphicon glyphicon-briefcase"> </span>
+                                <span class="glyphicon glyphicon-star"> </span>
                                 <em> - Administrator-</em>Provides user with all permissions above, and also the ability
                                 to add/remove users and modify permissions of other users
 
@@ -111,7 +111,7 @@
                                         <input type="hidden" name="user_id" value="{{$user->id}}">
 
                                         <label for="{{$user->id}}-administrator">
-                                            <span style="padding-left:10px" class="glyphicon glyphicon-briefcase">: </span>
+                                            <span style="padding-left:10px" class="glyphicon glyphicon-star">: </span>
                                         </label>
                                         @if($group->isAdmin($user->id))
                                             <input type="checkbox" name="administrator" id="{{$user->id}}-administrator" checked/>
@@ -120,7 +120,7 @@
                                         @endif
 
                                         <label for="{{$user->id}}-moderator">
-                                            <span style="padding-left:10px" class=" glyphicon glyphicon-inbox">: </span>
+                                            <span style="padding-left:10px" class=" glyphicon glyphicon-check">: </span>
                                         </label>
                                         @if ($group->isMod($user->id))
                                             <input type="checkbox" name="moderator" id="{{$user->id}}-moderator" checked/>
@@ -138,7 +138,7 @@
                                         @endif
 
                                         <label for="{{$user->id}}-adjudicator">
-                                            <span style="padding-left:10px" class=" glyphicon glyphicon-star">: </span>
+                                            <span style="padding-left:10px" class=" glyphicon glyphicon-edit">: </span>
                                         </label>
                                         @if ($group->isJudge($user->id))
                                             <input type="checkbox" name="adjudicator" id="{{$user->id}}-adjudicator" checked/>

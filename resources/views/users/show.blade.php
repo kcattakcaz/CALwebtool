@@ -101,13 +101,13 @@
                         <a href="{{action("GroupController@show",compact('group'))}}" class=" list-group-item">{{$group->name}}
 
                             @if($group->isAdmin($user->id))
-                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-briefcase"> </span>
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
                             @else
                                 <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                             @endif
 
                             @if($group->isMod($user->id))
-                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-inbox"> </span>
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-check"> </span>
                             @else
                                 <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                             @endif
@@ -119,7 +119,7 @@
                             @endif
 
                             @if($group->isJudge($user->id))
-                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-edit"> </span>
                             @else
                                 <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                             @endif
