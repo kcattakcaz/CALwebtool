@@ -3,6 +3,8 @@
 namespace CALwebtool\Policies;
 
 use CALwebtool\FormDefinition;
+use CALwebtool\Group;
+use CALwebtool\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FormPolicy
@@ -25,7 +27,7 @@ class FormPolicy
             return true;
         }
     }
-    
+
 
     public function update(User $user, FormDefinition $form){
         try {

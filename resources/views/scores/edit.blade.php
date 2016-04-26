@@ -66,10 +66,9 @@
 <script src="https://cdn.ckeditor.com/4.5.8/basic/ckeditor.js"></script>
 
 <script>
-
     CKEDITOR.replace('comment');
-    //CKEDITOR.instances.comment.setData("{!! $scores->comment!!}");
-
+    $("#numerical_score").val("{{$scores->score}}");
+    CKEDITOR.instances.comment.setData("{!! $scores->comment!!}");
 </script>
 
 @endsection

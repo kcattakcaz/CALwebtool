@@ -15,7 +15,7 @@
                             </a>
                         </h4>
                     </div>
-                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div id="collapseOne" class="panel" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
                             @if($form->status == "Drafting")
                                 A draft of the form has been saved, but it hasn't been scheduled yet.  It will <strong>NOT</strong> open for submissions until you schedule it!
@@ -100,9 +100,9 @@
                             </a>
                         </h4>
                     </div>
-                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+                    <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
                         <ul class="list-group">
-                            @foreach($moderated_submissions as $submission)
+                            @foreach($judged_submissions as $submission)
                                 <a href="{{action('SubmissionController@show',compact('submission'))}}" class="list-group-item clearfix">
                                     #{{$submission->id}}- <strong>{{$submission->name}}</strong> ({{$submission->email}})
                                     <em class="pull-right">{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$submission->submitted)->toCookieString()}}</em>

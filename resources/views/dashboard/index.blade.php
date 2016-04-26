@@ -20,24 +20,6 @@
         </div>
 
 
-{{--
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <ul class="nav nav-tabs">
-                @foreach($groups as $index=>$group)
-                    @if($index == 0)
-                        <li role="presentation" class="active danger"><a href="#">{{$group->name}}</a></li>
-                    @else
-                        <li role="presentation"><a href="#">{{$group->name}}</a></li>
-                    @endif
-                @endforeach
-
-            </ul>
-        </div>
-    </div>
-    --}}
-
-
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
 
@@ -45,9 +27,9 @@
                 <ul class="nav nav-tabs" role="tablist">
                     @foreach($groups as $index=>$group)
                         @if($index == 0)
-                            <li role="presentation" class="active"><a href="#{{$group->id}}" aria-controls="home" role="tab" data-toggle="tab">{{$group->name}}</a></li>
+                            <li role="presentation" class="active"><a href="#{{$group->id}}" aria-controls="home" role="tab" data-toggle="tab"><strong>{{$group->name}}</strong></a></li>
                         @else
-                            <li role="presentation"><a href="#{{$group->id}}" aria-controls="profile" role="tab" data-toggle="tab">{{$group->name}}</a></li>
+                            <li role="presentation"><a href="#{{$group->id}}" aria-controls="profile" role="tab" data-toggle="tab"><strong>{{$group->name}}</strong></a></li>
                         @endif
                     @endforeach
 
@@ -61,6 +43,12 @@
                                 @include('dashboard.teamadmin',["active"=>true])
                             @elseif($group->isJudge(Auth::user()->id))
                                 @include('dashboard.judge',["active"=>true])
+                            @else
+                                <div role="tabpanel" class="tab-pane active" id="{{$group->id}}">
+                                    <div class="well">
+                                        <h4>You're a member of this team, but you don't have any specific role.</h4>
+                                    </div>
+                                </div>
                             @endif
 
                         @else
@@ -68,6 +56,12 @@
                                 @include('dashboard.teamadmin',["active"=>false])
                             @elseif($group->isJudge(Auth::user()->id))
                                 @include('dashboard.judge',["active"=>false])
+                            @else
+                                <div role="tabpanel" class="tab-pane" id="{{$group->id}}">
+                                    <div class="well">
+                                        <h4>You're a member of this team, but you don't have any specific role.</h4>
+                                    </div>
+                                </div>
                             @endif
                         @endif
                     @endforeach

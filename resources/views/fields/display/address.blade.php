@@ -1,5 +1,5 @@
 <label id="addressName" for="{{$address_field->get('id')}}">{{$address_field->get('name')}}</label>
-<input type="hidden" name="{{$address_field->get('id')}}[]"/>
+<input id="{{$address_field->get('id')}}" type="hidden" name="{{$address_field->get('id')}}"/>
 
 <div class="form-group" id="addressField">
 
@@ -351,6 +351,9 @@
         $("#{{$address_field->get('id')}}_state").on('keyup',function(){
             updateAddress();
         });
+        $("#{{$address_field->get('id')}}_city").on('keyup',function(){
+            updateAddress();
+        });
         $("#{{$address_field->get('id')}}_country").on('keyup',function(){
             updateAddress();
         });
@@ -360,12 +363,14 @@
 
         function updateAddress(){
             var addressObject = {};
-            addressObject.line1 = $("{{$address_field->get('id')}}_line1").val();
-            addressObject.line1 = $("{{$address_field->get('id')}}_line2").val();
-            addressObject.line1 = $("{{$address_field->get('id')}}_state").val();
-            addressObject.line1 = $("{{$address_field->get('id')}}_country").val();
-            addressObject.line1 = $("{{$address_field->get('id')}}_zip").val();
+            addressObject.line1 = $("#{{$address_field->get('id')}}_line1").val();
+            addressObject.line2 = $("#{{$address_field->get('id')}}_line2").val();
+            addressObject.city = $("#{{$address_field->get('id')}}_city").val();
+            addressObject.state = $("#{{$address_field->get('id')}}_state").val();
+            addressObject.country = $("#{{$address_field->get('id')}}_country").val();
+            addressObject.zip = $("#{{$address_field->get('id')}}_zip").val();
             $("#{{$address_field->get('id')}}").val(JSON.stringify(addressObject));
+            console.log(addressObject);
         }
 
     </script>

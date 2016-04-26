@@ -90,6 +90,28 @@ class ScoreController extends Controller
         return view("scores.edit",compact('submissions','scores'));
     }
 
+
+    public function update(Submission $submissions, Scores $scores, Request $request){
+        $this->validate($request,[
+            "numerical_score" => "required|integer",
+            "comment"=>"required|string"
+        ]);
+        if(Auth::user()->cannot('judge',$submissions)){
+            flash()->overlay("You do not have permission to judge submissions in this group","Not Authorized");
+            return redirect()->back();
+        }
+        try{
+            $scores->score = $request->input("numerical_score");
+            $scores->comment = $request->input("comment");
+            $scores->save();
+            return redirect(action('SubmissionController@show',compact('submissions')));
+        }
+        catch(\Exception $e){
+            flash()->overlay("The score cannot be updated".$e->getMessage(),"Error");
+            return redirect()->back();
+        }
+    }
+
     public static function autoSubmissionStatus(){
         echo "<hr><br>Starting automated update of status of submissions in judging queue at ".Carbon::now('America/Detroit')->toDayDateTimeString()."<br>";
         $submissions = Submission::where('status','Judging')->get();
@@ -119,9 +141,5 @@ class ScoreController extends Controller
 
         }
         echo "<br>Ending automated update of status of submissions in judging queue at ".Carbon::now('America/Detroit')->toDayDateTimeString()."<br><hr>";
-    }
-    
-    public function update(){
-        
     }
 }

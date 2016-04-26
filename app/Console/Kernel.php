@@ -4,6 +4,7 @@ namespace CALwebtool\Console;
 
 use CALwebtool\FormDefinition;
 use CALwebtool\Http\Controllers\FormDefinitionController;
+use CALwebtool\Http\Controllers\ScoreController;
 use CALwebtool\Http\Controllers\SubmissionController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -38,6 +39,10 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             FormDefinitionController::scheduleForms();
-        })->everyFiveMinutes();
+        })->everyMinute();
+
+        $schedule->call(function(){
+           ScoreController::autoSubmissionStatus();
+        })->everyMinute();
     }
 }

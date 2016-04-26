@@ -13,16 +13,12 @@
 
             <h1>Forms <small>All Teams</small></h1>
 
-                    <div class="btn-group pull-right" role="group" aria-label="...">
-                        <button type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
-                        </button>
-
-                        <a href="{{action('FormDefinitionController@create')}}"><button type="button" class="btn btn-default">
+                    <!--<div class="btn-group pull-right" role="group" aria-label="..."> -->
+                        <a href="{{action('FormDefinitionController@create')}}"><button type="button" class="pull-right btn btn-success">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Form
                         </button>
                         </a>
-                    </div>
+                    <!--</div> -->
 
                     <br><br>
 

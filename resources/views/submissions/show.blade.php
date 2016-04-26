@@ -11,53 +11,77 @@
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
 
-                        @can('moderate',$submissions)
-                        <a href="{{action('SubmissionController@moderate',compact('submissions'))}}"><button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Send to Judges
-                            </button>
-                        </a>
-                        @endcan
+                        @if($group->isAdmin(Auth::user()->id))
 
-                        @can('reject',$submissions)
-                        <a href="{{action('SubmissionController@reject',compact('submissions'))}}"><button type="button" class="btn btn-danger">
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Reject
-                            </button>
-                        </a>
-                        @endcan
-
-                        @can('unlock',$submissions)
-                        <a href="{{action('SubmissionController@unlock',compact('submissions'))}}"><button type="button" class="btn btn-default">
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Allow Editing
-                            </button>
-                        </a>
-                        @endcan
-
-                        @can('reject',$submissions)
-                        <a href="{{action('SubmissionController@rejectNotify',compact('submissions'))}}"><button type="button" class="btn btn-danger">
-                                <span class="glyphicon glyphicon-envelope"></span> Reject with Message
-                            </button>
-                        </a>
-                        @endcan
-
-                        @can('accept',$submissions)
-                        <a href="{{action('SubmissionController@moderate',compact('submissions'))}}"><button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Accept
-                            </button>
-                        </a>
-                        @endcan
-
-                        @can('judge',$submissions)
-                        <a href="{{action('ScoreController@create',compact('submissions'))}}"><button type="button" class="btn btn-info">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Judge
-                            </button>
-                        </a>
-                        @endcan
-                        @can('delete',$submissions)
-                            <a href="{{action('SubmissionController@trash',compact('submissions'))}}"><button type="button" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                            @can('moderate',$submissions)
+                            <a href="{{action('SubmissionController@moderate',compact('submissions'))}}"><button type="button" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Send to Judges
                                 </button>
                             </a>
-                        @endcan
+                            @endcan
+
+                            @can('reject',$submissions)
+                            <a href="{{action('SubmissionController@reject',compact('submissions'))}}"><button type="button" class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Reject
+                                </button>
+                            </a>
+                            @endcan
+
+                            @can('unlock',$submissions)
+                            <a href="{{action('SubmissionController@unlock',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Allow Editing
+                                </button>
+                            </a>
+                            @endcan
+
+                            @can('reject',$submissions)
+                            <a href="{{action('SubmissionController@rejectNotify',compact('submissions'))}}"><button type="button" class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-envelope"></span> Reject with Message
+                                </button>
+                            </a>
+                            @endcan
+
+                            @can('accept',$submissions)
+                            <a href="{{action('SubmissionController@accept',compact('submissions'))}}"><button type="button" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Final Approval
+                                </button>
+                            </a>
+                            @endcan
+
+                            @can('judge',$submissions)
+                            <a href="{{action('ScoreController@create',compact('submissions'))}}"><button type="button" class="btn btn-info">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Judge
+                                </button>
+                            </a>
+                            @endcan
+                            @can('delete',$submissions)
+                                <a href="{{action('SubmissionController@trash',compact('submissions'))}}"><button type="button" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                                    </button>
+                                </a>
+                            @endcan
+                        @elseif($form->judges()->get()->contains((Auth::user())))
+                            <a href="{{action('SubmissionController@reject',compact('submissions'))}}"><button type="button" class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Reject
+                                </button>
+                            </a>
+
+                            @if($submissions->status == "Judged")
+                            <a href="{{action('SubmissionController@accept',compact('submissions'))}}"><button type="button" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Final Approval
+                                </button>
+                            </a>
+                            @else
+
+                            <a href="{{action('ScoreController@create',compact('submissions'))}}"><button type="button" class="btn btn-info">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Judge
+                                </button>
+                            </a>
+
+                            @endif
+                        @else
+                            <strong>No.</strong>
+                        @endif
                     </div>
 
                     <div class="clearfix"></div>

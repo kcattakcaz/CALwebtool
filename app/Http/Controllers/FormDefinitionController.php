@@ -59,7 +59,7 @@ class FormDefinitionController extends Controller
 
     public function store(Request $request){
         $this->validate($request,[
-            'name' => 'required|unique:formdefinitions|max:255',
+            'name' => 'required|unique:formdefinitions|max:100',
             'description' => 'required',
             'group'=>'required|integer',
             'definition'=>'required|array',
@@ -80,8 +80,8 @@ class FormDefinitionController extends Controller
         catch(\Exception $e){
             flash()->overlay("The team cannot be found, it may have been deleted."."Team Not Found");
         }
-        
-        if(Auth::user()->cannot('createForm-group',$group)){
+
+        if(Auth::user()->cannot('create-form',$group)){
             return response()->json(["Not authorized."=>["You do not have permission to create forms in this team"]],403);
         }
         

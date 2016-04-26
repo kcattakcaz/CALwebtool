@@ -59,6 +59,10 @@ class HomeController extends Controller
     }
 
     public function settings(){
+        if(!Auth::user()->isSystemAdmin()){
+            flash()->overlay("You do not have permission to modify settings","Settings");
+            return redirect(action('HomeController@index'));
+        }
         return view ('settings.index');
     }
 

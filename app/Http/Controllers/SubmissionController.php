@@ -91,7 +91,7 @@ class SubmissionController extends Controller
             }
             else{
                 if($this->verifyField($field,$request->input($field->field_id))){
-                    $fields->put($field->field_id,$request->input($field->field_id));
+                        $fields->put($field->field_id, $request->input($field->field_id));
 
                 }
                 else{
@@ -126,8 +126,8 @@ class SubmissionController extends Controller
     }
 
     public function show(Submission $submissions){
-        dd();
         $form = $submissions->formdefinition()->first();
+        $group = $form->group()->first();
         $submission_fields = json_decode($submissions->options);
         $fields = new Collection();
         foreach($submission_fields as $key=>$value){
@@ -139,7 +139,7 @@ class SubmissionController extends Controller
             }
         }
 
-        return view('submissions.show',compact('submissions','form','fields'));
+        return view('submissions.show',compact('submissions','form','fields','group'));
     }
 
     public static function verifyField($field,$value){
@@ -324,8 +324,8 @@ class SubmissionController extends Controller
     public function sendRejectNotify(Submission $submissions, Request $request){
         $this->validate($request,[
             'recipient'=>'required|email',
-            'subject'=>'string|max:40',
-            'message'=>'string'
+            'subject'=>'required|string|max:40',
+            'message'=>'required|string'
         ]);
         if(Auth::user()->can('reject',$submissions)){
 
@@ -351,7 +351,24 @@ class SubmissionController extends Controller
         }
     }
 
-    public static function approve(Submission $submissions){
+    public function accept(Submission $submissions){
+        if(Auth::user()->can('approve',$submissions)){
+            flash()->overlay(view('submissions.approve',compact('submissions'))->render(),"Approve Submission");
+            return redirect()->back();
+        }
+        else{
+            flash()->overlay("You do not have permission to approve submissions in this team",'Not Authorized');
+            return redirect()->back();
+        }
+    }
+
+
+    public function approve(Submission $submissions, Request $request){
+        $this->validate($request,
+            [
+                'message' => 'required|string'
+            ]);
+
         if(Auth::user()->can('approve',$submissions)) {
 
             $submissions->status = "Approve";
