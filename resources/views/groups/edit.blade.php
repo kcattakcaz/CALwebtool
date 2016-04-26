@@ -23,15 +23,6 @@
                                 </ul>
                             </div>
                         @endif
-
-                        <div class="btn-group pull-right" role="group" aria-label="...">
-                            <a>
-                                <button type="button" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
-                                </button>
-                            </a>
-                        </div>
-
                         <p>
                             {{$group->description}}
                         </p>
@@ -72,7 +63,7 @@
                                 <strong>Team Members</strong>
 
                             </p>
-
+                                <!--
                             <div class="">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search for...">
@@ -88,10 +79,11 @@
                                             <li role="separator" class="divider"></li>
                                             <li><a href="#">Show Admins Only</a></li>
                                         </ul>
-                                    </div><!-- /btn-group -->
-                                </div><!-- /input-group -->
-                            </div><!-- /input-group -->
-                        </div><!-- /.col-lg-6 -->
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                        </div>
 
 
                         @foreach($group->users()->get() as $user)
@@ -156,7 +148,7 @@
                                         <input type="hidden" name="_method" value="PATCH">
                                         <input type="hidden" name="action" value="delMember">
                                         <input type="hidden" name="user_id" value="{{$user->id}}">
-                                        <button id="btn_userDelete_{{$user->id}}" name="btn_userDelete_{{$user->id}}" type="submit" class="btn btn-default pull-right">
+                                        <button id="btn_userDelete_{{$user->id}}" name="btn_userDelete_{{$user->id}}" type="submit" class="btn btn-danger pull-right">
                                             <span class="glyphicon glyphicon-erase" aria-hidden="true"></span> Remove
                                         </button>
                                     </form>

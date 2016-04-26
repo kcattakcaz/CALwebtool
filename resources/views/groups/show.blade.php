@@ -15,17 +15,11 @@
                                 <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Edit Team
                             </button>
                         </a>
-                       <a> <button type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
-                        </button> </a>
                     </div>
-
                     <p>
                         {{$group->description}}
                     </p>
-
                     <br>
-
                     <p>
                         Members can have one or more of the following permissions: Administrator, Moderator, Creator, Adjudicator,
                         or no permissions at all.
@@ -58,7 +52,7 @@
                             <strong>Team Members</strong>
 
                         </p>
-
+                        <!--
                         <div class="">
                             <div class="input-group">
                                   <input type="text" class="form-control" placeholder="Search for...">
@@ -73,11 +67,11 @@
                                         <li role="separator" class="divider"></li>
                                         <li><a href="#">Show Admins Only</a></li>
                                     </ul>
-                                </div><!-- /btn-group -->
-                            </div><!-- /input-group -->
-                            </div><!-- /input-group -->
-                        </div><!-- /.col-lg-6 -->
-
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        -->
 
                         <p>
                             @foreach($group->users()->get() as $user)
