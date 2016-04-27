@@ -178,7 +178,7 @@ class GroupController extends Controller
                 $group->modifyPermissions($user,$creator,$moderator,$adjudicator);
             }
 
-            flash()->overlay($user->name." (".$user->email.") now has the permissions<br><br>Administrator: ".($administrator ? "True" : "False")."<br>Creator: ".($creator ? "True" : "False")."<br>Moderator: ".($moderator ? "True" : "False")."<br> Judge: ".($adjudicator ? "True" : "False"),"Permissions Updated");
+            flash()->overlay($user->name." (".$user->email.") now has the permissions<br><br>Administrator: ".($administrator ? "True" : "False")."<br>Moderator: ".($moderator ? "True" : "False")."<br> Judge: ".($adjudicator ? "True" : "False"),"Permissions Updated");
             return redirect()->back();
         }
         elseif($request->input("action") == "promoteAdmin"){
