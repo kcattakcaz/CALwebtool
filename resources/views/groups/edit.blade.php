@@ -37,18 +37,18 @@
                         </p>
                         <ul style="list-style-type:none">
                             <li>
-                                <span class="glyphicon glyphicon-edit"> </span>
-                                <em> - Judge-</em>Allows the user to score submissions
+                                <span class="glyphicon glyphicon-star"> </span>
+                                <em> - Administrator-</em>Provides user with all permissions above, and also the ability
+                                to add/remove users and modify permissions of other users
+
                             </li>
                             <li>
                                 <span class="glyphicon glyphicon-pencil"> </span>
                                 <em> - Moderator-</em>Allows the user to approve/reject submissions
                             </li>
                             <li>
-                                <span class="glyphicon glyphicon-star"> </span>
-                                <em> - Administrator-</em>Provides user with all permissions above, and also the ability
-                                to add/remove users and modify permissions of other users
-
+                                <span class="glyphicon glyphicon-edit"> </span>
+                                <em> - Judge-</em>Allows the user to score submissions
                             </li>
 
                         </ul>

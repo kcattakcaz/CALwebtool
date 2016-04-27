@@ -25,18 +25,18 @@
                         or no permissions at all.
                         <ul style="list-style-type:none">
                             <li>
+                                <span class="glyphicon glyphicon-star"> </span>
+                                <em> - Administrator-</em>Provides user with all permissions above, and also the ability
+                                to add/remove users and modify permissions of other users
+
+                            </li>
+                            <li>
                                 <span class="glyphicon glyphicon-pencil"> </span>
                                 <em> - Moderator-</em>Allows the user to approve/reject submissions
                             </li>
                             <li>
                                 <span class="glyphicon glyphicon-edit"> </span>
                                 <em> - Judge-</em>Allows the user to score submissions
-                            </li>
-                            <li>
-                                <span class="glyphicon glyphicon-star"> </span>
-                                <em> - Administrator-</em>Provides user with all permissions above, and also the ability
-                                to add/remove users and modify permissions of other users
-
                             </li>
 
                         </ul>
@@ -73,8 +73,8 @@
                             @foreach($group->users()->get() as $user)
                                 <a href="{{action("UserController@show",compact('user'))}}" class=" list-group-item">{{$user->name}}
 
-                                    @if($group->isAdmin($user->id))
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
+                                    @if($group->isJudge($user->id))
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-edit"> </span>
                                     @else
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                                     @endif
@@ -85,8 +85,8 @@
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                                     @endif
 
-                                    @if($group->isJudge($user->id))
-                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-edit"> </span>
+                                    @if($group->isAdmin($user->id))
+                                        <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
                                     @else
                                         <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                                     @endif
