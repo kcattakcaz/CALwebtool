@@ -192,11 +192,12 @@ function TextField(id,name,currentValuesObj){
         //this.is_multi_line = false;
         this.text_type = "Plain";
     }else{
+        var field_options = JSON.parse(currentValuesObj.options);
         this.type = currentValuesObj.type;
         this.id = currentValuesObj.id;
         this.name = currentValuesObj.name;
-        this.required = currentValuesObj.required;
-        this.text_type = currentValuesObj.text_type;
+        this.required = field_options.required;
+        this.text_type = field_options.text_type;
     }
 
     this.elementref_name = null;
@@ -237,6 +238,7 @@ function TextField(id,name,currentValuesObj){
                 $("<option value='1'> Required</option>"),
                 $("<option value='0'> Not required</option>")
             );
+        this.elementref_required.val(this.required);
         required_group.append(this.elementref_required);
         parentElementRef.append(required_group);
 
@@ -247,12 +249,10 @@ function TextField(id,name,currentValuesObj){
             .append(
                 $("<option value='any'>Any Text</option>"),
                 $("<option value='multiline'>Multiline Text Area</option>"),
-                $("<option value='num'>Number Spinner</option>"),
-                $("<option value='alpha'>Alphabetic</option>"),
+                $("<option value='num'>Numbers Only</option>"),
+                $("<option value='alpha'>Alphabetic Only</option>"),
                 $("<option value='email'>E-Mail Field</option>"),
-                $("<option value='phone'>Telephone Field</option>"),
-                $("<option value='date'>Date Field</option>"),
-                $("<option value='time'>Time Field</option>")
+                $("<option value='phone'>Telephone Field</option>")
             );
         texttype_group.append(this.elementref_texttype);
         parentElementRef.append(texttype_group);
@@ -287,12 +287,16 @@ function CheckBoxField(id,name,currentValuesObj){
         this.value_true = true;
         this.value_false = false;
     } else {
+        var field_options = JSON.parse(currentValuesObj.options);
         this.type = currentValuesObj.type;
         this.id = currentValuesObj.id;
         this.name = currentValuesObj.name;
-        this.required = currentValuesObj.required;
-        this.value_true = currentValuesObj.value_true;
-        this.value_false = currentValuesObj.value_false;
+        console.log("checkbox field options");
+        console.log(field_options);
+        this.required = field_options.required;
+        console.log("set value as "+this.required);
+        this.value_true = field_options.value_true;
+        this.value_false = field_options.value_false;
     }
 
     this.elementref_name = null;
@@ -331,6 +335,7 @@ function CheckBoxField(id,name,currentValuesObj){
                 $("<option value='1'> Required</option>"),
                 $("<option value='0'> Not required</option>")
             );
+        this.elementref_required.val(this.required);
         required_group.append(this.elementref_required);
         parentElementRef.append(required_group);
 
@@ -376,10 +381,11 @@ function SelectField(id,name,currentValuesObj){
         this.required = false;
         this.options =[];
     } else {
+        var field_options = JSON.parse(currentValuesObj.options);
         this.type = currentValuesObj.type;
         this.id = currentValuesObj.id;
         this.name = currentValuesObj.name;
-        this.required = currentValuesObj.required;
+        this.required = field_options.required;
         this.options = [];
         //this.options = currentValuesObj.options;
     }
@@ -421,6 +427,7 @@ function SelectField(id,name,currentValuesObj){
                 $("<option value='1'> Required</option>"),
                 $("<option value='0'> Not required</option>")
             );
+        this.elementref_required.val(this.required);
         required_group.append(this.elementref_required);
         parentElementRef.append(required_group);
 
@@ -606,6 +613,7 @@ function RadioGroupField(id,name,currentValuesObj){
                 $("<option value='1'> Required</option>"),
                 $("<option value='0'> Not required</option>")
             );
+        this.elementref_required.val(this.required);
         required_group.append(this.elementref_required);
         parentElementRef.append(required_group);
 
