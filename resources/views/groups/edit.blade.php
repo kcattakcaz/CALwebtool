@@ -53,12 +53,6 @@
 
                         </ul>
 
-
-                        <div class="list-group">
-                            <p>
-                                <strong>Team Members</strong>
-
-                            </p>
                                 <!--
                             <div class="">
                                 <div class="input-group">
@@ -79,9 +73,14 @@
                                 </div>
                             </div>
                             -->
+
+                        <div class="list-group">
+                            <p class="pull-left">
+                                <strong>Team Members:</strong>
+                            </p>
                             <span class="input-group-btn">
-                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_add_user">Add User(s)</button>
-                              </span>
+                                <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal_add_user">Add User(s)</button>
+                            </span>
                         </div>
 
 
