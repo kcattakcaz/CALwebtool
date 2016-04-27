@@ -79,6 +79,9 @@
                                 </div>
                             </div>
                             -->
+                            <span class="input-group-btn">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_add_user">Add User(s)</button>
+                              </span>
                         </div>
 
 
