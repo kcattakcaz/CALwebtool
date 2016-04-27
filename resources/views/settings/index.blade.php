@@ -18,9 +18,6 @@
 
                     <a href="{{action('GroupController@index')}}" class="list-group-item">Team Management <span class="pull-right glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
                     <a href="{{action('UserController@index')}}" class="list-group-item">User Management <span class="pull-right glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
-                    <a href="{{action('HomeController@unavailable')}}" class="list-group-item">Audit and Log Data (Disabled)<span class="pull-right glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
-                    <a href="{{action('HomeController@unavailable')}}" class="list-group-item">System Maintenance (Disabled)<span class="pull-right glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
-                    <a href="{{action('HomeController@unavailable')}}" class="list-group-item">Backup and Restore (Disabled)<span class="pull-right glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
                 </div>
 
             </div>
