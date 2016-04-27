@@ -70,7 +70,9 @@
                     @if(Auth::check())
                         <li><a href="{{ url('/home') }}">My Dashboard</a></li>
                         <li><a href="{{action('FormDefinitionController@index')}}">Forms</a></li>
-                        <li><a href="{{action('SubmissionController@index')}}">Submissions</a></li>
+                        @if(Auth::user()->isSystemAdmin())
+                            <li><a href="{{action('SubmissionController@index')}}">Submissions</a></li>
+                        @endif
                         @if(Auth::user()->isSystemAdmin() || (Auth::user()->adminGroups()->count() > 0))
                             <li><a href="{{url('/settings')}}">Settings</a></li>
                         @else
