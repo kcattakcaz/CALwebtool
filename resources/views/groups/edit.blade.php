@@ -30,7 +30,7 @@
                         <br>
 
                         <p>
-                            Members can have one or more of the following permissions: Administrator, Moderator, Creator, Adjudicator,
+                            Members can have one or more of the following permissions: Administrator, Moderator, Judge,
                             or no permissions at all.
 
 
@@ -38,14 +38,10 @@
                         <ul style="list-style-type:none">
                             <li>
                                 <span class="glyphicon glyphicon-edit"> </span>
-                                <em> - Adjudicator-</em>Allows the user to score submissions
+                                <em> - Judge-</em>Allows the user to score submissions
                             </li>
                             <li>
                                 <span class="glyphicon glyphicon-pencil"> </span>
-                                <em> - Creator-</em>Allows the user to create/modify/delete forms
-                            </li>
-                            <li>
-                                <span class="glyphicon glyphicon-check"> </span>
                                 <em> - Moderator-</em>Allows the user to approve/reject submissions
                             </li>
                             <li>
@@ -112,21 +108,12 @@
                                         @endif
 
                                         <label for="{{$user->id}}-moderator">
-                                            <span style="padding-left:10px" class=" glyphicon glyphicon-check">: </span>
+                                            <span style="padding-left:10px" class=" glyphicon glyphicon-pencil">: </span>
                                         </label>
                                         @if ($group->isMod($user->id))
                                             <input type="checkbox" name="moderator" id="{{$user->id}}-moderator" checked/>
                                        @else
                                             <input type="checkbox" name="moderator" id="{{$user->id}}-moderator"/>
-                                        @endif
-
-                                        <label for="{{$user->id}}-creator">
-                                            <span style="padding-left:10px" class=" glyphicon glyphicon-pencil">: </span>
-                                        </label>
-                                        @if ($group->isCreator($user->id))
-                                            <input type="checkbox" name="creator" id="{{$user->id}}-creator" checked/>
-                                        @else
-                                            <input type="checkbox" name="creator" id="{{$user->id}}-creator"/>
                                         @endif
 
                                         <label for="{{$user->id}}-adjudicator">
@@ -226,10 +213,6 @@
                                         <div class="form-group">
                                             <label class="col-md-2">Administrator:</label>
                                             <input name="administrator" id="useradd_admin" type="checkbox" value="1">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2">Creator:</label>
-                                            <input name="creator" id="useradd_creator" type="checkbox" value="1">
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2">Moderator:</label>
