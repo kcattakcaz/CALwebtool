@@ -63,7 +63,7 @@
                         @elseif($form->judges()->get()->contains((Auth::user())))
 
                             @if($submissions->status == "Judged")
-                                <a href="{{action('SubmissionController@reject',compact('submissions'))}}"><button type="button" class="btn btn-danger">
+                                <a href="{{action('SubmissionController@finalRejection',compact('submissions'))}}"><button type="button" class="btn btn-danger">
                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Reject
                                     </button>
                                 </a>
@@ -71,8 +71,10 @@
                                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Final Approval
                                     </button>
                                 </a>
-                            @elseif($submissions->status == "Approved" || $submissions->status == "Denied")
+                            @elseif($submissions->status == "Approved")
                                 The submission has been approved. No further action is needed.
+                            @elseif($submissions->status == "Denied")
+                                The submission has been rejected.  No further action is needed.
                             @else
                             <a href="{{action('ScoreController@create',compact('submissions'))}}"><button type="button" class="btn btn-info">
                                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Judge
@@ -148,6 +150,34 @@
             </div>
         </div>
     </div>
+
+    @if($submissions->status == "Approved")
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        Final Judgement
+                    </div>
+                    <div class="panel-body">
+                        {!! $submissions->judgement !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @elseif($submissions->status == "Denied")
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        Final Judgement
+                    </div>
+                    <div class="panel-body">
+                        {!! $submissions->judgement !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     @foreach($submissions->scores()->get() as $score)
         <div class="row">

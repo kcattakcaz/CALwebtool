@@ -57,7 +57,10 @@ class GroupController extends Controller
     }
 
     public function show(Group $group){
-        return view('groups.show',compact('group'));
+        $group_users = $group->users()->get();
+        $users = User::all()->diff($group_users);
+        return view('groups.edit', compact('group', 'users'));
+        //return view('groups.show',compact('group'));
     }
 
     //loads edit page

@@ -321,6 +321,17 @@ class SubmissionController extends Controller
         }
     }
 
+    public static function finalRejection(Submission $submissions){
+        if(Auth::user()->can('reject',$submissions)){
+            flash()->overlay(view('submissions.reject',compact('submissions'))->render(),"Reject Submission");
+            return redirect()->back();
+        }
+        else{
+            flash()->overlay("You don't have permission to reject submissions in this form","Not Authorized");
+            return redirect()->back();
+        }
+    }
+
     public function sendRejectNotify(Submission $submissions, Request $request){
         $this->validate($request,[
             'recipient'=>'required|email',
@@ -353,7 +364,7 @@ class SubmissionController extends Controller
 
     public function accept(Submission $submissions){
         if(Auth::user()->can('approve',$submissions)){
-            flash()->overlay(view('submissions.approve',compact('submissions'))->render(),"Approve Submission");
+            flash()->overlay(view('submissions.deny',compact('submissions'))->render(),"Approve Submission");
             return redirect()->back();
         }
         else{
@@ -380,6 +391,36 @@ class SubmissionController extends Controller
         }
         else{
             flash()->overlay("You do not have permission to approve submissions in this team.","Not Authorized");
+            return redirect()->back();
+        }
+    }
+
+    public function deny(Submission $submissions, Request $request){
+        $this->validate($request,
+            [
+                'message' => 'required|string'
+            ]);
+
+        if(Auth::user()->can('reject',$submissions)) {
+
+            $submissions->status = "Denied";
+            $submissions->judgement = $request->input("message");
+            $submissions->save();
+            $user = Auth::user();
+            $form = $submissions->formdefinition()->first();
+            foreach($submissions->group()->administratorUsers()->get() as $admin){
+                Mail::queue('emails.submission_final_rejection', ["content"=>$request->input('message'),"submission"=>$submissions,"admin"=>$admin,"form"=>$form], function ($message) use ($user,$admin){
+                    $message->from($user->email,$user->name);
+                    $message->subject("Submission Rejected");
+                    $message->to($admin->email,$admin->name);
+                });
+            }
+
+            flash()->overlay("The submission was denied","Denied!");
+            return redirect()->back();
+        }
+        else{
+            flash()->overlay("You do not have permission to deny submissions in this team.","Not Authorized");
             return redirect()->back();
         }
     }

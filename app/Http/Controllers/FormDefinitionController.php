@@ -368,14 +368,22 @@ class FormDefinitionController extends Controller
 
     public function update(FormDefinition $form, Request $request){
         if($form->status != "Drafting" || $form->submissions()->get()->count() > 0 ) {
-            return response()->json(["error" => true, "message" => "You cannot edit a form that has already opened or has submissions"],405);
+            return response()->json(["error" => true, "message" => ["You cannot edit a form that isn't a Draft or has submissions"]],405);
         }
         else{
+
+            $this->validate($request,[
+                'name' => 'required|max:100',
+                'description' => 'required',
+                'definition'=>'required|array']);
 
             $fieldErrors = new Collection();
             $old_fields = $form->fields()->get();
             $new_fields = new Collection();
             $formDef = $form;
+
+            $formDef->name= $request->input("name");
+            $formDef->description = $request->input('description');
 
             foreach($request->input('definition') as $fieldArray){
                 $fieldDef = collect($fieldArray);
@@ -486,6 +494,7 @@ class FormDefinitionController extends Controller
                 }
                 else{
                     $fieldErrors->push(["Unknown field type in submission"]);
+                    continue;
                 }
 
                 $new_fields->push($field);
@@ -495,6 +504,7 @@ class FormDefinitionController extends Controller
                 foreach($old_fields as $old_field){
                     $old_field->delete();
                 }
+                $formDef->save();
                 return response()->json(["id"=>$formDef->id,"new_fields"=>$new_fields,"old_fields"=>$old_fields],200);
             }
             else{

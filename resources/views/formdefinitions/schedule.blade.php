@@ -83,8 +83,10 @@
                         <div class="form-group col-xs-6">
                             <label for="status">Status:</label>
                             <select id="status" name="status" class="form-control">
+                                @if($form->status == "Scheduled" || $form->status == "Drafting")
                                 <option value="Drafting">Draft</option>
                                 <option value="Scheduled">Scheduled</option>
+                                @endif
                                 <option value="Accepting">Accepting Submissions</option>
                                 <option value="Reviewing">Waiting for Judges' Scores</option>
                                 <option value="Scored">Scoring Complete</option>

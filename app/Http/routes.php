@@ -68,6 +68,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('moderation/approve/{submissions}','SubmissionController@accept');
     Route::post('moderation/approve/{submissions}','SubmissionController@approve');
+    Route::get('moderation/deny/{submissions}','SubmissionController@finalRejection');
+    Route::post('moderation/deny/{submissions}','SubmissionController@deny');
     Route::get('moderation/reject/{submissions}','SubmissionController@reject');
     Route::get('moderation/moderate/{submissions}','SubmissionController@moderate');
     Route::get('moderation/unlock/{submissions}','SubmissionController@unlock');

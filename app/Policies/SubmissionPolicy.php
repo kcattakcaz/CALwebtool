@@ -61,7 +61,7 @@ class SubmissionPolicy
     public function reject(User $user, Submission $submission)
     {
         $group = $submission->group()->first();
-        if ($group->isJudge($user)) {
+        if ($group->isJudge($user->id)) {
             return true;
         }
         elseif($group->isMod($user->id)){

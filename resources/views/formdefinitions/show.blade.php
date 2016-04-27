@@ -24,9 +24,9 @@
                             @elseif($form->status == "Accepting")
                                 The form is now accepting submissions until {{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$form->submissions_end)->toDayDateTimeString()}} (It's {{\Carbon\Carbon::now()->toDayDateTimeString()}}
                             @elseif($form->status == "Reviewing")
-
+                                The form is now closed, waiting for judges to score all submissions.
                             @elseif($form->status == "Scored")
-
+                                The judges have scored all submissions.
                             @elseif($form->status == "Archived")
                                 The form is archived.
                             @endif
