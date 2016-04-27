@@ -107,12 +107,6 @@
                             @endif
 
                             @if($group->isMod($user->id))
-                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-check"> </span>
-                            @else
-                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
-                            @endif
-
-                            @if($group->isCreator($user->id))
                                 <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-pencil"> </span>
                             @else
                                 <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
