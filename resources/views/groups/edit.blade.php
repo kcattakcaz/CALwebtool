@@ -86,7 +86,7 @@
 
                         @foreach($group->users()->get() as $user)
                             @if($group->isAdmin($user->id))
-                                    <div id="panel_{{$user->id}}" class="panel panel-info" data-user-is-admin="true" data-user-name="{{$user->name}}" data-user-email="{{$user->email}}" data-join-date="{{$group->users()->find($user->id)->pivot->created_at}}">
+                                    <div id="panel_{{$user->id}}" class="panel panel-primary" data-user-is-admin="true" data-user-name="{{$user->name}}" data-user-email="{{$user->email}}" data-join-date="{{$group->users()->find($user->id)->pivot->created_at}}">
                                         <div class="panel-heading">{{$user->name}} (Admin)</div>
                             @else
                                 <div id="panel_{{$user->id}}" class="panel panel-default" data-user-is-admin="false" data-user-name="{{$user->name}}" data-user-email="{{$user->email}}" data-join-date="{{$group->users()->find($user->id)->pivot->created_at}}">

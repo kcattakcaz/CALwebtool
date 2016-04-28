@@ -13,10 +13,12 @@
 
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
+                        @if(Auth::user()->isSystemAdmin())
                         <a href="{{action('GroupController@create')}}"><button type="button" class="btn btn-default">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Team
                             </button>
                         </a>
+                        @endif
                     </div>
 
                     <br>
