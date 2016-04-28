@@ -10,7 +10,7 @@
                 <div class="list-group">
 
                     @foreach($submissions as $submission)
-                        <a href="{{action('SubmissionController@show',['submissions'=>$submission])}}" class="list-group-item">{{$submission->name}} <em class="pull-right">({{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$submission->submitted)->toCookieString()}})</em></a>
+                        <a href="{{action('SubmissionController@show',['submissions'=>$submission])}}" class="list-group-item">{{$submission->name}} </a>
 
                     @endforeach
 

@@ -140,6 +140,8 @@
                                 @include('fields.submission.radiogroup',['radiogroup_field'=>$field])
                             @elseif($field->get('fieldDef')->type == 'Address')
                                 @include('fields.submission.address',['address_field'=>$field])
+                            @elseif($field->get('fieldDef')->type = 'File')
+                                @include('fields.submission.file',['file_field'=>$field])
                             @else
                                 {{json_encode($field)}}<br>
                             @endif

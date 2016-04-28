@@ -44,6 +44,18 @@
                 {!! $formDef->description!!}
             </div>
 
+            @if(count(session('field_validation_errors')))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach(session('field_validation_errors') as $error)
+                            <li>{{$error}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @else
+                No errors
+            @endif
+
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
                     <ul>
@@ -54,7 +66,7 @@
                 </div>
             @endif
 
-            <form method="post" action="{{action('SubmissionController@store',compact('formDef'))}}">
+            <form method="post" enctype="multipart/form-data" action="{{action('SubmissionController@store',compact('formDef'))}}">
 
                 <div class="form-group">
                     <label for="name">Name:</label>
@@ -78,6 +90,8 @@
                         @include('fields.display.radiogroup',['radiogroup_field'=>$field])
                     @elseif($field->get('type') == 'Address')
                         @include('fields.display.address',['address_field'=>$field])
+                    @elseif($field->get('type') == "File")
+                        @include('fields.display.file',['file_field'=>$field])
                     @endif
                 @endforeach
 
