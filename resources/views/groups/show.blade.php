@@ -28,7 +28,6 @@
                                 <span class="glyphicon glyphicon-star"> </span>
                                 <em> - Administrator-</em>Provides user with all permissions above, and also the ability
                                 to add/remove users and modify permissions of other users
-
                             </li>
                             <li>
                                 <span class="glyphicon glyphicon-pencil"> </span>

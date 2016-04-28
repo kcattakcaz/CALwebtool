@@ -1,9 +1,11 @@
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-  border-bottom: 3px solid #ffffff!important;
+  border-bottom: 2px solid #ffffff!important;
+    line-height: 1px!important;
+    margin-bottom: 2px!important;
 }
 
-.navbar-inner {
+.navbar-inner .navbar-default{
 -webkit-border-radius: 0!important;
 -moz-border-radius: 0!important;
 border-radius: 0!important;
@@ -22,13 +24,13 @@ border-radius: 0!important;
     border-radius: 0!important;
 }
 
-
 .tab-content{
     background-color:#18453b!important;
-    color:#fff!important;
+    color:#18453b!important;
     padding:5px!important;
 }
 
-.modal-footer {
+.panel-footer > a{
     color:#fff!important;
+    text-decoration: none!important;
 }
