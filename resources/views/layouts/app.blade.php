@@ -18,7 +18,7 @@
     <link href="{{secure_asset('css/flatly_bootstrap.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{secure_asset("css/selectize.css")}}">
     <link rel="stylesheet" href="{{secure_asset("css/selectize.bootstrap3.css")}}">
-    <link rel="stylesheet" href="{{secure_asset("css/style.css")}}">
+    {{--<link rel="stylesheet" href="{{secure_asset("css/style.css")}}">--}}
 
     <link rel='shortcut icon' href='/public/favicon.ico' type='image/x-icon'/>
 
