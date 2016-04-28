@@ -2,6 +2,7 @@
 
 namespace CALwebtool\Http\Controllers;
 
+use CALwebtool\Field;
 use CALwebtool\FormDefinition;
 use CALwebtool\User;
 use CALwebtool\Group;
@@ -12,10 +13,12 @@ use Illuminate\Http\Request;
 
 use CALwebtool\Http\Requests;
 use CALwebtool\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\DomCrawler\Form;
 use Illuminate\Support\Facades\Mail;
@@ -63,9 +66,36 @@ class SubmissionController extends Controller
         return view('submissions.completed',compact('submissions','form'));
     }
 
-    public function store(Request $request, FormDefinition $formDef){
-        //dd($request->input());
+    public function retrieveFile(Submission $submissions, $file){
+        $form = $submissions->formdefinition()->first();
+        if($submissions->group()->users()->get()->contains(Auth::user())){
+            //$file = Storage::get("form/".$form->id."/".$file);
+            $filepath = "form/".$form->id."/".$file;
+            //Storage::get(form/)
+           // if(Storage::exists($filepath)){
 
+               /* if(copy($filepath,"/var/www/calwebtool/public/downloads/".$file)){
+                    return respones()->file("downloads/".$file);
+                }
+                //Storage::copy($filepath,"downloads/".$file);
+                return response()->file("downloads/".$file);
+            //}
+            /*else{
+                flash()->overlay("The file does not exist.","Not Found");
+                return redirect()->back();
+            }*/
+            if(Storage::exists($filepath)){
+                if(Storage::exists("downloads/".$file)){
+                    Storage::delete("downloads/".$file);
+                }
+                Storage::copy($filepath,"downloads/".$file);
+                return response()->download("downloads/".$file);
+            }
+
+        }
+    }
+
+    public function store(Request $request, FormDefinition $formDef){
         $this->validate($request,[
             'name' => 'required|max:255|string',
             'email' => 'required|email',
@@ -75,6 +105,8 @@ class SubmissionController extends Controller
 
         $fields = new Collection();
         $errors = new Collection();
+        $request->session()->forget('field_validation_errors');
+        $request->session()->put('field_validation_errors',[]);
 
         if($formDef->submissions()->where('email',$request->input('email'))->get()->count() > 0){
             $errors->push("A submission already exists for the e-mail you used: ". $request->input("email"));
@@ -83,22 +115,30 @@ class SubmissionController extends Controller
 
         foreach($formDef->fields()->get() as $field){
             $options = json_decode($field->options);
-            if($options->required && !$request->has($field->field_id) && $field->type != 'Checkbox'){
-                $errors->push("Missing required field named ".$field->name." with ID".$field->field_id);
+            if($options->required && (!$request->has($field->field_id)) && ($field->type != 'Checkbox' && $field->type != 'File')){
+                $errors->push("Missing required field named ".$field->name." with ID ".$field->field_id);
             }
-            elseif(!$request->has($field->field_id)){
+            elseif($options->required && $field->type == "File" && !$request->hasFile($field->field_id)){
+                $errors->push("Missing required file field named ".$field->name." with ID ".$field->field_id);
+            }
+            elseif(!$request->has($field->field_id) && $field->type != 'File'){
                 $fields->put($field->field_id,null);
             }
             else{
-                if($this->verifyField($field,$request->input($field->field_id))){
+                if ($this->verifyField($field, $request->input($field->field_id), $request)) {
+                    if($field->type != 'File') {
                         $fields->put($field->field_id, $request->input($field->field_id));
+                    }
+                    else{
+                        $fname ="file_".str_random(32).".".$request->file($field->field_id)->getClientOriginalExtension();
+                        $file =$request->file($field->field_id)->move('../storage/app/form/'. $formDef->id,$fname);
+                        $fields->put($field->field_id,$fname);
+                    }
 
+                } else {
+                    $errors->push("Invalid value for field named \"" . $field->name . "\" with ID  " . $field->field_id);
                 }
-                else{
-                    $errors->push("Invalid value for field named \"".$field->name."\" with ID  ".$field->field_id);
                 }
-
-              }
         }
 
         if($errors->count() > 0){
@@ -106,6 +146,8 @@ class SubmissionController extends Controller
             return redirect()->back()->withErrors($errors);
             //return view('formdefinitions.display', compact('fields', 'errors'));
         }
+
+        $request->session()->forget('form_validation_errors');
 
         $submission = new Submission(["form_definition_id"=>$formDef->id,
                                                     "name"=>$request->input('name'),
@@ -142,7 +184,7 @@ class SubmissionController extends Controller
         return view('submissions.show',compact('submissions','form','fields','group'));
     }
 
-    public static function verifyField($field,$value){
+    public static function verifyField($field,$value,$request){
         $options = json_decode($field->options);
 
         if($field->type == "Text"){
@@ -296,6 +338,17 @@ class SubmissionController extends Controller
                 return true;
             }
         }
+        elseif($field->type == "File"){
+
+            if($request->file($field->field_id)->isValid()){
+                $type = $request->file($field->field_id)->getMimeType();
+                return true;
+            }
+            else{
+                Session::push('field_validation_errors',$field->name." file field failed to upload successfully or was of an invalid file type");
+                return false;
+            }
+        }
         else{
             echo "<br>".$field->type;
         }
@@ -311,6 +364,12 @@ class SubmissionController extends Controller
         else{
             flash()->overlay("You do not have permission to reject submissions in this team.","Not Authorized");
             return redirect()->back();
+        }
+    }
+
+    public static function appendErrors(\Illuminate\Validation\Validator $validator){
+        foreach($validator->errors()->all() as $message){
+            Session::push('field_validation_errors',$message);
         }
     }
 
@@ -364,7 +423,7 @@ class SubmissionController extends Controller
 
     public function accept(Submission $submissions){
         if(Auth::user()->can('approve',$submissions)){
-            flash()->overlay(view('submissions.deny',compact('submissions'))->render(),"Approve Submission");
+            flash()->overlay(view('submissions.approve',compact('submissions'))->render(),"Approve Submission");
             return redirect()->back();
         }
         else{
@@ -385,6 +444,17 @@ class SubmissionController extends Controller
             $submissions->status = "Approved";
             $submissions->judgement = $request->input("message");
             $submissions->save();
+            $user = Auth::user();
+            $form = $submissions->formdefinition()->first();
+
+            foreach($submissions->group()->administratorUsers()->get() as $admin){
+                Mail::queue('emails.submission_final_rejection', ["content"=>$request->input('message'),"submission"=>$submissions,"admin"=>$admin,"form"=>$form], function ($message) use ($user,$admin){
+                    $message->from($user->email,$user->name);
+                    $message->subject("Submission Approved");
+                    $message->to($admin->email,$admin->name);
+                });
+            }
+
 
             flash()->overlay("The submission was approved","Approved!");
             return redirect()->back();

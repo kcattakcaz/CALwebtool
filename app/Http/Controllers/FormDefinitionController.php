@@ -52,7 +52,7 @@ class FormDefinitionController extends Controller
         if ($groups->count() > 0) {
             return view('formdefinitions.create',compact('groups','judges'));
         } else {
-            Flash()->overlay("You do not hve sufficient permission to perform this action. Please contact your group's administrator.", 'Authorization Error');
+            flash()->overlay("You do not hve sufficient permission to perform this action. Please contact your group's administrator.", 'Authorization Error');
             return redirect()->back();
         }
     }
@@ -257,7 +257,25 @@ class FormDefinitionController extends Controller
                 else{
                     $field_options = new Collection();
                     $field_options->put('required',$fieldDef->get('required'));
-                    $field_options->put('options',$fieldDef->get('options'));
+                    //$field_options->put('options',$fieldDef->get('options'));
+
+                    $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                    $field->save();
+                }
+            }
+            else if($type == "File"){
+                $validator = Validator::make($fieldArray,[
+                   'id'=>'required|alpha_dash',
+                    'name'=>'required',
+                    'required'=>'required',
+                ]);
+                if($validator->fails()){
+                    $fieldErrors->push($validator->errors());
+                }
+                else{
+                    $field_options = new Collection();
+                    $field_options->put('required',$fieldDef->get('required'));
+                    $field_options->put('types',$fieldDef->get('types'));
 
                     $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
                     $field->save();
@@ -282,7 +300,7 @@ class FormDefinitionController extends Controller
             return response()->json([$formDef->id],200);
         }
         else{
-            $formDef->forceDelete();
+            //$formDef->forceDelete();
             $errorBag = new Collection();
             foreach($fieldErrors as $fieldError){
                 foreach($fieldError->messages() as $error){
@@ -492,6 +510,24 @@ class FormDefinitionController extends Controller
                         $field->save();
                     }
                 }
+                else if($type == "File"){
+                    $validator = Validator::make($fieldArray,[
+                        'id'=>'required|alpha_dash',
+                        'name'=>'required',
+                        'required'=>'required',
+                    ]);
+                    if($validator->fails()){
+                        $fieldErrors->push($validator->errors());
+                    }
+                    else{
+                        $field_options = new Collection();
+                        $field_options->put('required',$fieldDef->get('required'));
+                        $field_options->put('types',$fieldDef->get('types'));
+
+                        $field = new Field(['form_definition_id'=>$formDef->id,'type'=>$fieldDef->get('type'),'field_id'=>$fieldDef->get('id'),'name'=>$fieldDef->get('name'),'order'=>0,'options'=>$field_options->toJson()]);
+                        $field->save();
+                    }
+                }
                 else{
                     $fieldErrors->push(["Unknown field type in submission"]);
                     continue;
@@ -508,7 +544,7 @@ class FormDefinitionController extends Controller
                 return response()->json(["id"=>$formDef->id,"new_fields"=>$new_fields,"old_fields"=>$old_fields],200);
             }
             else{
-                $formDef->forceDelete();
+                //$formDef->forceDelete();
                 $errorBag = new Collection();
                 foreach($fieldErrors as $fieldError){
                     foreach($fieldError->messages() as $error){

@@ -29,10 +29,13 @@ function FieldController(parentElement, previousValues)  {
             else if(previousValues[i].type == "Address"){
                 newField = new AddressField(previousValues[i].id,previousValues[i].name,previousValues[i]);
             }
+            else if(previousValues[i].type == "File"){
+                newField = new FileField(previousValues[i].id,previousValues[i].name,previousValues[i]);
+            }
 
             if(newField === null){
                 console.log("Failed to create field of given type "+type+" (the attempt to create the object returned null)");
-                alert("There was a problem creating a field of the type you selected, please sign out, close all browser windows, then try again.  If the problem persists, please refer to the documentation.")
+                alert("There was a problem creating a field of the type you selected, please sign out, close all browser windows, then try again.  If the problem persists, please refer to the documentation.");
                 return;
             }
 
@@ -92,6 +95,9 @@ function FieldController(parentElement, previousValues)  {
         }
         else if(type == "Address"){
             newField = new AddressField(field_id,name,null);
+        }
+        else if(type == "File"){
+            newField = new FileField(field_id,name,null);
         }
 
         if(newField === null){
@@ -799,6 +805,72 @@ function AddressField(id,name,currentValuesObj){
         var values = {};
 
         values.type = "Address";
+        values.id = this.id;
+        values.name = this.elementref_name.val();
+        values.required = this.elementref_required.val();
+        return values;
+    }
+
+}
+
+
+function FileField(id,name,currentValuesObj){
+    if(currentValuesObj === null) {
+        this.type = "File";
+        this.id = id;
+        this.name = name;
+        this.required = false;
+    }else{
+        var field_options = JSON.parse(currentValuesObj.options);
+        this.type = currentValuesObj.type;
+        this.id = currentValuesObj.id;
+        this.name = currentValuesObj.name;
+        this.required = field_options.required;
+    }
+
+    this.elementref_name = null;
+    this.elementref_required = null;
+    /**
+     * renderOptions(parentElementRef,currentValuesObj)
+     *
+     * parentElementRef: Use a JQuery selector to refer to the parent element the field should be appended to
+     * currentvaluesObj: An object containing key-value pairs of all the parameters needed to restore a field
+     *
+     * renderOptions will append to a given parent element the HTML elements needed to set the values of this field
+     * you may also provide values to fill the fields from a saved state.  It will also setup the object so that you
+     * can later call getValuesObj() to get the field parameters
+     *
+     **/
+    this.renderOptions = function(parentElementRef){
+        //Name Text Input Field//
+        var name_group = $("<div class='form-group'>");
+        name_group.append("<label for='name'>Name</label>");
+        this.elementref_name = $("<input class='form-control' type='text' name='"+this.id+"_name' id='"+this.id+"_name'>").val(this.name);
+        name_group.append(this.elementref_name);
+        parentElementRef.append(name_group);
+        this.elementref_name.on('keyup',{field_id:this.id},function(event){
+            //console.log("Change event for: "+this+"  with id: "+event.data.field_id);
+            $("#"+event.data.field_id+"_title_link").text($(this).val() + " ("+event.data.field_id+")");
+        });
+
+        //Required Select Field
+        var required_group = $("<div class='form-group'>");
+        required_group.append("<label for='required'>Is this required to submit the form?</label>");
+        this.elementref_required = $("<select class='form-control' name='"+this.id+"_required' id='"+this.id+"_required'>")
+            .append(
+                $("<option value='1'> Required</option>"),
+                $("<option value='0'> Not required</option>")
+            );
+        this.elementref_required.val(this.required);
+        this.elementref_required.val("1");
+        required_group.append(this.elementref_required);
+        parentElementRef.append(required_group);
+    };
+
+    this.getValuesObj = function(){
+        var values = {};
+
+        values.type = "File";
         values.id = this.id;
         values.name = this.elementref_name.val();
         values.required = this.elementref_required.val();

@@ -59,6 +59,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('form/{form}/judges','FormDefinitionController@updateJudges');
     Route::resource('form','FormDefinitionController');
 
+    Route::get('download/{submissions}/{file}','SubmissionController@retrieveFile');
     Route::get('submissions/form/{form}','SubmissionController@getForm');
     Route::get('submissions/unscored/{form}','SubmissionController@unscored');
     Route::get('submissions/scored/{form}','SubmissionController@scored');
