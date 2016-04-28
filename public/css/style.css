@@ -1,0 +1,16 @@
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+  border-bottom: 3px solid #ffffff;
+}
+
+.navbar-inner {
+-webkit-border-radius: 0;
+-moz-border-radius: 0;
+border-radius: 0;
+}
+
+.tab-content{
+    background-color:#18453b;
+    color:#fff;
+    padding:5px
+}
