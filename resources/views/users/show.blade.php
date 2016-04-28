@@ -70,17 +70,21 @@
                         <input type="hidden" name="action" value="modNotifications">
 
                         <div class="checkbox">
-                            <label for="notify_new_subs"> <input name="notify_new_subs" id="notify_new_subs" class="" type="checkbox" value="1">New Submissions for Moderators (Daily)</label>
+                            <label for="notify_new_subs"> <input name="notify_new_subs" id="notify_new_subs" class="" type="checkbox" value="1">New Submissions for Moderators and Admins (Daily)</label>
 
                         </div>
 
                         <div class="checkbox">
-                            <label for="notify_must_score"> <input name="notify_must_score" id="notify_must_score" class="" type="checkbox" value="1">New Submissions for Judges (Weekly)</label>
+                            <label for="notify_must_score"> <input name="notify_must_score" id="notify_must_score" class="" type="checkbox" value="1">Submissions Ready for Judges (Weekly)</label>
 
                         </div>
 
                         <div class="checkbox">
-                            <label for="notify_scoring_complete"><input name="notify_scoring_complete" id="notify_scoring_complete" class="" type="checkbox" value="1">Judging Complete for Judges and Moderators (As Needed)</label>
+                            <label for="notify_accept_reject"><input name="notify_accept_reject" id="notify_accept_reject" class="" type="checkbox" value="1">Final Approval / Rejection for Admins (As Needed) </label>
+                        </div>
+
+                        <div class="checkbox">
+                            <label for="notify_scoring_complete"><input name="notify_scoring_complete" id="notify_scoring_complete" class="" type="checkbox" value="1">Judging Complete for Judges and Admins (As Needed)</label>
 
                         </div>
 
