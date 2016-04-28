@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{secure_asset("css/selectize.bootstrap3.css")}}">
     {{--<link rel="stylesheet" href="{{secure_asset("css/style.css")}}">--}}
 
-    <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
+    <link rel='shortcut icon' href='/public/favicon.ico' type='image/x-icon'/>
 
     <style>
         body {
