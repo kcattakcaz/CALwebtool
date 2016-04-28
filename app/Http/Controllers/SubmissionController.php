@@ -423,7 +423,7 @@ class SubmissionController extends Controller
 
     public function accept(Submission $submissions){
         if(Auth::user()->can('approve',$submissions)){
-            flash()->overlay(view('submissions.deny',compact('submissions'))->render(),"Approve Submission");
+            flash()->overlay(view('submissions.approve',compact('submissions'))->render(),"Approve Submission");
             return redirect()->back();
         }
         else{
@@ -444,6 +444,17 @@ class SubmissionController extends Controller
             $submissions->status = "Approved";
             $submissions->judgement = $request->input("message");
             $submissions->save();
+            $user = Auth::user();
+            $form = $submissions->formdefinition()->first();
+
+            foreach($submissions->group()->administratorUsers()->get() as $admin){
+                Mail::queue('emails.submission_final_rejection', ["content"=>$request->input('message'),"submission"=>$submissions,"admin"=>$admin,"form"=>$form], function ($message) use ($user,$admin){
+                    $message->from($user->email,$user->name);
+                    $message->subject("Submission Approved");
+                    $message->to($admin->email,$admin->name);
+                });
+            }
+
 
             flash()->overlay("The submission was approved","Approved!");
             return redirect()->back();
