@@ -12,13 +12,13 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
 
     <!-- Styles -->
-    <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"> -->
-    <!--<link href="{{secure_asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{secure_asset('css/bootstrap-theme.min.css')}}" rel="stylesheet"> -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{secure_asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{secure_asset('css/bootstrap-theme.min.css')}}" rel="stylesheet">
     <link href="{{secure_asset('css/flatly_bootstrap.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{secure_asset("css/selectize.css")}}">
     <link rel="stylesheet" href="{{secure_asset("css/selectize.bootstrap3.css")}}">
-    {{--<link rel="stylesheet" href="{{secure_asset("css/style.css")}}">--}}
+    <link rel="stylesheet" href="{{secure_asset("css/style.css")}}">
 
     <link rel='shortcut icon' href='/public/favicon.ico' type='image/x-icon'/>
 
