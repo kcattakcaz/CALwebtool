@@ -183,7 +183,7 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 @if(!$submissions->formdefinition()->first()->judges()->get()->contains($score->user()->first()))
-                    <div class="panel panel-primarys">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
                             {{$score->user()->first()->name}}
                         </div>
