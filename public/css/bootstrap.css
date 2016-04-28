@@ -5,8 +5,8 @@
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=f4fbd036a17f3a6f1c68d84af3930023)
- * Config saved to config.json and https://gist.github.com/f4fbd036a17f3a6f1c68d84af3930023
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=c58cfe247c859803ebde21ffc11dd10a)
+ * Config saved to config.json and https://gist.github.com/c58cfe247c859803ebde21ffc11dd10a
  */
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
@@ -1092,7 +1092,7 @@ body {
   font-size: 14px;
   line-height: 1.42857143;
   color: #333333;
-  background-color: #f7f2e6;
+  background-color: #fcfaf5;
 }
 input,
 button,
@@ -1137,7 +1137,7 @@ img {
 .img-thumbnail {
   padding: 4px;
   line-height: 1.42857143;
-  background-color: #f7f2e6;
+  background-color: #fcfaf5;
   border: 1px solid #dddddd;
   border-radius: 4px;
   -webkit-transition: all 0.2s ease-in-out;
@@ -2299,7 +2299,7 @@ th {
   border-top: 2px solid #dddddd;
 }
 .table .table {
-  background-color: #f7f2e6;
+  background-color: #fcfaf5;
 }
 .table-condensed > thead > tr > th,
 .table-condensed > tbody > tr > th,
@@ -4090,7 +4090,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .nav-tabs.nav-justified > .active > a,
   .nav-tabs.nav-justified > .active > a:hover,
   .nav-tabs.nav-justified > .active > a:focus {
-    border-bottom-color: #f7f2e6;
+    border-bottom-color: #fcfaf5;
   }
 }
 .nav-pills > li {
@@ -4158,7 +4158,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .nav-tabs-justified > .active > a,
   .nav-tabs-justified > .active > a:hover,
   .nav-tabs-justified > .active > a:focus {
-    border-bottom-color: #f7f2e6;
+    border-bottom-color: #fcfaf5;
   }
 }
 .tab-content > .tab-pane {
@@ -5012,7 +5012,7 @@ a.badge:focus {
   padding: 4px;
   margin-bottom: 20px;
   line-height: 1.42857143;
-  background-color: #f7f2e6;
+  background-color: #fcfaf5;
   border: 1px solid #dddddd;
   border-radius: 4px;
   -webkit-transition: border 0.2s ease-in-out;
