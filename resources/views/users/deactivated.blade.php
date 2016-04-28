@@ -9,7 +9,7 @@
 
                 </div>
 
-                <div class="panel-body">
+                <div class="panel-body well">
 
 
                     <div class="btn-group pull-right" role="group" aria-label="...">

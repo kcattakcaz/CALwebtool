@@ -12,7 +12,7 @@
 
                     <div class="panel-heading">{{$group->name}}</div>
 
-                    <div class="panel-body">
+                    <div class="panel-body well">
 
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">

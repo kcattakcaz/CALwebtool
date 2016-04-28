@@ -18,7 +18,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{{$user->name}}'s Profile</div>
 
-                <div class="panel-body">
+                <div class="tab-content">
+                <div class="panel-body well">
 
                     <form role="form" method="post" action="{{action('UserController@update', compact('user'))}}">
                         {{ csrf_field() }}
@@ -50,12 +51,14 @@
 
 
                 </div>
+                </div>
             </div>
 
             <div class="panel panel-default">
                 <div class="panel-heading">Notification Preferences</div>
 
-                <div class="panel-body">
+                <div class="tab-content">
+                <div class="panel-body well">
 
                     <p>Note that your permissions in a specific team will override the settings below.
                         For example, if you enable Submissions to Score for Judges, you will only receive e-mails
@@ -88,20 +91,22 @@
 
 
                 </div>
+                </div>
             </div>
 
             <div class="panel panel-default">
 
                 <div class="panel-heading">Teams that {{$user->name}} is a member of:</div>
 
-                <div class="panel-body">
+                <div class="tab-content">
+                <div class="panel-body well">
 
                     <!-- this should be a table instead of another panel-->
                     @foreach($user->groups()->get() as $group)
                         <a href="{{action("GroupController@show",compact('group'))}}" class=" list-group-item">{{$group->name}}
 
-                            @if($group->isAdmin($user->id))
-                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
+                            @if($group->isJudge($user->id))
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-edit"> </span>
                             @else
                                 <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                             @endif
@@ -112,8 +117,8 @@
                                 <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                             @endif
 
-                            @if($group->isJudge($user->id))
-                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-edit"> </span>
+                            @if($group->isAdmin($user->id))
+                                <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-star"> </span>
                             @else
                                 <span style="padding-left:5px; padding-right: 5px;" class="pull-right glyphicon glyphicon-minus"> </span>
                             @endif
@@ -121,13 +126,15 @@
                         </a>
                     @endforeach
                 </div>
+                </div>
             </div>
 
 
                 <div class="panel panel-default">
                     <div class="panel-heading">Advanced User Management</div>
 
-                    <div class="panel-body">
+                    <div class="tab-content">
+                    <div class="panel-body well">
 
                         <p>Take EXTREME care with these options</p>
 
@@ -163,6 +170,7 @@
                         </form>
 
 
+                    </div>
                     </div>
                 </div>
 

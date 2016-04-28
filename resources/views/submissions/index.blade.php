@@ -15,7 +15,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">{{$form->name}}</div>
 
-                    <div class="panel-body">
+                    <div class="tab-content">
+                    <div class="panel-body well">
 
                         <div class="list-group">
                             @if($form->group()->first()->isMod(Auth::user()->id))
@@ -23,8 +24,8 @@
                                     <a href="{{action('SubmissionController@getForm',['form'=>$form])}}" class="list-group-item">{{$submission->name}} <em class="pull-right">({{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$submission->submitted)->toCookieString()}})</em></a>
                                 @endforeach
                             @endif
-
                         </div>
+                    </div>
                     </div>
                 </div>
             @endforeach

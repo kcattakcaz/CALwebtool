@@ -9,8 +9,8 @@
 
                 </div>
 
-                <div class="panel-body">
-
+                <div class="tab-content">
+                <div class="panel-body well">
 
                     <div class="btn-group pull-right" role="group" aria-label="...">
                         @if(Auth::user()->isSystemAdmin())
@@ -32,7 +32,7 @@
                         @endforeach
                     </div>
 
-
+                </div>
                 </div>
             </div>
         </div>
